@@ -1,4 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700&display=swap');
+@import "mixins";
 @import "reset";
+
+body {
+  color: var(--color-8);
+  font: 400 16px/1.2 'Jost', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
 
 // colors
 :root {
@@ -12,4 +21,33 @@
   --color-8: #647196;
   --color-9: #f49f85;
   --color-10: #62bcfa;
+}
+
+//Typography
+.h1 {
+  @include font-title(24px, 35px, -0.333px);
+}
+
+.h2 {
+  @include font-title(20px, 29px);
+}
+
+.h3 {
+  @include font-title(18px, 26px);
+}
+
+.h4 {
+  @include font-title(14px, 20px, -0.2px);
+}
+
+.b1 {
+  @include font-body(16px, 23px);
+}
+
+.b2 {
+  @include font-body(15px, 22px);
+}
+
+.b3 {
+  @include font-body(13px, 19px, 600);
 }
