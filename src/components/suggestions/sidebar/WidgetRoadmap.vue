@@ -2,10 +2,11 @@
 import { useFeedbackStatuses } from '@/stores/feedbackStatuses'
 import { computed } from 'vue'
 import type { IFeedbackStatus } from '@/types'
+import { storeToRefs } from 'pinia'
 
-const { feedbackStatuses } = useFeedbackStatuses()
+const { feedbackStatuses } = storeToRefs(useFeedbackStatuses())
 const statuses = computed<IFeedbackStatus[]>(() =>
-  feedbackStatuses.filter(({ status }) => status !== 'suggestion')
+  feedbackStatuses.value.filter(({ status }) => status !== 'suggestion')
 )
 </script>
 
