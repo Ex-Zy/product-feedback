@@ -12,4 +12,10 @@ import WidgetRoadmap from '@/components/suggestions/sidebar/WidgetRoadmap.vue'
   </aside>
 </template>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+</style>

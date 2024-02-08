@@ -14,3 +14,17 @@
   font-family: 'Jost', sans-serif;
   color: var(--color-8);
 }
+
+@mixin font-link($fs: 13px, $lh: 19px, $fw: 600) {
+  font-weight: $fw;
+  font-size: $fs;
+  line-height: $lh;
+  font-family: 'Jost', sans-serif;
+  text-decoration-line: underline;
+  color: var(--color-2);
+  transition: all 0.25s;
+
+  &:hover {
+    color: #8397F8;
+  }
+}

@@ -11,8 +11,8 @@
 .widget-top {
   background: url('@/assets/suggestions/desktop/background-header.png') no-repeat center;
   background-size: contain;
-  padding: 24px;
-  border-radius: 10px;
+  padding: var(--widget-padding);
+  border-radius: var(--radius-1);
   filter: drop-shadow(0 4px 4px rgba(0, 0, 0, 0.25));
   height: 137px;
   display: flex;

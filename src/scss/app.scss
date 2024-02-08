@@ -8,9 +8,8 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-
-// colors
 :root {
+  // colors
   --color-1: #ad1fea;
   --color-2: #4661e6;
   --color-3: #373f68;
@@ -21,6 +20,13 @@ body {
   --color-8: #647196;
   --color-9: #f49f85;
   --color-10: #62bcfa;
+
+  // border-radius
+  --radius-1: 10px;
+  --radius-2: 5px;
+
+  // padding
+  --widget-padding: 24px;
 }
 
 //Typography
@@ -50,4 +56,8 @@ body {
 
 .b3 {
   @include font-body(13px, 19px, 600);
+}
+
+.link {
+  @include font-link();
 }

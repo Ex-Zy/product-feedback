@@ -26,3 +26,10 @@ export interface IReply {
   replyingTo: string
   user: IUser
 }
+
+export interface IFeedbackStatus {
+  status: ISuggestion['status']
+  label: string
+  color: string
+  amount: number
+}
