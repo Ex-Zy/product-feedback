@@ -7,7 +7,7 @@ import { useSuggestionsStore } from '@/stores/suggestions'
 import { storeToRefs } from 'pinia'
 import SuggestionsEmpty from '@/components/suggestions/main/SuggestionsEmpty.vue'
 import ConfettiExplosion from 'vue-confetti-explosion'
-import { nextTick, ref } from 'vue'
+import { ref } from 'vue'
 
 const { filteredSuggestions } = storeToRefs(useSuggestionsStore())
 
@@ -29,7 +29,9 @@ async function handleUpVote() {
   <!-- Show Confetti after UpVote suggestion -->
   <div class="confetti" v-if="showConfetti">
     <ConfettiExplosion
-      :particleCount="100"
+      :force="0.1"
+      :particleCount="50"
+      :particleSize="10"
       :duration="duration"
       :stageWidth="vW"
       :stageHeight="vH"
@@ -53,6 +55,8 @@ async function handleUpVote() {
 
 <style lang="scss" scoped>
 .confetti {
+  display: flex;
+  justify-content: center;
   position: fixed;
   inset: 0;
   z-index: 100;
