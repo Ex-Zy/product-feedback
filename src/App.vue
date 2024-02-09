@@ -26,8 +26,7 @@ function setAppDataIntoStore() {
 <style lang="scss">
 #app {
   background: var(--color-6);
-  overflow: hidden;
   padding: 40px;
-  height: 100vh;
+  min-height: 100vh;
 }
 </style>
