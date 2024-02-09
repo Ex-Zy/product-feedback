@@ -13,27 +13,28 @@ const { filteredSuggestions } = storeToRefs(useSuggestionsStore())
 
 // confetti logic
 const showConfetti = ref(false)
-let timerId: ReturnType<typeof setTimeout>
+const duration = 3000
+const { innerWidth: vW, innerHeight: vH } = window
 
 async function handleUpVote() {
-  // reset old confetti state
-  if (showConfetti.value) {
-    showConfetti.value = false
-    clearTimeout(timerId)
-    await nextTick()
-  }
-
   showConfetti.value = true
 
-  timerId = setTimeout(() => {
+  setTimeout(() => {
     showConfetti.value = false
-  }, 10000)
+  }, duration)
 }
 </script>
 
 <template>
   <!-- Show Confetti after UpVote suggestion -->
-  <ConfettiExplosion v-if="showConfetti" :particleCount="100" />
+  <div class="confetti" v-if="showConfetti">
+    <ConfettiExplosion
+      :particleCount="100"
+      :duration="duration"
+      :stageWidth="vW"
+      :stageHeight="vH"
+    />
+  </div>
   <AppLayout>
     <template #sidebar>
       <TheSidebar />
@@ -50,4 +51,10 @@ async function handleUpVote() {
   </AppLayout>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.confetti {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+}
+</style>
