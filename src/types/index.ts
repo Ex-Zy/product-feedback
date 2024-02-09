@@ -27,7 +27,7 @@ export interface IReply {
   user: IUser
 }
 
-export interface IFeedbackStatus {
+export interface IStatus {
   status: ISuggestion['status']
   label: string
   color: string

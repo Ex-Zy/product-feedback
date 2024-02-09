@@ -1,7 +1,7 @@
 import { defineStore, storeToRefs } from 'pinia'
 import { useSuggestionsStore } from '@/stores/suggestions'
 import { computed } from 'vue'
-import type { IFeedbackStatus } from '@/types'
+import type { IStatus } from '@/types'
 
 const COLORS_OF_STATUS = {
   suggestion: '',
@@ -10,10 +10,10 @@ const COLORS_OF_STATUS = {
   live: '#62BCFA'
 }
 
-export const useFeedbackStatuses = defineStore('feedbackStatuses', () => {
+export const useStatuses = defineStore('statuses', () => {
   const { suggestions } = storeToRefs(useSuggestionsStore())
 
-  const feedbackStatuses = computed<IFeedbackStatus[]>(() => {
+  const statuses = computed<IStatus[]>(() => {
     const uniqStatuses = [...new Set(suggestions.value.map((item) => item.status))]
 
     return uniqStatuses.map((status) => {
@@ -28,5 +28,5 @@ export const useFeedbackStatuses = defineStore('feedbackStatuses', () => {
     })
   })
 
-  return { feedbackStatuses }
+  return { statuses }
 })

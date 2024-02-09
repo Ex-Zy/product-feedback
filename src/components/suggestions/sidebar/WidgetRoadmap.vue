@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { useFeedbackStatuses } from '@/stores/feedbackStatuses'
+import { useStatuses } from '@/stores/statuses'
 import { computed } from 'vue'
-import type { IFeedbackStatus } from '@/types'
+import type { IStatus } from '@/types'
 import { storeToRefs } from 'pinia'
 
-const { feedbackStatuses } = storeToRefs(useFeedbackStatuses())
-const statuses = computed<IFeedbackStatus[]>(() =>
-  feedbackStatuses.value.filter(({ status }) => status !== 'suggestion')
+const { statuses } = storeToRefs(useStatuses())
+const statusesWithoutSuggestion = computed<IStatus[]>(() =>
+  statuses.value.filter(({ status }) => status !== 'suggestion')
 )
 </script>
 
@@ -17,7 +17,11 @@ const statuses = computed<IFeedbackStatus[]>(() =>
       <RouterLink class="widget-roadmap__link link" to="/">View</RouterLink>
     </div>
     <ul class="feedback-statuses">
-      <li class="feedback-statuses__item" v-for="item in statuses" :key="item.status">
+      <li
+        class="feedback-statuses__item"
+        v-for="item in statusesWithoutSuggestion"
+        :key="item.status"
+      >
         <span class="feedback-statuses__icon" :style="{ background: item.color }"></span>
         <div class="feedback-statuses__label b1">{{ item.label }}</div>
         <div class="feedback-statuses__amount b1">{{ item.amount }}</div>
