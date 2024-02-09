@@ -21,6 +21,7 @@ const { selectedSuggestionCount } = storeToRefs(useSuggestionsStore())
   align-items: center;
   column-gap: 16px;
   padding: 14px 16px 14px 24px;
+  margin: 0 0 24px;
   height: 72px;
   border-radius: var(--radius-1);
   background: var(--color-3);

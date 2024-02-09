@@ -2,7 +2,7 @@
 import { computed } from 'vue'
 
 interface Props {
-  type:
+  type?:
     | 'primary'
     | 'secondary'
     | 'terminate'

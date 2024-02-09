@@ -7,7 +7,7 @@ const { selectedSuggestion } = storeToRefs(useSuggestionsStore())
 </script>
 
 <template>
-  <ul class="suggestions-list">
+  <TransitionGroup class="suggestions-list" name="list" tag="ul">
     <li
       class="suggestions-list__item"
       v-for="suggestion in selectedSuggestion"
@@ -20,7 +20,7 @@ const { selectedSuggestion } = storeToRefs(useSuggestionsStore())
         <UiCategory :label="suggestion.category" />
       </div>
     </li>
-  </ul>
+  </TransitionGroup>
 </template>
 
 <style scoped lang="scss">
@@ -28,7 +28,6 @@ const { selectedSuggestion } = storeToRefs(useSuggestionsStore())
   display: flex;
   flex-direction: column;
   row-gap: 20px;
-  margin: 24px 0 0;
 
   &__item {
     background: var(--color-4);

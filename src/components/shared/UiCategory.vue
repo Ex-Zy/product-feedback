@@ -3,8 +3,8 @@ import { computed } from 'vue'
 
 interface Props {
   label: string
-  isActive: boolean
-  isClickable: boolean
+  isActive?: boolean
+  isClickable?: boolean
 }
 interface Emits {
   (e: 'click'): void
