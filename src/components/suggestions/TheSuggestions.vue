@@ -7,7 +7,7 @@ import { useSuggestionsStore } from '@/stores/suggestions'
 import { storeToRefs } from 'pinia'
 import SuggestionsEmpty from '@/components/suggestions/main/SuggestionsEmpty.vue'
 
-const { selectedSuggestion } = storeToRefs(useSuggestionsStore())
+const { filteredSuggestions } = storeToRefs(useSuggestionsStore())
 </script>
 
 <template>
@@ -19,7 +19,7 @@ const { selectedSuggestion } = storeToRefs(useSuggestionsStore())
       <main>
         <SuggestionsHeader />
         <Transition name="fade" mode="out-in">
-          <SuggestionsEmpty v-if="!selectedSuggestion.length" />
+          <SuggestionsEmpty v-if="!filteredSuggestions.length" />
           <SuggestionsList v-else />
         </Transition>
       </main>

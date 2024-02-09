@@ -5,18 +5,18 @@ import type { ISuggestion } from '@/types'
 export const useSuggestionsStore = defineStore('suggestions', () => {
   const suggestions = ref<ISuggestion[]>([])
 
-  const selectedCategory = ref('all')
-  const selectedSuggestion = computed<ISuggestion[]>(() => {
+  const filter = ref('all')
+  const filteredSuggestions = computed<ISuggestion[]>(() => {
     return suggestions.value.filter((item) => {
-      if (selectedCategory.value === 'all') return item
+      if (filter.value === 'all') return item
 
-      return item.category === selectedCategory.value
+      return item.category === filter.value
     })
   })
-  const selectedSuggestionCount = computed(() => selectedSuggestion.value.length)
+  const filteredSuggestionsCount = computed(() => filteredSuggestions.value.length)
 
-  function setSelectedCategory(category: string) {
-    selectedCategory.value = category
+  function setFilter(category: string) {
+    filter.value = category
   }
 
   function setSuggestions(newSuggestions: ISuggestion[]) {
@@ -25,10 +25,10 @@ export const useSuggestionsStore = defineStore('suggestions', () => {
 
   return {
     suggestions,
-    selectedSuggestion,
-    selectedSuggestionCount,
-    selectedCategory,
+    filteredSuggestions,
+    filteredSuggestionsCount,
+    filter,
     setSuggestions,
-    setSelectedCategory
+    setFilter
   }
 })

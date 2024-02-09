@@ -4,13 +4,13 @@ import { useSuggestionsStore } from '@/stores/suggestions'
 import { storeToRefs } from 'pinia'
 import UIButton from '@/components/shared/UIButton.vue'
 
-const { selectedSuggestionCount } = storeToRefs(useSuggestionsStore())
+const { filteredSuggestionsCount } = storeToRefs(useSuggestionsStore())
 </script>
 
 <template>
   <header class="suggestions-header">
     <IconSuggestions />
-    <div class="suggestions-header__count h3">{{ selectedSuggestionCount }} Suggestions</div>
+    <div class="suggestions-header__count h3">{{ filteredSuggestionsCount }} Suggestions</div>
     <UIButton text="+ Add Feedback" class="suggestions-header__btn" />
   </header>
 </template>

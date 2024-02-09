@@ -4,7 +4,7 @@ import { storeToRefs } from 'pinia'
 import UiCategory from '@/components/shared/UiCategory.vue'
 import UIUpVote from '@/components/shared/UIUpVote.vue'
 
-const { selectedSuggestion } = storeToRefs(useSuggestionsStore())
+const { filteredSuggestions } = storeToRefs(useSuggestionsStore())
 
 function uppercaseCategoryName(category: string) {
   const firstLetter = category[0].toUpperCase()
@@ -17,7 +17,7 @@ function uppercaseCategoryName(category: string) {
   <TransitionGroup class="suggestions-list" name="list" tag="ul">
     <li
       class="suggestions-list__item"
-      v-for="suggestion in selectedSuggestion"
+      v-for="suggestion in filteredSuggestions"
       :key="suggestion.id"
     >
       <div class="suggestions-list__vote">

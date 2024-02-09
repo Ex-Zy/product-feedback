@@ -4,17 +4,17 @@ import WidgetFeedbackBoard from '@/components/suggestions/sidebar/WidgetFeedback
 import WidgetRoadmap from '@/components/suggestions/sidebar/WidgetRoadmap.vue'
 import { useSuggestionsStore } from '@/stores/suggestions'
 
-const { setSelectedCategory } = useSuggestionsStore()
+const { setFilter } = useSuggestionsStore()
 
-function handleSelectedCategory(categoryName: string) {
-  setSelectedCategory(categoryName)
+function handleFilterCategory(categoryName: string) {
+  setFilter(categoryName)
 }
 </script>
 
 <template>
   <aside class="sidebar">
     <WidgetFeedbackBoard />
-    <WidgetCategories @select-category="handleSelectedCategory" />
+    <WidgetCategories @filter="handleFilterCategory" />
     <WidgetRoadmap />
   </aside>
 </template>

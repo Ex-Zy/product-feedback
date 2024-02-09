@@ -10,7 +10,7 @@ interface IWidgetCategory {
 }
 
 interface Emit {
-  (e: 'selectCategory', name: string): void
+  (e: 'filter', name: string): void
 }
 
 const emit = defineEmits<Emit>()
@@ -24,11 +24,11 @@ const categories = reactive<IWidgetCategory[]>([
   { id: 6, name: 'feature', label: 'Feature', isActive: false }
 ])
 
-function handleSelectCategory(selectedCategory: IWidgetCategory) {
+function handleFilterCategory(filter: IWidgetCategory) {
   categories.forEach((category) => {
-    category.isActive = selectedCategory.id === category.id
+    category.isActive = filter.id === category.id
   })
-  emit('selectCategory', selectedCategory.name)
+  emit('filter', filter.name)
 }
 </script>
 
@@ -40,7 +40,7 @@ function handleSelectCategory(selectedCategory: IWidgetCategory) {
       :label="category.label"
       :is-active="category.isActive"
       is-clickable
-      @click="handleSelectCategory(category)"
+      @click="handleFilterCategory(category)"
     />
   </div>
 </template>
