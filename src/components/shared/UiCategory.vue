@@ -55,6 +55,9 @@ const rootClasses = computed(() => {
 
   &.is-clicable {
     cursor: pointer;
+    &:not(.is-active):hover {
+      background: var(--color-5-hover);
+    }
   }
 }
 </style>

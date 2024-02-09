@@ -2,8 +2,15 @@
 import { useSuggestionsStore } from '@/stores/suggestions'
 import { storeToRefs } from 'pinia'
 import UiCategory from '@/components/shared/UiCategory.vue'
+import UIUpVote from '@/components/shared/UIUpVote.vue'
 
 const { selectedSuggestion } = storeToRefs(useSuggestionsStore())
+
+function uppercaseCategoryName(category: string) {
+  const firstLetter = category[0].toUpperCase()
+
+  return firstLetter + category.slice(1)
+}
 </script>
 
 <template>
@@ -13,11 +20,17 @@ const { selectedSuggestion } = storeToRefs(useSuggestionsStore())
       v-for="suggestion in selectedSuggestion"
       :key="suggestion.id"
     >
-      <div class="suggestions-list__vote"></div>
+      <div class="suggestions-list__vote">
+        <UIUpVote v-model="suggestion.upvotes" />
+      </div>
       <div class="suggestions-list__content">
         <h3 class="suggestions-list__title h3">{{ suggestion.title }}</h3>
         <p class="suggestions-list__description b1">{{ suggestion.description }}</p>
-        <UiCategory :label="suggestion.category" />
+        <UiCategory :label="uppercaseCategoryName(suggestion.category)" />
+      </div>
+      <div class="suggestions-list__comment-amount" v-if="suggestion.comments">
+        <img src="@/assets/shared/icon-comments.svg" alt="Comment icon" />
+        {{ suggestion.comments?.length }}
       </div>
     </li>
   </TransitionGroup>
@@ -36,10 +49,36 @@ const { selectedSuggestion } = storeToRefs(useSuggestionsStore())
     min-height: 150px;
     display: flex;
     column-gap: 40px;
+    cursor: pointer;
+
+    &:hover {
+      .suggestions-list__title {
+        color: var(--color-7-hover);
+      }
+    }
+  }
+
+  &__content {
+    flex-grow: 1;
+  }
+
+  &__title {
+    transition: color 0.25s;
   }
 
   &__description {
     margin: 4px 0 12px;
+  }
+
+  &__comment-amount {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    font:
+      700 16px/1 'Jost',
+      sans-serif;
+    letter-spacing: -0.222px;
+    color: var(--color-7);
   }
 }
 </style>
