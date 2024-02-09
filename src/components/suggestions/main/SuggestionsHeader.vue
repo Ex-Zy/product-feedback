@@ -17,6 +17,8 @@ const { selectedSuggestionCount } = storeToRefs(useSuggestionsStore())
 
 <style scoped lang="scss">
 .suggestions-header {
+  position: sticky;
+  top: 10px;
   display: flex;
   align-items: center;
   column-gap: 16px;

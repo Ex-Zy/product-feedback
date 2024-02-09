@@ -21,6 +21,8 @@ function handleSelectedCategory(categoryName: string) {
 
 <style scoped lang="scss">
 .sidebar {
+  position: sticky;
+  top: 10px;
   display: flex;
   flex-direction: column;
   gap: 24px;
