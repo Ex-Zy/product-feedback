@@ -3,6 +3,14 @@ import { useSuggestionsStore } from '@/stores/suggestions'
 import { storeToRefs } from 'pinia'
 import UiCategory from '@/components/shared/UiCategory.vue'
 import UIUpVote from '@/components/shared/UIUpVote.vue'
+import type { ISuggestion } from '@/types'
+import { reactive } from 'vue'
+
+interface Emit {
+  (e: 'upvote'): void
+}
+
+const emit = defineEmits<Emit>()
 
 const { filteredSuggestions } = storeToRefs(useSuggestionsStore())
 
@@ -10,6 +18,18 @@ function uppercaseCategoryName(category: string) {
   const firstLetter = category[0].toUpperCase()
 
   return firstLetter + category.slice(1)
+}
+
+const upVotedSuggestions = reactive<number[]>([])
+function handleUpVote(suggestion: ISuggestion) {
+  if (!upVotedSuggestions.includes(suggestion.id)) {
+    upVotedSuggestions.push(suggestion.id)
+    suggestion.upvotes++
+    emit('upvote')
+  }
+}
+function isUpVoted(id: number) {
+  return upVotedSuggestions.includes(id)
 }
 </script>
 
@@ -21,7 +41,11 @@ function uppercaseCategoryName(category: string) {
       :key="suggestion.id"
     >
       <div class="suggestions-list__vote">
-        <UIUpVote v-model="suggestion.upvotes" />
+        <UIUpVote
+          :is-disabled="isUpVoted(suggestion.id)"
+          :model-value="suggestion.upvotes"
+          @update:model-value="handleUpVote(suggestion)"
+        />
       </div>
       <div class="suggestions-list__content">
         <h3 class="suggestions-list__title h3">{{ suggestion.title }}</h3>
