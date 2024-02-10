@@ -3,14 +3,16 @@ import IconSuggestions from '@/components/icons/IconSuggestions.vue'
 import { useSuggestionsStore } from '@/stores/suggestions'
 import { storeToRefs } from 'pinia'
 import UIButton from '@/components/shared/UIButton.vue'
+import SortBy from '@/components/suggestions/SortBy.vue'
 
-const { filteredSuggestionsCount } = storeToRefs(useSuggestionsStore())
+const { filteredSuggestionsCount, sortBy } = storeToRefs(useSuggestionsStore())
 </script>
 
 <template>
   <header class="suggestions-header">
     <IconSuggestions />
     <div class="suggestions-header__count h3">{{ filteredSuggestionsCount }} Suggestions</div>
+    <SortBy v-model="sortBy" />
     <UIButton text="+ Add Feedback" class="suggestions-header__btn" />
   </header>
 </template>

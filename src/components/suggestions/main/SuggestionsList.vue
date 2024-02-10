@@ -5,6 +5,7 @@ import UiCategory from '@/components/shared/UiCategory.vue'
 import UIUpVote from '@/components/shared/UIUpVote.vue'
 import type { ISuggestion } from '@/types'
 import { reactive } from 'vue'
+import { calculateComments } from '@/helpers'
 
 interface Emit {
   (e: 'upvote'): void
@@ -52,9 +53,9 @@ function isUpVoted(id: number) {
         <p class="suggestions-list__description b1">{{ suggestion.description }}</p>
         <UiCategory :label="uppercaseCategoryName(suggestion.category)" />
       </div>
-      <div class="suggestions-list__comment-amount" v-if="suggestion.comments">
+      <div class="suggestions-list__comment-amount">
         <img src="@/assets/shared/icon-comments.svg" alt="Comment icon" />
-        {{ suggestion.comments?.length }}
+        {{ suggestion.comments ? calculateComments(suggestion.comments) : 0 }}
       </div>
     </li>
   </TransitionGroup>
