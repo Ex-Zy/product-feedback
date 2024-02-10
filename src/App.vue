@@ -28,5 +28,9 @@ function setAppDataIntoStore() {
   background: var(--color-6);
   padding: 40px;
   min-height: 100vh;
+
+  @media screen and (max-width: 767px) {
+    padding: 0;
+  }
 }
 </style>

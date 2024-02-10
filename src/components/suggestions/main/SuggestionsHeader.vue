@@ -10,7 +10,7 @@ const { filteredSuggestionsCount, sortBy } = storeToRefs(useSuggestionsStore())
 
 <template>
   <header class="suggestions-header">
-    <IconSuggestions />
+    <IconSuggestions class="suggestions-header__icon" />
     <div class="suggestions-header__count h3">{{ filteredSuggestionsCount }} Suggestions</div>
     <SortBy v-model="sortBy" />
     <UIButton text="+ Add Feedback" class="suggestions-header__btn" />
@@ -29,6 +29,18 @@ const { filteredSuggestionsCount, sortBy } = storeToRefs(useSuggestionsStore())
   height: 72px;
   border-radius: var(--radius-1);
   background: var(--color-3);
+
+  @media screen and (max-width: 767px) {
+    border-radius: 0;
+    top: 72px;
+
+    .suggestions-header {
+      &__icon,
+      &__count {
+        display: none;
+      }
+    }
+  }
 
   &__count {
     color: var(--color-4);

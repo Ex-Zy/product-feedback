@@ -67,6 +67,10 @@ function isUpVoted(id: number) {
   flex-direction: column;
   row-gap: 20px;
 
+  @media screen and (max-width: 767px) {
+    padding-inline: 24px;
+  }
+
   &__item {
     background: var(--color-4);
     border-radius: var(--radius-1);

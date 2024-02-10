@@ -22,5 +22,14 @@
     grid-template-columns: 1fr;
     row-gap: 40px;
   }
+
+  @media screen and (max-width: 767px) {
+    row-gap: 0;
+
+    .app-layout__col-1 {
+      position: sticky;
+      top: 0;
+    }
+  }
 }
 </style>

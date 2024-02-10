@@ -8,6 +8,8 @@ import { storeToRefs } from 'pinia'
 import SuggestionsEmpty from '@/components/suggestions/main/SuggestionsEmpty.vue'
 import ConfettiExplosion from 'vue-confetti-explosion'
 import { ref } from 'vue'
+import { useMediaQuery } from '@vueuse/core'
+import MobileHeader from '@/components/suggestions/MobileHeader.vue'
 
 const { filteredSuggestions } = storeToRefs(useSuggestionsStore())
 
@@ -23,6 +25,8 @@ async function handleUpVote() {
     showConfetti.value = false
   }, duration)
 }
+
+const isMobileScreen = useMediaQuery('(max-width: 767px)')
 </script>
 
 <template>
@@ -39,7 +43,8 @@ async function handleUpVote() {
   </div>
   <AppLayout>
     <template #sidebar>
-      <TheSidebar />
+      <MobileHeader v-if="isMobileScreen" />
+      <TheSidebar v-else />
     </template>
     <template #main>
       <main>

@@ -11,7 +11,7 @@ const isOpen = ref(false)
 </script>
 
 <template>
-  <dropdown-menu :isOpen="isOpen" @opened="isOpen = true" @closed="isOpen = false">
+  <dropdown-menu :isOpen="isOpen" @opened="isOpen = true" @closed="isOpen = false" :overlay="false">
     <template #trigger>
       <button type="button" class="trigger-button">
         Sort by&nbsp:&nbsp<span>{{ model }}</span>
@@ -50,6 +50,10 @@ const isOpen = ref(false)
   font:
     400 14px/1.2 'Jost',
     sans-serif;
+
+  @media screen and (max-width: 767px) {
+    padding-inline: 0;
+  }
 
   span {
     font-weight: 700;
