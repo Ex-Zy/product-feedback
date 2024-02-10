@@ -26,5 +26,12 @@ function handleFilterCategory(categoryName: string) {
   display: flex;
   flex-direction: column;
   gap: 24px;
+
+  @media screen and (max-width: 1024px) {
+    position: relative;
+    display: grid;
+    gap: 10px;
+    grid-template-columns: 1fr 1fr 1fr;
+  }
 }
 </style>

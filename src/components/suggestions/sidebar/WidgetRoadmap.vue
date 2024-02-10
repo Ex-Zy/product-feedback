@@ -40,6 +40,10 @@ const statusesWithoutSuggestion = computed<IStatus[]>(() =>
   flex-direction: column;
   row-gap: 24px;
 
+  @media screen and (max-width: 1024px) {
+    min-height: auto;
+  }
+
   &__top {
     display: flex;
     justify-content: space-between;

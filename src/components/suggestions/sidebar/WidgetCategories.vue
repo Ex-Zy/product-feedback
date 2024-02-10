@@ -56,5 +56,9 @@ function handleFilterCategory(filter: IWidgetCategory) {
   align-items: flex-start;
   column-gap: 8px;
   row-gap: 14px;
+
+  @media screen and (max-width: 1024px) {
+    min-height: auto;
+  }
 }
 </style>

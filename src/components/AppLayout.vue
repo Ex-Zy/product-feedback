@@ -17,5 +17,10 @@
   margin: 0 auto;
   grid-template-columns: 255px 1fr;
   column-gap: 30px;
+
+  @media screen and (max-width: 1024px) {
+    grid-template-columns: 1fr;
+    row-gap: 40px;
+  }
 }
 </style>
