@@ -4,13 +4,9 @@ import { storeToRefs } from 'pinia'
 import SuggestionsListItem from '@/components/suggestions/main/SuggestionsListItem.vue'
 import type { ISuggestion } from '@/types'
 import { reactive } from 'vue'
+import { useConfetti } from '@/composables/useConfetti'
 
-interface Emit {
-  (e: 'upvote'): void
-}
-
-const emit = defineEmits<Emit>()
-
+const { showConfetti } = useConfetti()
 const { filteredSuggestions } = storeToRefs(useSuggestionsStore())
 
 const upVotedSuggestions = reactive<number[]>([])
@@ -18,7 +14,7 @@ function handleUpVote(suggestion: ISuggestion) {
   if (!upVotedSuggestions.includes(suggestion.id)) {
     upVotedSuggestions.push(suggestion.id)
     suggestion.upvotes++
-    emit('upvote')
+    showConfetti()
   }
 }
 function isUpVoted(id: number) {

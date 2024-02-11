@@ -77,6 +77,7 @@ const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1)
 
     @include mobile {
       order: 1;
+      flex-basis: 100%;
     }
   }
 
