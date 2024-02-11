@@ -15,6 +15,7 @@ const closeSidebar = () => (isOpen.value = false)
       <h2 class="widget-top__subtitle">Feedback Board</h2>
     </div>
     <button
+      v-if="isMobile"
       class="hamburger hamburger--collapse"
       :class="{ 'is-active': isOpen }"
       type="button"
