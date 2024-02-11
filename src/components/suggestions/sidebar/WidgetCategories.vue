@@ -57,7 +57,7 @@ function handleFilterCategory(filter: IWidgetCategory) {
   column-gap: 8px;
   row-gap: 14px;
 
-  @media screen and (max-width: 1024px) {
+  @include tablet {
     min-height: auto;
   }
 }

@@ -30,9 +30,10 @@ const { filteredSuggestionsCount, sortBy } = storeToRefs(useSuggestionsStore())
   border-radius: var(--radius-1);
   background: var(--color-3);
 
-  @media screen and (max-width: 767px) {
+  @include mobile {
     border-radius: 0;
     top: 72px;
+    margin: 0;
 
     .suggestions-header {
       &__icon,

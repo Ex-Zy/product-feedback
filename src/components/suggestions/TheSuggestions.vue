@@ -8,8 +8,6 @@ import { storeToRefs } from 'pinia'
 import SuggestionsEmpty from '@/components/suggestions/main/SuggestionsEmpty.vue'
 import ConfettiExplosion from 'vue-confetti-explosion'
 import { ref } from 'vue'
-import { useMediaQuery } from '@vueuse/core'
-import MobileHeader from '@/components/suggestions/MobileHeader.vue'
 
 const { filteredSuggestions } = storeToRefs(useSuggestionsStore())
 
@@ -25,8 +23,6 @@ async function handleUpVote() {
     showConfetti.value = false
   }, duration)
 }
-
-const isMobileScreen = useMediaQuery('(max-width: 767px)')
 </script>
 
 <template>
@@ -43,11 +39,10 @@ const isMobileScreen = useMediaQuery('(max-width: 767px)')
   </div>
   <AppLayout>
     <template #sidebar>
-      <MobileHeader v-if="isMobileScreen" />
-      <TheSidebar v-else />
+      <TheSidebar />
     </template>
     <template #main>
-      <main>
+      <main class="main">
         <SuggestionsHeader />
         <Transition name="fade" mode="out-in">
           <SuggestionsEmpty v-if="!filteredSuggestions.length" />
@@ -65,5 +60,12 @@ const isMobileScreen = useMediaQuery('(max-width: 767px)')
   position: fixed;
   inset: 0;
   z-index: 100;
+}
+.main {
+  @include mobile {
+    display: flex;
+    flex-direction: column;
+    gap: calc(72px + 32px); // header height + offset
+  }
 }
 </style>

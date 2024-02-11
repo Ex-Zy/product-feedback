@@ -40,7 +40,7 @@ const statusesWithoutSuggestion = computed<IStatus[]>(() =>
   flex-direction: column;
   row-gap: 24px;
 
-  @media screen and (max-width: 1024px) {
+  @include tablet {
     min-height: auto;
   }
 

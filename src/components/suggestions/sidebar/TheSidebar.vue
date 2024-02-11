@@ -3,17 +3,20 @@ import WidgetCategories from '@/components/suggestions/sidebar/WidgetCategories.
 import WidgetFeedbackBoard from '@/components/suggestions/sidebar/WidgetFeedbackBoard.vue'
 import WidgetRoadmap from '@/components/suggestions/sidebar/WidgetRoadmap.vue'
 import { useSuggestionsStore } from '@/stores/suggestions'
+import { ref } from 'vue'
 
 const { setFilter } = useSuggestionsStore()
 
 function handleFilterCategory(categoryName: string) {
   setFilter(categoryName)
 }
+
+const isOpenSidebar = ref(false)
 </script>
 
 <template>
-  <aside class="sidebar">
-    <WidgetFeedbackBoard />
+  <aside class="sidebar" :class="{ 'is-open': isOpenSidebar }">
+    <WidgetFeedbackBoard v-model="isOpenSidebar" />
     <WidgetCategories @filter="handleFilterCategory" />
     <WidgetRoadmap />
   </aside>
@@ -27,11 +30,31 @@ function handleFilterCategory(categoryName: string) {
   flex-direction: column;
   gap: 24px;
 
-  @media screen and (max-width: 1024px) {
+  @include tablet {
     position: relative;
     display: grid;
     gap: 10px;
     grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  @include mobile {
+    width: 272px;
+    position: fixed;
+    z-index: 100;
+    display: flex;
+    gap: 24px;
+    padding-block-start: calc(72px + 24px); // widget height + offset
+    padding-inline: 24px;
+    flex-direction: column;
+    top: 0;
+    right: -100%;
+    bottom: 0;
+    background: var(--color-6);
+    transition: all 0.25s;
+
+    &.is-open {
+      right: 0;
+    }
   }
 }
 </style>

@@ -29,7 +29,7 @@ function setAppDataIntoStore() {
   padding: 40px;
   min-height: 100vh;
 
-  @media screen and (max-width: 767px) {
+  @include mobile {
     padding: 0;
   }
 }

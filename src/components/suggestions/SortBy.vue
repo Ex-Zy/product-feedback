@@ -51,7 +51,7 @@ const isOpen = ref(false)
     400 14px/1.2 'Jost',
     sans-serif;
 
-  @media screen and (max-width: 767px) {
+  @include mobile {
     padding-inline: 0;
   }
 

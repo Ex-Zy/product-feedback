@@ -67,7 +67,7 @@ function isUpVoted(id: number) {
   flex-direction: column;
   row-gap: 20px;
 
-  @media screen and (max-width: 767px) {
+  @include mobile {
     padding-inline: 24px;
   }
 

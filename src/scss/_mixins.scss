@@ -1,3 +1,4 @@
+// typography
 @mixin font-title($fs: 20px, $lh: 20px, $ls: -0.25px) {
   font-weight: 700;
   font-size: $fs;
@@ -26,5 +27,18 @@
 
   &:hover {
     color: #8397F8;
+  }
+}
+
+// media query
+@mixin tablet {
+  @media screen and (max-width: 1024px) {
+    @content;
+  }
+}
+
+@mixin mobile {
+  @media screen and (max-width: 767px) {
+    @content;
   }
 }

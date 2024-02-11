@@ -18,18 +18,13 @@
   grid-template-columns: 255px 1fr;
   column-gap: 30px;
 
-  @media screen and (max-width: 1024px) {
+  @include tablet {
     grid-template-columns: 1fr;
     row-gap: 40px;
   }
 
-  @media screen and (max-width: 767px) {
+  @include mobile {
     row-gap: 0;
-
-    .app-layout__col-1 {
-      position: sticky;
-      top: 0;
-    }
   }
 }
 </style>
