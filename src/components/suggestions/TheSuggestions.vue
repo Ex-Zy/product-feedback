@@ -59,7 +59,7 @@ async function handleUpVote() {
   justify-content: center;
   position: fixed;
   inset: 0;
-  z-index: 100;
+  z-index: 200;
 }
 .main {
   @include mobile {

@@ -88,11 +88,19 @@ function handleUpVote(value: number) {
     display: flex;
     align-items: center;
 
+    @include mobile {
+      height: 32px;
+    }
+
     .ui-upvote__content {
       display: flex;
       gap: 12px;
       align-items: center;
       justify-content: flex-end;
+    }
+
+    .ui-upvote__arrow {
+      padding-bottom: 2px;
     }
   }
 

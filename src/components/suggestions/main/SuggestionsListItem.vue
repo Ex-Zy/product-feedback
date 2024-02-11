@@ -3,6 +3,7 @@ import { calculateComments } from '@/helpers'
 import type { ISuggestion } from '@/types'
 import UIUpVote from '@/components/shared/UIUpVote.vue'
 import UiCategory from '@/components/shared/UiCategory.vue'
+import { useMediaQuery } from '@vueuse/core'
 
 interface Props {
   suggestion: ISuggestion
@@ -16,6 +17,7 @@ interface Emit {
 const props = defineProps<Props>()
 const emit = defineEmits<Emit>()
 
+const isMobile = useMediaQuery('(max-width: 767px)')
 const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1)
 </script>
 
@@ -23,6 +25,7 @@ const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1)
   <li class="suggestions-item" :key="suggestion.id">
     <div class="suggestions-item__vote">
       <UIUpVote
+        :align="isMobile ? 'horizontal' : 'vertical'"
         :is-disabled="props.isUpVoted"
         :model-value="suggestion.upvotes"
         @update:model-value="emit('upvote')"
@@ -50,14 +53,31 @@ const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1)
   column-gap: 40px;
   cursor: pointer;
 
+  @include mobile {
+    flex-wrap: wrap;
+    justify-content: space-between;
+    row-gap: 16px;
+    padding: 24px;
+  }
+
   &:hover {
     .suggestions-item__title {
       color: var(--color-7-hover);
     }
   }
 
+  &__vote {
+    @include mobile {
+      order: 2;
+    }
+  }
+
   &__content {
     flex-grow: 1;
+
+    @include mobile {
+      order: 1;
+    }
   }
 
   &__title {
@@ -77,6 +97,10 @@ const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1)
       sans-serif;
     letter-spacing: -0.222px;
     color: var(--color-7);
+
+    @include mobile {
+      order: 3;
+    }
   }
 }
 </style>

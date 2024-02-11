@@ -47,6 +47,10 @@ const rootClasses = computed(() => ({
     sans-serif;
   color: var(--color-4);
 
+  @include mobile {
+    padding: 8px 16px;
+  }
+
   &:active {
     top: 1px;
   }
