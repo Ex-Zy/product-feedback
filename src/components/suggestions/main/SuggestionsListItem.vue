@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { calculateComments } from '@/helpers'
+import { calculateComments, capitalize } from '@/helpers'
 import type { ISuggestion } from '@/types'
 import UIUpVote from '@/components/shared/UIUpVote.vue'
 import UiCategory from '@/components/shared/UiCategory.vue'
@@ -18,7 +18,6 @@ const props = defineProps<Props>()
 const emit = defineEmits<Emit>()
 
 const isMobile = useMediaQuery('(max-width: 767px)')
-const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1)
 </script>
 
 <template>
@@ -32,11 +31,13 @@ const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1)
       />
     </div>
     <div class="suggestions-item__content">
-      <h3 class="suggestions-item__title h3">{{ suggestion.title }}</h3>
-      <p class="suggestions-item__description b1">{{ suggestion.description }}</p>
+      <h3 data-test="title" class="suggestions-item__title h3">{{ suggestion.title }}</h3>
+      <p data-test="description" class="suggestions-item__description b1">
+        {{ suggestion.description }}
+      </p>
       <UiCategory :label="capitalize(suggestion.category)" />
     </div>
-    <div class="suggestions-item__comment-amount">
+    <div data-test="amount" class="suggestions-item__comment-amount">
       <img src="@/assets/shared/icon-comments.svg" alt="Comment icon" />
       {{ suggestion.comments ? calculateComments(suggestion.comments) : 0 }}
     </div>

@@ -6,3 +6,7 @@ export function calculateComments(comments: IComment[]) {
     return sum + commentsCount
   }, 0)
 }
+
+export const capitalize = (str: string) => {
+  return str.charAt(0).toUpperCase() + str.slice(1)
+}
