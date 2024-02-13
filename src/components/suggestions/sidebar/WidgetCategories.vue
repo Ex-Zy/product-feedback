@@ -37,7 +37,7 @@ function handleFilterCategory(filter: IWidgetCategory) {
     <UiCategory
       v-for="category in categories"
       :key="category.id"
-      :label="category.label"
+      :name="category.label"
       :is-active="category.isActive"
       is-clickable
       @click="handleFilterCategory(category)"

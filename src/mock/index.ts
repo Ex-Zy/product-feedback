@@ -1,44 +1,116 @@
 import type { ISuggestion } from '@/types'
 
-export const suggestionMock: ISuggestion = {
-  id: 5,
-  title: 'Ability to follow others',
-  category: 'feature',
-  upvotes: 42,
-  status: 'suggestion',
-  description: 'Stay updated on comments and solutions other people post.',
-  comments: [
-    {
-      id: 8,
-      content:
-        'I also want to be notified when devs I follow submit projects on FEM. Is in-app notification also in the pipeline?',
-      user: {
-        image: './assets/user-images/image-victoria.jpg',
-        name: 'Victoria Mejia',
-        username: 'arlen_the_marlin'
-      },
-      replies: [
-        {
-          content:
-            "Bumping this. It would be good to have a tab with a feed of people I follow so it's easy to see what challenges they’ve done lately. I learn a lot by reading good developers' code.",
-          replyingTo: 'arlen_the_marlin',
-          user: {
-            image: './assets/user-images/image-zena.jpg',
-            name: 'Zena Kelley',
-            username: 'velvetround'
-          }
-        }
-      ]
-    },
-    {
-      id: 9,
-      content:
-        "I've been saving the profile URLs of a few people and I check what they’ve been doing from time to time. Being able to follow them solves that",
-      user: {
-        image: './assets/user-images/image-jackson.jpg',
-        name: 'Jackson Barker',
-        username: 'countryspirit'
-      }
-    }
-  ]
-}
+export const mockSuggestions: ISuggestion[] = [
+  {
+    id: 1,
+    title: 'Add tags for solutions',
+    category: 'enhancement',
+    upvotes: 112,
+    status: 'suggestion',
+    description: 'Easier to search for solutions based on a specific stack.'
+  },
+  {
+    id: 2,
+    title: 'Add a dark theme option',
+    category: 'feature',
+    upvotes: 99,
+    status: 'suggestion',
+    description: 'It would help people with light sensitivities and who prefer dark mode.'
+  },
+  {
+    id: 11,
+    title: 'Animated solution screenshots',
+    category: 'bug',
+    upvotes: 9,
+    status: 'in-progress',
+    description: 'Screenshots of solutions with animations don’t display correctly.'
+  }
+]
+
+// for sort
+export const mockByMostUpvotesSuggestions: ISuggestion[] = [
+  {
+    id: 1,
+    title: 'Add tags for solutions',
+    category: 'enhancement',
+    upvotes: 112,
+    status: 'suggestion',
+    description: 'Easier to search for solutions based on a specific stack.'
+  },
+  {
+    id: 2,
+    title: 'Add a dark theme option',
+    category: 'feature',
+    upvotes: 99,
+    status: 'suggestion',
+    description: 'It would help people with light sensitivities and who prefer dark mode.'
+  },
+  {
+    id: 11,
+    title: 'Animated solution screenshots',
+    category: 'bug',
+    upvotes: 9,
+    status: 'in-progress',
+    description: 'Screenshots of solutions with animations don’t display correctly.'
+  }
+]
+export const mockSuggestionsByLeastUpvotes: ISuggestion[] = [
+  {
+    id: 11,
+    title: 'Animated solution screenshots',
+    category: 'bug',
+    upvotes: 9,
+    status: 'in-progress',
+    description: 'Screenshots of solutions with animations don’t display correctly.'
+  },
+  {
+    id: 2,
+    title: 'Add a dark theme option',
+    category: 'feature',
+    upvotes: 99,
+    status: 'suggestion',
+    description: 'It would help people with light sensitivities and who prefer dark mode.'
+  },
+  {
+    id: 1,
+    title: 'Add tags for solutions',
+    category: 'enhancement',
+    upvotes: 112,
+    status: 'suggestion',
+    description: 'Easier to search for solutions based on a specific stack.'
+  }
+]
+
+// for filter
+export const mockBugSuggestions: ISuggestion[] = [
+  {
+    id: 11,
+    title: 'Animated solution screenshots',
+    category: 'bug',
+    upvotes: 9,
+    status: 'in-progress',
+    description: 'Screenshots of solutions with animations don’t display correctly.'
+  }
+]
+
+export const mockEnhancementSuggestions: ISuggestion[] = [
+  {
+    id: 1,
+    title: 'Add tags for solutions',
+    category: 'enhancement',
+    upvotes: 112,
+    status: 'suggestion',
+    description: 'Easier to search for solutions based on a specific stack.'
+  }
+]
+
+export const mockFeatureSuggestions: ISuggestion[] = [
+  {
+    id: 2,
+    title: 'Add a dark theme option',
+    category: 'feature',
+    upvotes: 99,
+    status: 'suggestion',
+    description: 'It would help people with light sensitivities and who prefer dark mode.'
+  }
+]

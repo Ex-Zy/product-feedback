@@ -1,12 +1,18 @@
 <script setup lang="ts">
 import { calculateComments, capitalize } from '@/helpers'
-import type { ISuggestion } from '@/types'
+import type { IComment, ISuggestion } from '@/types'
 import UIUpVote from '@/components/shared/UIUpVote.vue'
 import UiCategory from '@/components/shared/UiCategory.vue'
 import { useMediaQuery } from '@vueuse/core'
+import { computed } from 'vue'
 
 interface Props {
-  suggestion: ISuggestion
+  id: number
+  upvotes: number
+  title: string
+  description: string
+  category: string
+  comments?: IComment[]
   isUpVoted: boolean
 }
 
@@ -18,28 +24,33 @@ const props = defineProps<Props>()
 const emit = defineEmits<Emit>()
 
 const isMobile = useMediaQuery('(max-width: 767px)')
+const align = computed(() => (isMobile.value ? 'horizontal' : 'vertical'))
+
+const commentsAmount = computed(() => {
+  return props.comments ? calculateComments(props.comments) : 0
+})
 </script>
 
 <template>
-  <li class="suggestions-item" :key="suggestion.id">
+  <li class="suggestions-item" :data-id="props.id">
     <div class="suggestions-item__vote">
       <UIUpVote
-        :align="isMobile ? 'horizontal' : 'vertical'"
-        :is-disabled="props.isUpVoted"
-        :model-value="suggestion.upvotes"
+        :align="align"
+        :is-upvoted="props.isUpVoted"
+        :model-value="props.upvotes"
         @update:model-value="emit('upvote')"
       />
     </div>
     <div class="suggestions-item__content">
-      <h3 data-test="title" class="suggestions-item__title h3">{{ suggestion.title }}</h3>
+      <h3 data-test="title" class="suggestions-item__title h3">{{ props.title }}</h3>
       <p data-test="description" class="suggestions-item__description b1">
-        {{ suggestion.description }}
+        {{ props.description }}
       </p>
-      <UiCategory :label="capitalize(suggestion.category)" />
+      <UiCategory :name="props.category" />
     </div>
     <div data-test="amount" class="suggestions-item__comment-amount">
       <img src="@/assets/shared/icon-comments.svg" alt="Comment icon" />
-      {{ suggestion.comments ? calculateComments(suggestion.comments) : 0 }}
+      {{ commentsAmount }}
     </div>
   </li>
 </template>

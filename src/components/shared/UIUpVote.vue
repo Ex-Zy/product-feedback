@@ -5,7 +5,7 @@ import IconArrowUp from '@/components/icons/IconArrowUp.vue'
 interface Props {
   align?: 'vertical' | 'horizontal'
   modelValue: number
-  isDisabled?: boolean
+  isUpvoted?: boolean
 }
 
 interface Emit {
@@ -14,14 +14,14 @@ interface Emit {
 
 const props = withDefaults(defineProps<Props>(), {
   align: 'vertical',
-  isDisabled: false
+  isUpvoted: false
 })
 const emit = defineEmits<Emit>()
 
 const rootClasses = computed(() => {
   return {
     [`is-${props.align}`]: true,
-    'is-disabled': props.isDisabled
+    'is-upvoted': props.isUpvoted
   }
 })
 
@@ -47,11 +47,11 @@ function handleUpVote(value: number) {
   transition: all 0.25s;
   cursor: pointer;
 
-  &:hover {
+  &:hover:not(.is-upvoted) {
     background: var(--color-5-hover);
   }
 
-  &:active {
+  &:active:not(.is-upvoted) {
     background: var(--color-2);
 
     .ui-upvote__arrow {
@@ -63,7 +63,7 @@ function handleUpVote(value: number) {
     }
   }
 
-  &.is-disabled {
+  &.is-upvoted {
     pointer-events: none;
     cursor: default;
   }

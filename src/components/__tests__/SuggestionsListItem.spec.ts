@@ -1,41 +1,83 @@
 import { describe, it, expect } from 'vitest'
 
-import { mount } from '@vue/test-utils'
-import { suggestionMock } from '@/mock'
+import { mount, VueWrapper } from '@vue/test-utils'
 import SuggestionsListItem from '../suggestions/main/SuggestionsListItem.vue'
 import UIUpVote from '../shared/UIUpVote.vue'
 import UiCategory from '../shared/UiCategory.vue'
-import { capitalize } from 'vue'
+import type { IComment } from '@/types'
 
-describe('SuggestionsListItem', () => {
-  const wrapper = mount(SuggestionsListItem, {
+const comments: IComment[] = [
+  {
+    id: 8,
+    content:
+      'I also want to be notified when devs I follow submit projects on FEM. Is in-app notification also in the pipeline?',
+    user: {
+      image: './assets/user-images/image-victoria.jpg',
+      name: 'Victoria Mejia',
+      username: 'arlen_the_marlin'
+    },
+    replies: [
+      {
+        content:
+          "Bumping this. It would be good to have a tab with a feed of people I follow so it's easy to see what challenges they’ve done lately. I learn a lot by reading good developers' code.",
+        replyingTo: 'arlen_the_marlin',
+        user: {
+          image: './assets/user-images/image-zena.jpg',
+          name: 'Zena Kelley',
+          username: 'velvetround'
+        }
+      }
+    ]
+  },
+  {
+    id: 9,
+    content:
+      "I've been saving the profile URLs of a few people and I check what they’ve been doing from time to time. Being able to follow them solves that",
+    user: {
+      image: './assets/user-images/image-jackson.jpg',
+      name: 'Jackson Barker',
+      username: 'countryspirit'
+    }
+  }
+]
+
+describe('SuggestionsListItem.vue Test', () => {
+  const wrapper: VueWrapper = mount(SuggestionsListItem, {
     props: {
-      suggestion: suggestionMock,
-      isUpVoted: false
+      id: 5,
+      title: 'Ability to follow others',
+      category: 'feature',
+      upvotes: 42,
+      description: 'Stay updated on comments and solutions other people post.',
+      isUpVoted: false,
+      comments
     }
   })
 
-  const UpVote = wrapper.getComponent(UIUpVote)
-  const Category = wrapper.getComponent(UiCategory)
-
-  const title = wrapper.find('[data-test="title"]')
-  const description = wrapper.find('[data-test="description"]')
-  const amount = wrapper.find('[data-test="amount"]')
-
-  it('renders properly', () => {
-    expect(UpVote.text()).toContain('42')
-
-    expect(title.text()).toContain('Ability to follow others')
-    expect(description.text()).toContain(
-      'Stay updated on comments and solutions other people post.'
-    )
-    expect(Category.text()).toContain(capitalize('feature'))
-
-    expect(amount.text()).toContain('3')
+  it('render title', () => {
+    expect(wrapper.find('[data-test="title"]').text()).toMatch('Ability to follow others')
   })
 
-  it('emit upvote', async () => {
-    await UpVote.setValue(42)
+  it('render description', () => {
+    expect(wrapper.find('[data-test="description"]').text()).toMatch(
+      'Stay updated on comments and solutions other people post.'
+    )
+  })
+
+  it('render comments amount', () => {
+    expect(wrapper.find('[data-test="amount"]').text()).toMatch('3')
+  })
+
+  it('render category', () => {
+    expect(wrapper.findComponent(UiCategory).text()).toMatch('feature')
+  })
+
+  it('render upvote', () => {
+    expect(wrapper.findComponent(UIUpVote).text()).toMatch('42')
+  })
+
+  it('emit upvote event', async () => {
+    await wrapper.findComponent(UIUpVote).setValue(42)
     expect(wrapper.emitted()).toHaveProperty('upvote')
   })
 })

@@ -6,9 +6,9 @@ import type { ISuggestion } from '@/types'
 import { reactive } from 'vue'
 import { useConfetti } from '@/composables/useConfetti'
 
-const { showConfetti } = useConfetti()
 const { filteredSuggestions } = storeToRefs(useSuggestionsStore())
 
+const { showConfetti } = useConfetti()
 const upVotedSuggestions = reactive<number[]>([])
 function handleUpVote(suggestion: ISuggestion) {
   if (!upVotedSuggestions.includes(suggestion.id)) {
@@ -27,8 +27,13 @@ function isUpVoted(id: number) {
     <SuggestionsListItem
       v-for="suggestion in filteredSuggestions"
       :key="suggestion.id"
+      :id="suggestion.id"
+      :upvotes="suggestion.upvotes"
+      :category="suggestion.category"
+      :title="suggestion.title"
+      :description="suggestion.description"
+      :comments="suggestion.comments"
       :is-up-voted="isUpVoted(suggestion.id)"
-      :suggestion="suggestion"
       @upvote="handleUpVote(suggestion)"
     />
   </TransitionGroup>

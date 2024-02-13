@@ -2,7 +2,7 @@
 import { computed } from 'vue'
 
 interface Props {
-  label: string
+  name: string
   isActive?: boolean
   isClickable?: boolean
 }
@@ -10,7 +10,7 @@ interface Emits {
   (e: 'click'): void
 }
 const props = withDefaults(defineProps<Props>(), {
-  label: 'default',
+  name: 'default',
   isActive: false,
   isClickable: false
 })
@@ -30,7 +30,7 @@ const rootClasses = computed(() => {
 
 <template>
   <div class="ui-category" :class="rootClasses" @click="handleClick">
-    <div class="ui-category__text">{{ label }}</div>
+    <div class="ui-category__text">{{ name }}</div>
   </div>
 </template>
 
@@ -47,6 +47,7 @@ const rootClasses = computed(() => {
     600 13px 'Jost',
     sans-serif;
   transition: all 0.25s;
+  text-transform: capitalize;
 
   &.is-active {
     color: var(--color-4);
