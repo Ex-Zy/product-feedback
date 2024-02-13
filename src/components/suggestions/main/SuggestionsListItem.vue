@@ -63,19 +63,12 @@ const commentsAmount = computed(() => {
   min-height: 150px;
   display: flex;
   column-gap: 40px;
-  cursor: pointer;
 
   @include mobile {
     flex-wrap: wrap;
     justify-content: space-between;
     row-gap: 16px;
     padding: 24px;
-  }
-
-  &:hover {
-    .suggestions-item__title {
-      color: var(--color-7-hover);
-    }
   }
 
   &__vote {
@@ -95,6 +88,11 @@ const commentsAmount = computed(() => {
 
   &__title {
     transition: color 0.25s;
+    cursor: pointer;
+
+    &:hover {
+      color: var(--color-7-hover);
+    }
   }
 
   &__description {

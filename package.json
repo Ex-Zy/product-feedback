@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@vueuse/core": "^10.7.2",
+    "floating-vue": "^5.2.2",
     "hamburgers": "^1.2.1",
     "pinia": "^2.1.7",
     "v-dropdown-menu": "^2.0.4",

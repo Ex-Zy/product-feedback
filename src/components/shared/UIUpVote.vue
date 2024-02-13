@@ -18,6 +18,10 @@ const props = withDefaults(defineProps<Props>(), {
 })
 const emit = defineEmits<Emit>()
 
+const tooltip = computed(() => {
+  return props.isUpvoted ? 'You upvoted for this suggestion' : ''
+})
+
 const rootClasses = computed(() => {
   return {
     [`is-${props.align}`]: true,
@@ -31,7 +35,12 @@ function handleUpVote(value: number) {
 </script>
 
 <template>
-  <div class="ui-upvote" :class="rootClasses" @click="handleUpVote(props.modelValue + 1)">
+  <div
+    v-tooltip="tooltip"
+    class="ui-upvote"
+    :class="rootClasses"
+    @click="handleUpVote(props.modelValue + 1)"
+  >
     <div class="ui-upvote__content">
       <div class="ui-upvote__arrow"><IconArrowUp /></div>
       <div class="ui-upvote__amount">{{ props.modelValue }}</div>
@@ -64,8 +73,8 @@ function handleUpVote(value: number) {
   }
 
   &.is-upvoted {
-    pointer-events: none;
-    cursor: default;
+    cursor: not-allowed;
+    background: #dbe1ff;
   }
 
   &.is-vertical {

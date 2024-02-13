@@ -25,5 +25,6 @@ const { show, duration, vW, vH } = useConfetti()
   position: fixed;
   inset: 0;
   z-index: 200;
+  pointer-events: none;
 }
 </style>

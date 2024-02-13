@@ -1,14 +1,21 @@
-import { ref } from 'vue'
+import { nextTick, ref } from 'vue'
 
 const show = ref(false)
 
 export const useConfetti = () => {
   const duration = 3000
   const { innerWidth: vW, innerHeight: vH } = window
-  function showConfetti() {
+
+  let id: ReturnType<typeof setTimeout>
+  async function showConfetti() {
+    if (show.value) {
+      show.value = false
+      await nextTick()
+    }
+
     show.value = true
 
-    setTimeout(() => {
+    id = setTimeout(() => {
       show.value = false
     }, duration)
   }
