@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { LEAST_COMMENTS, LEAST_UPVOTES, MOST_COMMENTS, MOST_UPVOTES } from '@/constants'
-import IconArrowDown from '@/components/icons/IconArrowDown.vue'
-import IconArrowUp from '@/components/icons/IconArrowUp.vue'
+import IconArrowDown from '@/components/common/icons/IconArrowDown.vue'
+import IconArrowUp from '@/components/common/icons/IconArrowUp.vue'
 
 const model = defineModel<string>({ default: '' })
 const sortByValues = ref([MOST_UPVOTES, LEAST_UPVOTES, MOST_COMMENTS, LEAST_COMMENTS])

@@ -2,6 +2,7 @@ import { defineStore, storeToRefs } from 'pinia'
 import { useSuggestionsStore } from '@/stores/suggestions'
 import { computed } from 'vue'
 import type { IStatus } from '@/types'
+import { capitalize } from '@/helpers'
 
 const COLORS_OF_STATUS = {
   suggestion: '',
@@ -22,7 +23,8 @@ export const useStatuses = defineStore('statuses', () => {
       return {
         status,
         amount,
-        label: status.charAt(0).toUpperCase() + status.slice(1),
+        name: status,
+        label: capitalize(status),
         color: COLORS_OF_STATUS[status]
       }
     })

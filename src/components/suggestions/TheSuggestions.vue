@@ -6,13 +6,11 @@ import SuggestionsList from '@/components/suggestions/main/SuggestionsList.vue'
 import { useSuggestionsStore } from '@/stores/suggestions'
 import { storeToRefs } from 'pinia'
 import SuggestionsEmpty from '@/components/suggestions/main/SuggestionsEmpty.vue'
-import TheConfetti from '@/components/suggestions/TheConfetti.vue'
 
 const { filteredSuggestions } = storeToRefs(useSuggestionsStore())
 </script>
 
 <template>
-  <TheConfetti />
   <AppLayout>
     <template #sidebar>
       <TheSidebar />

@@ -28,7 +28,7 @@ describe('suggestions store', () => {
   it('set state', () => {
     const store = useSuggestionsStore()
 
-    store.setSuggestions(mockSuggestions)
+    store.setSuggestionsToStore(mockSuggestions)
     expect(store.suggestions).toEqual(mockSuggestions)
 
     store.setFilter('feature')
@@ -38,7 +38,7 @@ describe('suggestions store', () => {
   it('getter filteredSuggestions - filter by all/enhancement/feature/bug', () => {
     const store = useSuggestionsStore()
 
-    store.setSuggestions(mockSuggestions)
+    store.setSuggestionsToStore(mockSuggestions)
 
     store.setFilter('all')
     expect(store.filteredSuggestions).toEqual(mockSuggestions)
@@ -56,7 +56,7 @@ describe('suggestions store', () => {
   it('getter filteredSuggestions - sort by least/most upvotes', () => {
     const store = useSuggestionsStore()
 
-    store.setSuggestions(mockSuggestions)
+    store.setSuggestionsToStore(mockSuggestions)
     store.sortBy = LEAST_UPVOTES
     expect(store.filteredSuggestions).toEqual(mockSuggestionsByLeastUpvotes)
 
@@ -67,7 +67,7 @@ describe('suggestions store', () => {
   it('getter filteredSuggestionsCount - must be 3', () => {
     const store = useSuggestionsStore()
 
-    store.setSuggestions(mockSuggestions)
+    store.setSuggestionsToStore(mockSuggestions)
     store.setFilter('all')
     expect(store.filteredSuggestionsCount).toBe(3)
   })

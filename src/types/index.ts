@@ -9,6 +9,7 @@ export interface ISuggestion {
   title: string
   category: 'enhancement' | 'feature' | 'bug'
   upvotes: number
+  isUpvoted: boolean
   status: 'suggestion' | 'planned' | 'in-progress' | 'live'
   description: string
   comments?: IComment[]
@@ -22,6 +23,7 @@ export interface IComment {
 }
 
 export interface IReply {
+  id: number
   content: string
   replyingTo: string
   user: IUser
@@ -29,6 +31,7 @@ export interface IReply {
 
 export interface IStatus {
   status: ISuggestion['status']
+  name: string
   label: string
   color: string
   amount: number

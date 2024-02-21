@@ -2,8 +2,8 @@ import { describe, it, expect } from 'vitest'
 
 import { mount, VueWrapper } from '@vue/test-utils'
 import SuggestionsListItem from '../suggestions/main/SuggestionsListItem.vue'
-import UIUpVote from '../shared/UIUpVote.vue'
-import UiCategory from '../shared/UiCategory.vue'
+import UIUpVote from '../common/UIUpVote.vue'
+import UiCategory from '../common/UiCategory.vue'
 import type { IComment } from '@/types'
 
 const comments: IComment[] = [

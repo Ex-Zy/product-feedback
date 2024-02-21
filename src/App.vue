@@ -5,9 +5,10 @@ import { useUserStore } from '@/stores/user'
 import { onMounted } from 'vue'
 import { useSuggestionsStore } from '@/stores/suggestions'
 import type { ISuggestion } from '@/types'
+import TheConfetti from '@/components/suggestions/TheConfetti.vue'
 
 const { setCurrentUser } = useUserStore()
-const { setSuggestions } = useSuggestionsStore()
+const { setSuggestionsToStore } = useSuggestionsStore()
 
 onMounted(() => {
   setAppDataIntoStore()
@@ -15,11 +16,12 @@ onMounted(() => {
 
 function setAppDataIntoStore() {
   setCurrentUser(jsonData.currentUser)
-  setSuggestions(jsonData.productRequests as ISuggestion[])
+  setSuggestionsToStore(jsonData.productRequests as ISuggestion[])
 }
 </script>
 
 <template>
+  <TheConfetti />
   <RouterView />
 </template>
 

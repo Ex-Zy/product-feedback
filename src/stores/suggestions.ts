@@ -7,8 +7,11 @@ import { calculateComments } from '@/helpers'
 export const useSuggestionsStore = defineStore('suggestions', () => {
   const suggestions = ref<ISuggestion[]>([])
 
-  function setSuggestions(newSuggestions: ISuggestion[]) {
+  function setSuggestionsToStore(newSuggestions: ISuggestion[]) {
     suggestions.value = newSuggestions
+  }
+  function getSuggestion(id: number) {
+    return suggestions.value.find((item) => item.id === id) ?? null
   }
 
   const sortBy = ref(MOST_UPVOTES)
@@ -53,7 +56,8 @@ export const useSuggestionsStore = defineStore('suggestions', () => {
     filteredSuggestionsCount,
     filter,
     sortBy,
-    setSuggestions,
-    setFilter
+    setSuggestionsToStore,
+    setFilter,
+    getSuggestion
   }
 })

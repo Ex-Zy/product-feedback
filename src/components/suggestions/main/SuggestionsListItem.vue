@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { calculateComments, capitalize } from '@/helpers'
 import type { IComment, ISuggestion } from '@/types'
-import UIUpVote from '@/components/shared/UIUpVote.vue'
-import UiCategory from '@/components/shared/UiCategory.vue'
+import UIUpVote from '@/components/common/UIUpVote.vue'
+import UiCategory from '@/components/common/UiCategory.vue'
 import { useMediaQuery } from '@vueuse/core'
 import { computed } from 'vue'
 
@@ -17,7 +17,7 @@ interface Props {
 }
 
 interface Emit {
-  (e: 'upvote'): void
+  (e: 'upvote', isUpvoted: boolean): void
 }
 
 const props = defineProps<Props>()
@@ -29,6 +29,14 @@ const align = computed(() => (isMobile.value ? 'horizontal' : 'vertical'))
 const commentsAmount = computed(() => {
   return props.comments ? calculateComments(props.comments) : 0
 })
+
+function handleUpvote() {
+  if (props.isUpVoted) return
+
+  emit('upvote', true)
+}
+
+const feedbackUrl = computed(() => `/feedback/${props.id}`)
 </script>
 
 <template>
@@ -38,11 +46,13 @@ const commentsAmount = computed(() => {
         :align="align"
         :is-upvoted="props.isUpVoted"
         :model-value="props.upvotes"
-        @update:model-value="emit('upvote')"
+        @update:model-value="handleUpvote"
       />
     </div>
     <div class="suggestions-item__content">
-      <h3 data-test="title" class="suggestions-item__title h3">{{ props.title }}</h3>
+      <router-link data-test="title" class="suggestions-item__title h3" :to="feedbackUrl">
+        {{ props.title }}
+      </router-link>
       <p data-test="description" class="suggestions-item__description b1">
         {{ props.description }}
       </p>
@@ -89,6 +99,7 @@ const commentsAmount = computed(() => {
   &__title {
     transition: color 0.25s;
     cursor: pointer;
+    text-decoration: none;
 
     &:hover {
       color: var(--color-7-hover);

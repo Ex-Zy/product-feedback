@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import IconSuggestions from '@/components/icons/IconSuggestions.vue'
+import IconSuggestions from '@/components/common/icons/IconSuggestions.vue'
 import { useSuggestionsStore } from '@/stores/suggestions'
 import { storeToRefs } from 'pinia'
-import UIButton from '@/components/shared/UIButton.vue'
+import UIButton from '@/components/common/UIButton.vue'
 import SortBy from '@/components/suggestions/SortBy.vue'
 
 const { filteredSuggestionsCount, sortBy } = storeToRefs(useSuggestionsStore())

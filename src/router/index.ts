@@ -6,7 +6,12 @@ const router = createRouter({
     {
       path: '/',
       name: 'suggestions',
-      component: () => import('../views/SuggestionsView.vue')
+      component: () => import('@/views/SuggestionsView.vue')
+    },
+    {
+      path: '/feedback/:id',
+      name: 'detail',
+      component: () => import('@/views/FeedbackDetailView.vue')
     }
   ]
 })

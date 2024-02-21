@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import UiCategory from '@/components/shared/UiCategory.vue'
+import UiCategory from '@/components/common/UiCategory.vue'
 import { reactive } from 'vue'
 
 interface IWidgetCategory {

@@ -2,24 +2,11 @@
 import { useSuggestionsStore } from '@/stores/suggestions'
 import { storeToRefs } from 'pinia'
 import SuggestionsListItem from '@/components/suggestions/main/SuggestionsListItem.vue'
-import type { ISuggestion } from '@/types'
-import { reactive } from 'vue'
-import { useConfetti } from '@/composables/useConfetti'
+import { useUpvoted } from '@/composables/useUpvoted'
 
 const { filteredSuggestions } = storeToRefs(useSuggestionsStore())
 
-const { showConfetti } = useConfetti()
-const upVotedSuggestions = reactive<number[]>([])
-function handleUpVote(suggestion: ISuggestion) {
-  if (!upVotedSuggestions.includes(suggestion.id)) {
-    upVotedSuggestions.push(suggestion.id)
-    suggestion.upvotes++
-    showConfetti()
-  }
-}
-function isUpVoted(id: number) {
-  return upVotedSuggestions.includes(id)
-}
+const { setUpvoted } = useUpvoted()
 </script>
 
 <template>
@@ -33,8 +20,8 @@ function isUpVoted(id: number) {
       :title="suggestion.title"
       :description="suggestion.description"
       :comments="suggestion.comments"
-      :is-up-voted="isUpVoted(suggestion.id)"
-      @upvote="handleUpVote(suggestion)"
+      :is-up-voted="suggestion.isUpvoted"
+      @upvote="(isUpvoted) => setUpvoted(suggestion, isUpvoted)"
     />
   </TransitionGroup>
 </template>
