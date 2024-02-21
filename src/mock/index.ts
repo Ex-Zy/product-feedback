@@ -7,6 +7,7 @@ export const mockSuggestions: ISuggestion[] = [
     category: 'enhancement',
     upvotes: 112,
     status: 'suggestion',
+    isUpvoted: false,
     description: 'Easier to search for solutions based on a specific stack.'
   },
   {
@@ -15,6 +16,7 @@ export const mockSuggestions: ISuggestion[] = [
     category: 'feature',
     upvotes: 99,
     status: 'suggestion',
+    isUpvoted: false,
     description: 'It would help people with light sensitivities and who prefer dark mode.'
   },
   {
@@ -23,6 +25,7 @@ export const mockSuggestions: ISuggestion[] = [
     category: 'bug',
     upvotes: 9,
     status: 'in-progress',
+    isUpvoted: false,
     description: 'Screenshots of solutions with animations don’t display correctly.'
   }
 ]
@@ -35,6 +38,7 @@ export const mockByMostUpvotesSuggestions: ISuggestion[] = [
     category: 'enhancement',
     upvotes: 112,
     status: 'suggestion',
+    isUpvoted: false,
     description: 'Easier to search for solutions based on a specific stack.'
   },
   {
@@ -43,6 +47,7 @@ export const mockByMostUpvotesSuggestions: ISuggestion[] = [
     category: 'feature',
     upvotes: 99,
     status: 'suggestion',
+    isUpvoted: false,
     description: 'It would help people with light sensitivities and who prefer dark mode.'
   },
   {
@@ -51,6 +56,7 @@ export const mockByMostUpvotesSuggestions: ISuggestion[] = [
     category: 'bug',
     upvotes: 9,
     status: 'in-progress',
+    isUpvoted: false,
     description: 'Screenshots of solutions with animations don’t display correctly.'
   }
 ]
@@ -61,6 +67,7 @@ export const mockSuggestionsByLeastUpvotes: ISuggestion[] = [
     category: 'bug',
     upvotes: 9,
     status: 'in-progress',
+    isUpvoted: false,
     description: 'Screenshots of solutions with animations don’t display correctly.'
   },
   {
@@ -69,6 +76,7 @@ export const mockSuggestionsByLeastUpvotes: ISuggestion[] = [
     category: 'feature',
     upvotes: 99,
     status: 'suggestion',
+    isUpvoted: false,
     description: 'It would help people with light sensitivities and who prefer dark mode.'
   },
   {
@@ -77,6 +85,7 @@ export const mockSuggestionsByLeastUpvotes: ISuggestion[] = [
     category: 'enhancement',
     upvotes: 112,
     status: 'suggestion',
+    isUpvoted: false,
     description: 'Easier to search for solutions based on a specific stack.'
   }
 ]
@@ -89,6 +98,7 @@ export const mockBugSuggestions: ISuggestion[] = [
     category: 'bug',
     upvotes: 9,
     status: 'in-progress',
+    isUpvoted: false,
     description: 'Screenshots of solutions with animations don’t display correctly.'
   }
 ]
@@ -100,6 +110,7 @@ export const mockEnhancementSuggestions: ISuggestion[] = [
     category: 'enhancement',
     upvotes: 112,
     status: 'suggestion',
+    isUpvoted: false,
     description: 'Easier to search for solutions based on a specific stack.'
   }
 ]
@@ -111,6 +122,7 @@ export const mockFeatureSuggestions: ISuggestion[] = [
     category: 'feature',
     upvotes: 99,
     status: 'suggestion',
+    isUpvoted: false,
     description: 'It would help people with light sensitivities and who prefer dark mode.'
   }
 ]
