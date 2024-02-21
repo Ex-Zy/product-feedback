@@ -91,6 +91,10 @@ const { showReplyBtn, showPostReply, togglePostReply, handleSubmitReply } = useA
       opacity: 0.1;
       background: var(--color-8);
       width: 1px;
+
+      @include mobile {
+        display: none;
+      }
     }
   }
 }
@@ -135,6 +139,22 @@ const { showReplyBtn, showPostReply, togglePostReply, handleSubmitReply } = useA
 .comment-replies {
   padding-left: var(--avatar-size);
   position: relative;
+
+  @include mobile {
+    padding-left: calc(var(--avatar-size) * 0.5);
+
+    &:before {
+      content: '';
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      opacity: 0.1;
+      background: var(--color-8);
+      width: 1px;
+    }
+  }
 
   &:deep(.comment-outer) {
     &:last-child:before {
