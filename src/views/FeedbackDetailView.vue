@@ -12,5 +12,9 @@ import FeedbackDetail from '@/components/feedbackDetail/FeedbackDetail.vue'
 .fd-view {
   max-width: 730px;
   margin-inline: auto;
+  @include mobile {
+    max-width: none;
+    padding: 24px;
+  }
 }
 </style>

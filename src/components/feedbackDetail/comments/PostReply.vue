@@ -35,7 +35,7 @@ function handleSubmitReply() {
       v-model="commentMsg"
       @keyup.enter="handleSubmitReply"
     />
-    <UIButton text="Post Reply" @click="handleSubmitReply" />
+    <UIButton text="Post Reply" @click="handleSubmitReply" class="post-reply__btn" />
   </div>
 </template>
 
@@ -53,7 +53,12 @@ function handleSubmitReply() {
   position: relative;
   display: flex;
   align-items: flex-start;
-  column-gap: 16px;
+  gap: 16px;
+
+  @include mobile {
+    flex-direction: column;
+    align-items: initial;
+  }
 
   &__area {
     flex-grow: 1;
@@ -71,8 +76,19 @@ function handleSubmitReply() {
       sans-serif;
     color: var(--color-7);
 
+    @include mobile {
+      font-size: 13px;
+      padding: 16px;
+    }
+
     &:focus {
       border: 1px solid var(--color-2);
+    }
+  }
+
+  &__btn {
+    @include mobile {
+      align-self: flex-end;
     }
   }
 }

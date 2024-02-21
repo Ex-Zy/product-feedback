@@ -76,6 +76,10 @@ const { showReplyBtn, showPostReply, togglePostReply, handleSubmitReply } = useA
   margin-top: var(--gap);
   position: relative;
 
+  @include mobile {
+    --gap: 16px;
+  }
+
   &.is-replies-open {
     &:before {
       content: '';
@@ -104,6 +108,10 @@ const { showReplyBtn, showPostReply, togglePostReply, handleSubmitReply } = useA
     display: flex;
     flex-direction: column;
     row-gap: calc(var(--gap) * 0.75);
+
+    @include mobile {
+      padding: 0;
+    }
   }
 
   &__content {

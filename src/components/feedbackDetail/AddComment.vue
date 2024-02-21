@@ -7,8 +7,13 @@ const { commentMsg, quantity, handleSubmitComment } = useAddComment()
 
 <template>
   <div class="add-comment">
-    <h2 class="add-comment__title h2">Add Comment</h2>
-    <textarea class="add-comment__area" v-model="commentMsg" @keyup.enter="handleSubmitComment" />
+    <h2 class="add-comment__title h3">Add Comment</h2>
+    <textarea
+      class="add-comment__area"
+      placeholder="Type your comment here"
+      v-model="commentMsg"
+      @keyup.enter="handleSubmitComment"
+    />
     <div class="add-comment__footer">
       <span class="add-comment__characters b2">{{ `${quantity} Characters left` }}</span>
       <UIButton text="Post Reply" @click="handleSubmitComment" />
@@ -45,6 +50,11 @@ const { commentMsg, quantity, handleSubmitComment } = useAddComment()
       15px/1.2 'Jost',
       sans-serif;
     color: var(--color-7);
+
+    @include mobile {
+      font-size: 13px;
+      padding: 16px;
+    }
 
     &:focus {
       border: 1px solid var(--color-2);

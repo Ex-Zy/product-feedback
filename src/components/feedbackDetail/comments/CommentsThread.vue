@@ -17,7 +17,7 @@ const { commentRef } = useScrollToLastComment(commentsAmount)
 
 <template>
   <div class="comments-list">
-    <div class="comments-list__title h2">{{ props.commentsAmount }} Comments</div>
+    <div class="comments-list__title h3">{{ props.commentsAmount }} Comments</div>
     <div class="comments-list__content">
       <CommentsItem
         ref="commentRef"
