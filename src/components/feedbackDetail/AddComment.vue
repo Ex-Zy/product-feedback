@@ -1,8 +1,25 @@
 <script setup lang="ts">
 import UIButton from '@/components/common/UIButton.vue'
-import { useAddComment } from '@/composables/comments/useAddComment'
+import { usePostMessage } from '@/composables/comments/usePostMessage'
 
-const { commentMsg, quantity, handleSubmitComment } = useAddComment()
+interface Emit {
+  (e: 'submit', value: string): void
+}
+
+const emit = defineEmits<Emit>()
+
+const { commentMsg, quantity, clearTextArea } = usePostMessage()
+
+function handleSubmitComment() {
+  const trimmedComment = commentMsg.value.trim()
+
+  if (!trimmedComment.length) {
+    return
+  }
+
+  emit('submit', trimmedComment)
+  setTimeout(clearTextArea, 300)
+}
 </script>
 
 <template>

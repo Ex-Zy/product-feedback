@@ -4,11 +4,14 @@ import WidgetFeedbackBoard from '@/components/suggestions/sidebar/WidgetFeedback
 import WidgetRoadmap from '@/components/suggestions/sidebar/WidgetRoadmap.vue'
 import { useSuggestionsStore } from '@/stores/suggestions'
 import { ref } from 'vue'
+import type { FilterType } from '@/types'
 
-const { setFilter } = useSuggestionsStore()
+const { loadSuggestionsPageDataToStore } = useSuggestionsStore()
 
-function handleFilterCategory(categoryName: string) {
-  setFilter(categoryName)
+function handleFilterCategory(filterBy: FilterType) {
+  loadSuggestionsPageDataToStore({
+    filterBy
+  })
 }
 
 const isOpenSidebar = ref(false)

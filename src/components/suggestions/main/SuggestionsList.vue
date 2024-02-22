@@ -2,17 +2,16 @@
 import { useSuggestionsStore } from '@/stores/suggestions'
 import { storeToRefs } from 'pinia'
 import SuggestionsListItem from '@/components/suggestions/main/SuggestionsListItem.vue'
-import { useUpvoted } from '@/composables/useUpvoted'
+import { useFeedbackStore } from '@/stores/feedback'
 
-const { filteredSuggestions } = storeToRefs(useSuggestionsStore())
-
-const { setUpvoted } = useUpvoted()
+const { suggestions } = storeToRefs(useSuggestionsStore())
+const { upvoteFeedback } = useFeedbackStore()
 </script>
 
 <template>
   <TransitionGroup class="suggestions-list" name="list" tag="ul">
     <SuggestionsListItem
-      v-for="suggestion in filteredSuggestions"
+      v-for="suggestion in suggestions"
       :key="suggestion.id"
       :id="suggestion.id"
       :upvotes="suggestion.upvotes"
@@ -21,7 +20,7 @@ const { setUpvoted } = useUpvoted()
       :description="suggestion.description"
       :comments="suggestion.comments"
       :is-up-voted="suggestion.isUpvoted"
-      @upvote="(isUpvoted) => setUpvoted(suggestion, isUpvoted)"
+      @upvote="(isUpvoted) => upvoteFeedback(suggestion, isUpvoted)"
     />
   </TransitionGroup>
 </template>

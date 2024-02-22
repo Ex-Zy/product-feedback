@@ -6,8 +6,15 @@ import SuggestionsList from '@/components/suggestions/main/SuggestionsList.vue'
 import { useSuggestionsStore } from '@/stores/suggestions'
 import { storeToRefs } from 'pinia'
 import SuggestionsEmpty from '@/components/suggestions/main/SuggestionsEmpty.vue'
+import { onMounted } from 'vue'
 
-const { filteredSuggestions } = storeToRefs(useSuggestionsStore())
+const { suggestions } = storeToRefs(useSuggestionsStore())
+
+const { loadSuggestionsPageDataToStore } = useSuggestionsStore()
+
+onMounted(() => {
+  loadSuggestionsPageDataToStore()
+})
 </script>
 
 <template>
@@ -19,7 +26,7 @@ const { filteredSuggestions } = storeToRefs(useSuggestionsStore())
       <main class="main">
         <SuggestionsHeader />
         <Transition name="fade" mode="out-in">
-          <SuggestionsList v-if="filteredSuggestions.length" />
+          <SuggestionsList v-if="suggestions.length" />
           <SuggestionsEmpty v-else />
         </Transition>
       </main>

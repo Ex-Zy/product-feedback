@@ -4,12 +4,13 @@ const show = ref(false)
 
 export const useConfetti = () => {
   const duration = 3000
-  const { innerWidth: vW, innerHeight: vH } = window
 
   let id: ReturnType<typeof setTimeout>
   async function showConfetti() {
+    // reset old confetti
     if (show.value) {
       show.value = false
+      clearTimeout(id)
       await nextTick()
     }
 
@@ -23,8 +24,6 @@ export const useConfetti = () => {
   return {
     show,
     duration,
-    vW,
-    vH,
     showConfetti
   }
 }

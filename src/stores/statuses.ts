@@ -1,34 +1,43 @@
 import { defineStore, storeToRefs } from 'pinia'
 import { useSuggestionsStore } from '@/stores/suggestions'
-import { computed } from 'vue'
+import { ref, watchEffect } from 'vue'
 import type { IStatus } from '@/types'
-import { capitalize } from '@/helpers'
-
-const COLORS_OF_STATUS = {
-  suggestion: '',
-  planned: '#F49F85',
-  'in-progress': '#AD1FEA',
-  live: '#62BCFA'
-}
 
 export const useStatuses = defineStore('statuses', () => {
   const { suggestions } = storeToRefs(useSuggestionsStore())
+  const statuses = ref<IStatus[]>([
+    {
+      status: 'planned',
+      amount: 0,
+      name: 'planned',
+      label: 'Planned',
+      color: '#F49F85'
+    },
+    {
+      status: 'in-progress',
+      amount: 0,
+      name: 'in-progress',
+      label: 'In-progress',
+      color: '#AD1FEA'
+    },
+    { status: 'live', amount: 0, name: 'live', label: 'Live', color: '#62BCFA' },
+    { status: 'suggestion', amount: 0, name: 'suggestion', label: 'Suggestion', color: '' }
+  ])
 
-  const statuses = computed<IStatus[]>(() => {
-    const uniqStatuses = [...new Set(suggestions.value.map((item) => item.status))]
+  watchEffect(calculateStatusesAmount)
 
-    return uniqStatuses.map((status) => {
-      const amount = suggestions.value.filter((suggestion) => suggestion.status === status).length
+  function calculateStatusesAmount() {
+    statuses.value = statuses.value.map((status) => {
+      const amount = suggestions.value.filter(
+        (suggestion) => suggestion.status === status.status
+      ).length
 
       return {
-        status,
-        amount,
-        name: status,
-        label: capitalize(status),
-        color: COLORS_OF_STATUS[status]
+        ...status,
+        amount
       }
     })
-  })
+  }
 
-  return { statuses }
+  return { statuses, calculateStatusesAmount }
 })

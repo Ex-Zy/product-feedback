@@ -1,63 +1,74 @@
 import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
-import type { ISuggestion } from '@/types'
-import { LEAST_COMMENTS, LEAST_UPVOTES, MOST_COMMENTS, MOST_UPVOTES } from '@/constants'
-import { calculateComments } from '@/helpers'
+import type { FilterType, ISuggestion, SortBy } from '@/types'
+import { MOST_UPVOTES } from '@/constants'
+import { sortSuggestionsBy } from '@/stores/utils/sortSuggestionsBy'
+import { productRequests } from '@/data/data.json'
+import { filterSuggestionsByCategory } from '@/stores/utils/filterSuggestionsByCategory'
+
+interface Params {
+  filterBy: FilterType
+  sortBy: SortBy
+}
+
+type SuggestionsReturnType = Promise<ISuggestion[] | undefined>
 
 export const useSuggestionsStore = defineStore('suggestions', () => {
+  const loader = ref<boolean>(false)
+  const error = ref<string | null>(null)
+
   const suggestions = ref<ISuggestion[]>([])
+  const sortBy = ref<SortBy>(MOST_UPVOTES)
+  const filterBy = ref<FilterType>('all')
 
-  function setSuggestionsToStore(newSuggestions: ISuggestion[]) {
-    suggestions.value = newSuggestions
+  const suggestionsAmount = computed(() => suggestions.value.length)
+
+  // Api calls
+  async function fetchSuggestions(
+    params = { filterBy: 'all', sortBy: MOST_UPVOTES } as Params,
+    delay = 300
+  ): SuggestionsReturnType {
+    loader.value = true
+
+    try {
+      const promiseResponse = new Promise<ISuggestion[]>((resolve, reject) => {
+        setTimeout(() => resolve(productRequests), delay)
+      })
+      const response: ISuggestion[] = await promiseResponse
+
+      sortBy.value = params.sortBy
+      filterBy.value = params.filterBy
+
+      return response
+        ?.filter(filterSuggestionsByCategory(params.filterBy))
+        ?.sort(sortSuggestionsBy(params.sortBy))
+    } catch (err) {
+      error.value = 'Failed to fetch any suggestions'
+      console.log(err)
+    } finally {
+      loader.value = false
+    }
   }
-  function getSuggestion(id: number) {
-    return suggestions.value.find((item) => item.id === id) ?? null
-  }
 
-  const sortBy = ref(MOST_UPVOTES)
-  const filter = ref('all')
-  const filteredSuggestions = computed<ISuggestion[]>(() => {
-    // filtered by selected category(like: bug, feature, etc...)
-    const filtered = suggestions.value.filter((item) => {
-      return filter.value === 'all' || filter.value === item.category
+  async function loadSuggestionsPageDataToStore(params: Partial<Params> = {}): Promise<void> {
+    const response = await fetchSuggestions({
+      sortBy: params.sortBy ?? sortBy.value,
+      filterBy: params.filterBy ?? filterBy.value
     })
-    // sorted by one of suggestion attribute(most comments, most upvotes, etc...)
-    return filtered.sort((a, b) => {
-      const aComments = a.comments ? calculateComments(a.comments) : 0
-      const bComments = b.comments ? calculateComments(b.comments) : 0
 
-      if (sortBy.value === MOST_UPVOTES) {
-        return b.upvotes - a.upvotes
-      }
-
-      if (sortBy.value === LEAST_UPVOTES) {
-        return a.upvotes - b.upvotes
-      }
-      if (sortBy.value === MOST_COMMENTS) {
-        return bComments - aComments
-      }
-      if (sortBy.value === LEAST_COMMENTS) {
-        return aComments - bComments
-      }
-
-      // not sort suggestion
-      return 0
-    })
-  })
-  const filteredSuggestionsCount = computed(() => filteredSuggestions.value.length)
-
-  function setFilter(category: string) {
-    filter.value = category
+    if (response) {
+      suggestions.value = response
+    }
   }
 
   return {
     suggestions,
-    filteredSuggestions,
-    filteredSuggestionsCount,
-    filter,
+    suggestionsAmount,
+    loader,
+    error,
+    filterBy,
     sortBy,
-    setSuggestionsToStore,
-    setFilter,
-    getSuggestion
+    fetchSuggestions,
+    loadSuggestionsPageDataToStore
   }
 })

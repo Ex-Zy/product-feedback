@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import ConfettiExplosion from 'vue-confetti-explosion'
 import { useConfetti } from '@/composables/useConfetti'
+import { useWindowSize } from '@vueuse/core'
 
-const { show, duration, vW, vH } = useConfetti()
+const { show, duration } = useConfetti()
+const { width, height } = useWindowSize()
 </script>
 
 <template>
@@ -12,8 +14,8 @@ const { show, duration, vW, vH } = useConfetti()
       :particleCount="50"
       :particleSize="10"
       :duration="duration"
-      :stageWidth="vW"
-      :stageHeight="vH"
+      :stageWidth="width"
+      :stageHeight="height"
     />
   </div>
 </template>

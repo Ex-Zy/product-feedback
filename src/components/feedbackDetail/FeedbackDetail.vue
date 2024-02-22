@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import SuggestionsListItem from '@/components/suggestions/main/SuggestionsListItem.vue'
-import { useUpvoted } from '@/composables/useUpvoted'
 import CommentsThread from '@/components/feedbackDetail/comments/CommentsThread.vue'
 import AddComment from '@/components/feedbackDetail/AddComment.vue'
 import { storeToRefs } from 'pinia'
@@ -8,9 +7,18 @@ import { useFeedbackStore } from '@/stores/feedback'
 import UIButton from '@/components/common/UIButton.vue'
 import router from '@/router'
 import IconArrowLeft from '@/components/common/icons/IconArrowLeft.vue'
+import { onBeforeUnmount, onMounted } from 'vue'
 
 const { feedback, comments, commentsAmount } = storeToRefs(useFeedbackStore())
-const { setUpvoted } = useUpvoted()
+const { upvoteFeedback, loadFeedbackToStore, $reset, submitComment } = useFeedbackStore()
+
+onMounted(() => {
+  loadFeedbackToStore()
+})
+
+onBeforeUnmount(() => {
+  $reset()
+})
 
 function handleGoBack() {
   router.push('/')
@@ -35,14 +43,14 @@ function handleGoBack() {
         :category="feedback.category"
         :comments="feedback.comments"
         :is-up-voted="feedback.isUpvoted"
-        @upvote="(isUpvoted) => setUpvoted(feedback!, isUpvoted)"
+        @upvote="(isUpvoted) => upvoteFeedback(feedback!, isUpvoted)"
       />
       <CommentsThread
         v-if="comments?.length"
         :comments="comments"
         :comments-amount="commentsAmount"
       />
-      <AddComment />
+      <AddComment @submit="submitComment" />
     </template>
   </div>
 </template>

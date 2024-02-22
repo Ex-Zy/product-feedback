@@ -1,13 +1,8 @@
 <script setup lang="ts">
 import { useStatuses } from '@/stores/statuses'
-import { computed } from 'vue'
-import type { IStatus } from '@/types'
 import { storeToRefs } from 'pinia'
 
 const { statuses } = storeToRefs(useStatuses())
-const statusesWithoutSuggestion = computed<IStatus[]>(() =>
-  statuses.value.filter(({ status }) => status !== 'suggestion')
-)
 </script>
 
 <template>
@@ -17,15 +12,13 @@ const statusesWithoutSuggestion = computed<IStatus[]>(() =>
       <RouterLink class="widget-roadmap__link link" to="/">View</RouterLink>
     </div>
     <ul class="feedback-statuses">
-      <li
-        class="feedback-statuses__item"
-        v-for="item in statusesWithoutSuggestion"
-        :key="item.status"
-      >
-        <span class="feedback-statuses__icon" :style="{ background: item.color }"></span>
-        <div class="feedback-statuses__label b1">{{ item.label }}</div>
-        <div class="feedback-statuses__amount b1">{{ item.amount }}</div>
-      </li>
+      <template v-for="item in statuses" :key="item.status">
+        <li class="feedback-statuses__item" v-if="item.status !== 'suggestion'">
+          <span class="feedback-statuses__icon" :style="{ background: item.color }"></span>
+          <div class="feedback-statuses__label b1">{{ item.label }}</div>
+          <div class="feedback-statuses__amount b1">{{ item.amount }}</div>
+        </li>
+      </template>
     </ul>
   </div>
 </template>

@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import CommentsItem from '@/components/feedbackDetail/comments/CommentsItem.vue'
 import type { IReply, IUser } from '@/types'
-import { computed, toRefs } from 'vue'
+import { computed } from 'vue'
 import PostReply from '@/components/feedbackDetail/comments/PostReply.vue'
 import UserProfile from '@/components/feedbackDetail/comments/UserProfile.vue'
 import { useScrollToLastComment } from '@/composables/comments/useScrollToLastComment'
-import { useAddReply } from '@/composables/comments/useAddReply'
+import { useUserStore } from '@/stores/user'
+import { storeToRefs } from 'pinia'
+import { useFeedbackStore } from '@/stores/feedback'
 
 interface Props {
   commentId: number
@@ -27,13 +29,17 @@ const commentsAmount = computed(() => props.replies?.length ?? 0)
 const { commentRef } = useScrollToLastComment(commentsAmount)
 
 // Add Reply
-const finalId = computed(() => props.commentReplyId ?? props.commentId)
-const { user, commentId } = toRefs(props)
-const { showReplyBtn, showPostReply, togglePostReply, handleSubmitReply } = useAddReply(
-  user,
-  commentId,
-  finalId
+const { currentUser } = storeToRefs(useUserStore())
+const { openReplyId } = storeToRefs(useFeedbackStore())
+const showReplyBtn = computed(() => currentUser.value.username !== props.user.username)
+const showPostReply = computed(
+  () => openReplyId.value === (props.commentReplyId ?? props.commentId)
 )
+const { toggleReply, submitReply } = useFeedbackStore()
+
+function handleSubmitReply(commentMsg: string) {
+  submitReply(props.commentId, commentMsg)
+}
 </script>
 
 <template>
@@ -41,7 +47,12 @@ const { showReplyBtn, showPostReply, togglePostReply, handleSubmitReply } = useA
     <div class="comment">
       <div class="comment__header">
         <UserProfile :user="props.user" />
-        <span v-if="showReplyBtn" class="reply-btn" @click="togglePostReply">Reply</span>
+        <span
+          v-if="showReplyBtn"
+          class="reply-btn"
+          @click="toggleReply(props.commentId, props.commentReplyId)"
+          >Reply</span
+        >
       </div>
       <div class="comment__body">
         <div class="comment__content b2">

@@ -1,16 +1,17 @@
 <script setup lang="ts">
 import UiCategory from '@/components/common/UiCategory.vue'
 import { reactive } from 'vue'
+import type { FilterType } from '@/types'
 
 interface IWidgetCategory {
   id: number
-  name: string
+  name: FilterType
   label: string
   isActive: boolean
 }
 
 interface Emit {
-  (e: 'filter', name: string): void
+  (e: 'filter', name: FilterType): void
 }
 
 const emit = defineEmits<Emit>()

@@ -1,3 +1,5 @@
+import { LEAST_COMMENTS, LEAST_UPVOTES, MOST_COMMENTS, MOST_UPVOTES } from '@/constants'
+
 export interface IUser {
   image: string
   name: string
@@ -7,10 +9,10 @@ export interface IUser {
 export interface ISuggestion {
   id: number
   title: string
-  category: 'enhancement' | 'feature' | 'bug'
+  category: string
   upvotes: number
   isUpvoted: boolean
-  status: 'suggestion' | 'planned' | 'in-progress' | 'live'
+  status: string
   description: string
   comments?: IComment[]
 }
@@ -36,3 +38,11 @@ export interface IStatus {
   color: string
   amount: number
 }
+
+export type SortBy =
+  | typeof MOST_UPVOTES
+  | typeof LEAST_UPVOTES
+  | typeof MOST_COMMENTS
+  | typeof LEAST_COMMENTS
+
+export type FilterType = 'all' | 'enhancement' | 'feature' | 'bug' | 'ui' | 'ux'

@@ -1,23 +1,14 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
-import jsonData from './data/data.json'
-import { useUserStore } from '@/stores/user'
 import { onMounted } from 'vue'
-import { useSuggestionsStore } from '@/stores/suggestions'
-import type { ISuggestion } from '@/types'
 import TheConfetti from '@/components/suggestions/TheConfetti.vue'
+import { useUserStore } from '@/stores/user'
 
-const { setCurrentUser } = useUserStore()
-const { setSuggestionsToStore } = useSuggestionsStore()
+const { loadCurrentUserToStore } = useUserStore()
 
 onMounted(() => {
-  setAppDataIntoStore()
+  loadCurrentUserToStore()
 })
-
-function setAppDataIntoStore() {
-  setCurrentUser(jsonData.currentUser)
-  setSuggestionsToStore(jsonData.productRequests as ISuggestion[])
-}
 </script>
 
 <template>
