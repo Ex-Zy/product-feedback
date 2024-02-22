@@ -10,7 +10,7 @@ const router = createRouter({
     },
     {
       path: '/feedback/:id',
-      name: 'detail',
+      name: 'feedback',
       component: () => import('@/views/FeedbackDetailView.vue')
     }
   ]
