@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { IComment } from '@/types'
 import CommentsItem from '@/components/feedbackDetail/comments/CommentsItem.vue'
 import { useScrollToLastComment } from '@/composables/comments/useScrollToLastComment'
 import { storeToRefs } from 'pinia'

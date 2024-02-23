@@ -14,7 +14,7 @@ interface Params {
 type SuggestionsReturnType = Promise<ISuggestion[] | undefined>
 
 export const useSuggestionsStore = defineStore('suggestions', () => {
-  const loader = ref<boolean>(false)
+  const loader = ref<boolean>(true)
   const error = ref<string | null>(null)
 
   const suggestions = ref<ISuggestion[]>([])
@@ -26,7 +26,7 @@ export const useSuggestionsStore = defineStore('suggestions', () => {
   // Api calls
   async function fetchSuggestions(
     params = { filterBy: 'all', sortBy: MOST_UPVOTES } as Params,
-    delay = 300
+    delay = 800
   ): SuggestionsReturnType {
     loader.value = true
 

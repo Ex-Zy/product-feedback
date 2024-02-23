@@ -8,8 +8,9 @@ import { storeToRefs } from 'pinia'
 import SuggestionsEmpty from '@/components/suggestions/main/SuggestionsEmpty.vue'
 import { onMounted } from 'vue'
 import { useUserStore } from '@/stores/user'
+import SuggestionsSkeleton from '@/components/suggestions/main/SuggestionsSkeleton.vue'
 
-const { suggestions } = storeToRefs(useSuggestionsStore())
+const { suggestions, loader, error } = storeToRefs(useSuggestionsStore())
 
 const { loadCurrentUserToStore } = useUserStore()
 const { loadSuggestionsPageDataToStore } = useSuggestionsStore()
@@ -29,7 +30,8 @@ onMounted(() => {
       <main class="main">
         <SuggestionsHeader />
         <Transition name="fade" mode="out-in">
-          <SuggestionsList v-if="suggestions.length" />
+          <SuggestionsSkeleton v-if="loader || error" />
+          <SuggestionsList v-else-if="suggestions.length" />
           <SuggestionsEmpty v-else />
         </Transition>
       </main>
