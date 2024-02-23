@@ -2,7 +2,7 @@
 import CommentsItem from '@/components/feedbackDetail/comments/CommentsItem.vue'
 import type { IComment, IReply } from '@/types'
 import { computed } from 'vue'
-import PostReply from '@/components/feedbackDetail/comments/PostReply.vue'
+import AddReply from '@/components/feedbackDetail/comments/AddReply.vue'
 import UserProfile from '@/components/feedbackDetail/comments/UserProfile.vue'
 import { useScrollToLastComment } from '@/composables/comments/useScrollToLastComment'
 import { useUserStore } from '@/stores/user'
@@ -61,7 +61,7 @@ function handleSubmitReply(commentMsg: string) {
           <span v-if="comment.replyingTo" class="replying-to"> @{{ comment.replyingTo }} </span>
           {{ comment.content }}
         </div>
-        <PostReply v-if="showPostReply" @submit="handleSubmitReply" />
+        <AddReply v-if="showPostReply" @submit="handleSubmitReply" />
       </div>
     </div>
     <div v-if="repliesAmount" class="comment-replies">
