@@ -27,8 +27,8 @@ export interface IComment {
 export interface IReply {
   id: number
   content: string
-  replyingTo: string
   user: IUser
+  replyingTo: string
 }
 
 export interface IStatus {

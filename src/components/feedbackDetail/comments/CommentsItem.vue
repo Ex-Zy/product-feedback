@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import CommentsItem from '@/components/feedbackDetail/comments/CommentsItem.vue'
-import type { IReply, IUser } from '@/types'
+import type { IComment, IReply } from '@/types'
 import { computed } from 'vue'
 import PostReply from '@/components/feedbackDetail/comments/PostReply.vue'
 import UserProfile from '@/components/feedbackDetail/comments/UserProfile.vue'
@@ -10,35 +10,37 @@ import { storeToRefs } from 'pinia'
 import { useFeedbackStore } from '@/stores/feedback'
 
 interface Props {
-  commentId: number
-  commentReplyId?: number
-  content: string
-  user: IUser
   type: 'comment' | 'reply'
-  replies?: IReply[]
-  replyingTo?: string
+  comment: IComment & IReply
+  parentCommentId: number
 }
 const props = defineProps<Props>()
 
-const rootClasses = computed(() => ({
-  'is-replies-open': !!props.replies?.length
-}))
-
 // scroll to last comment
-const commentsAmount = computed(() => props.replies?.length ?? 0)
-const { commentRef } = useScrollToLastComment(commentsAmount)
+const repliesAmount = computed(() => props.comment.replies?.length ?? 0)
+const { commentRef } = useScrollToLastComment(repliesAmount)
+
+const rootClasses = computed(() => ({
+  'is-replies-open': !!props.comment.replies?.length
+}))
 
 // Add Reply
 const { currentUser } = storeToRefs(useUserStore())
 const { openReplyId } = storeToRefs(useFeedbackStore())
-const showReplyBtn = computed(() => currentUser.value.username !== props.user.username)
-const showPostReply = computed(
-  () => openReplyId.value === (props.commentReplyId ?? props.commentId)
-)
+
+const showReplyBtn = computed(() => {
+  return currentUser.value.username !== props.comment.user.username
+})
+const showPostReply = computed(() => {
+  if (props.type === 'reply') {
+    return openReplyId.value === props.comment.id
+  }
+  return openReplyId.value === props.parentCommentId
+})
 const { toggleReply, submitReply } = useFeedbackStore()
 
 function handleSubmitReply(commentMsg: string) {
-  submitReply(props.commentId, commentMsg)
+  submitReply(props.parentCommentId, commentMsg)
 }
 </script>
 
@@ -46,34 +48,31 @@ function handleSubmitReply(commentMsg: string) {
   <div class="comment-outer" :class="rootClasses">
     <div class="comment">
       <div class="comment__header">
-        <UserProfile :user="props.user" />
+        <UserProfile :user="comment.user" />
         <span
           v-if="showReplyBtn"
           class="reply-btn"
-          @click="toggleReply(props.commentId, props.commentReplyId)"
+          @click="toggleReply(parentCommentId, comment.id)"
           >Reply</span
         >
       </div>
       <div class="comment__body">
         <div class="comment__content b2">
-          <span v-if="props.replyingTo" class="replying-to"> @{{ props.replyingTo }} </span>
-          {{ props.content }}
+          <span v-if="comment.replyingTo" class="replying-to"> @{{ comment.replyingTo }} </span>
+          {{ comment.content }}
         </div>
         <PostReply v-if="showPostReply" @submit="handleSubmitReply" />
       </div>
     </div>
-    <div v-if="!!props.replies?.length" class="comment-replies">
-      <CommentsItem
-        v-for="item in replies"
-        ref="commentRef"
-        :key="item.id"
-        type="reply"
-        :comment-id="props.commentId"
-        :comment-reply-id="item.id"
-        :user="item.user"
-        :content="item.content"
-        :replying-to="item.replyingTo"
-      />
+    <div v-if="repliesAmount" class="comment-replies">
+      <template v-for="item in comment.replies" :key="item.id">
+        <CommentsItem
+          ref="commentRef"
+          type="reply"
+          :comment="item"
+          :parent-comment-id="comment.id"
+        />
+      </template>
     </div>
   </div>
 </template>

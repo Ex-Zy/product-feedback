@@ -7,12 +7,15 @@ import { useSuggestionsStore } from '@/stores/suggestions'
 import { storeToRefs } from 'pinia'
 import SuggestionsEmpty from '@/components/suggestions/main/SuggestionsEmpty.vue'
 import { onMounted } from 'vue'
+import { useUserStore } from '@/stores/user'
 
 const { suggestions } = storeToRefs(useSuggestionsStore())
 
+const { loadCurrentUserToStore } = useUserStore()
 const { loadSuggestionsPageDataToStore } = useSuggestionsStore()
 
 onMounted(() => {
+  loadCurrentUserToStore()
   loadSuggestionsPageDataToStore()
 })
 </script>

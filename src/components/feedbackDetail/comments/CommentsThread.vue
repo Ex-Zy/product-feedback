@@ -1,33 +1,26 @@
 <script setup lang="ts">
 import type { IComment } from '@/types'
 import CommentsItem from '@/components/feedbackDetail/comments/CommentsItem.vue'
-import { computed } from 'vue'
 import { useScrollToLastComment } from '@/composables/comments/useScrollToLastComment'
+import { storeToRefs } from 'pinia'
+import { useFeedbackStore } from '@/stores/feedback'
 
-interface Props {
-  comments: IComment[]
-  commentsAmount: number
-}
-const props = defineProps<Props>()
+const { comments, commentsAmount } = storeToRefs(useFeedbackStore())
 
 // scroll to last comment
-const commentsAmount = computed(() => props.comments.length)
 const { commentRef } = useScrollToLastComment(commentsAmount)
 </script>
 
 <template>
   <div class="comments-list">
-    <div class="comments-list__title h3">{{ props.commentsAmount }} Comments</div>
+    <div class="comments-list__title h3">{{ commentsAmount }} Comments</div>
     <div class="comments-list__content">
       <CommentsItem
         ref="commentRef"
-        v-for="comment in props.comments"
+        v-for="comment in comments"
         :key="comment.id"
-        :id="comment.id"
-        :comment-id="comment.id"
-        :content="comment.content"
-        :user="comment.user"
-        :replies="comment.replies"
+        :parent-comment-id="comment.id"
+        :comment="comment"
         type="comment"
       />
     </div>

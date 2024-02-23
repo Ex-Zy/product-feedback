@@ -8,11 +8,14 @@ import UIButton from '@/components/common/UIButton.vue'
 import router from '@/router'
 import IconArrowLeft from '@/components/common/icons/IconArrowLeft.vue'
 import { onBeforeUnmount, onMounted } from 'vue'
+import { useUserStore } from '@/stores/user'
 
-const { feedback, comments, commentsAmount } = storeToRefs(useFeedbackStore())
+const { loadCurrentUserToStore } = useUserStore()
+const { feedback, comments } = storeToRefs(useFeedbackStore())
 const { upvoteFeedback, loadFeedbackToStore, $reset, submitComment } = useFeedbackStore()
 
 onMounted(() => {
+  loadCurrentUserToStore()
   loadFeedbackToStore()
 })
 
@@ -36,11 +39,7 @@ function handleGoBack() {
         <UIButton type="secondary" text="Edit Feedback" />
       </div>
       <SuggestionsListItem :suggestion="feedback" @upvote="upvoteFeedback" />
-      <CommentsThread
-        v-if="comments?.length"
-        :comments="comments"
-        :comments-amount="commentsAmount"
-      />
+      <CommentsThread v-if="comments?.length" />
       <AddComment @submit="submitComment" />
     </template>
   </div>
