@@ -35,16 +35,7 @@ function handleGoBack() {
         </UIButton>
         <UIButton type="secondary" text="Edit Feedback" />
       </div>
-      <SuggestionsListItem
-        :id="feedback.id"
-        :title="feedback.title"
-        :description="feedback.description"
-        :upvotes="feedback.upvotes"
-        :category="feedback.category"
-        :comments="feedback.comments"
-        :is-up-voted="feedback.isUpvoted"
-        @upvote="(isUpvoted) => upvoteFeedback(feedback!, isUpvoted)"
-      />
+      <SuggestionsListItem :suggestion="feedback" @upvote="upvoteFeedback" />
       <CommentsThread
         v-if="comments?.length"
         :comments="comments"

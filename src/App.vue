@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
 import { onMounted } from 'vue'
-import TheConfetti from '@/components/suggestions/TheConfetti.vue'
+import TheConfetti from '@/components/common/TheConfetti.vue'
 import { useUserStore } from '@/stores/user'
 
 const { loadCurrentUserToStore } = useUserStore()

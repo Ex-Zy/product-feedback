@@ -4,59 +4,55 @@ import type { IComment, ISuggestion } from '@/types'
 import UIUpVote from '@/components/common/UIUpVote.vue'
 import UiCategory from '@/components/common/UiCategory.vue'
 import { useMediaQuery } from '@vueuse/core'
-import { computed } from 'vue'
+import { computed, toRefs } from 'vue'
 
 interface Props {
-  id: number
-  upvotes: number
-  title: string
-  description: string
-  category: string
-  comments?: IComment[]
-  isUpVoted: boolean
+  suggestion: ISuggestion
 }
 
 interface Emit {
-  (e: 'upvote', isUpvoted: boolean): void
+  (e: 'upvote', suggestion: ISuggestion, isUpvoted: boolean): void
 }
 
 const props = defineProps<Props>()
 const emit = defineEmits<Emit>()
 
+const { suggestion } = toRefs(props)
+
 const isMobile = useMediaQuery('(max-width: 767px)')
 const align = computed(() => (isMobile.value ? 'horizontal' : 'vertical'))
 
 const commentsAmount = computed(() => {
-  return props.comments ? calculateComments(props.comments) : 0
+  return suggestion.value.comments ? calculateComments(suggestion.value.comments) : 0
 })
 
 function handleUpvote() {
-  if (props.isUpVoted) return
+  if (suggestion.value.isUpvoted) return
 
-  emit('upvote', true)
+  emit('upvote', suggestion.value, true)
 }
 
-const feedbackUrl = computed(() => `/feedback/${props.id}`)
+const feedbackUrl = computed(() => `/feedback/${suggestion.value.id}`)
 </script>
 
 <template>
-  <li class="suggestions-item" :data-id="props.id">
+  <li class="suggestions-item" :data-id="suggestion.id">
     <div class="suggestions-item__vote">
       <UIUpVote
         :align="align"
-        :is-upvoted="props.isUpVoted"
-        :model-value="props.upvotes"
+        :is-upvoted="suggestion.isUpvoted"
+        :model-value="suggestion.upvotes"
         @update:model-value="handleUpvote"
       />
     </div>
     <div class="suggestions-item__content">
       <router-link data-test="title" class="suggestions-item__title h3" :to="feedbackUrl">
-        {{ props.title }}
+        {{ suggestion.title }}
       </router-link>
       <p data-test="description" class="suggestions-item__description b1">
-        {{ props.description }}
+        {{ suggestion.description }}
       </p>
-      <UiCategory :name="props.category" />
+      <UiCategory :name="suggestion.category" />
     </div>
     <div data-test="amount" class="suggestions-item__comment-amount">
       <img src="@/assets/shared/icon-comments.svg" alt="Comment icon" />

@@ -13,14 +13,8 @@ const { upvoteFeedback } = useFeedbackStore()
     <SuggestionsListItem
       v-for="suggestion in suggestions"
       :key="suggestion.id"
-      :id="suggestion.id"
-      :upvotes="suggestion.upvotes"
-      :category="suggestion.category"
-      :title="suggestion.title"
-      :description="suggestion.description"
-      :comments="suggestion.comments"
-      :is-up-voted="suggestion.isUpvoted"
-      @upvote="(isUpvoted) => upvoteFeedback(suggestion, isUpvoted)"
+      :suggestion="suggestion"
+      @upvote="upvoteFeedback"
     />
   </TransitionGroup>
 </template>
