@@ -8,7 +8,7 @@ import { storeToRefs } from 'pinia'
 import SuggestionsEmpty from '@/components/suggestions/main/SuggestionsEmpty.vue'
 import { onMounted } from 'vue'
 import { useUserStore } from '@/stores/user'
-import SuggestionsSkeleton from '@/components/suggestions/main/SuggestionsSkeleton.vue'
+import SuggestionsSkeleton from '@/components/suggestions/main/skeleton/SuggestionsSkeleton.vue'
 
 const { suggestions, loader, error } = storeToRefs(useSuggestionsStore())
 

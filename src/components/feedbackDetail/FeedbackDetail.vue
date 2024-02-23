@@ -9,9 +9,11 @@ import router from '@/router'
 import IconArrowLeft from '@/components/common/icons/IconArrowLeft.vue'
 import { onBeforeUnmount, onMounted } from 'vue'
 import { useUserStore } from '@/stores/user'
+import SuggestionsListItemSkeleton from '@/components/suggestions/main/skeleton/SuggestionsListItemSkeleton.vue'
+import CommentsThreadSkeleton from '@/components/feedbackDetail/comments/skeleton/CommentsThreadSkeleton.vue'
 
 const { loadCurrentUserToStore } = useUserStore()
-const { feedback, comments } = storeToRefs(useFeedbackStore())
+const { feedback, comments, loader, error } = storeToRefs(useFeedbackStore())
 const { upvoteFeedback, loadFeedbackToStore, $reset, submitComment } = useFeedbackStore()
 
 onMounted(() => {
@@ -30,18 +32,21 @@ function handleGoBack() {
 
 <template>
   <div class="feedback-detail">
-    <h1 v-if="!feedback" class="feedback-detail__empty h1">No feedback data to display</h1>
-    <template v-else>
-      <div class="feedback-detail__header">
-        <UIButton type="light" text="Go Back" @click="handleGoBack">
-          <IconArrowLeft />
-        </UIButton>
-        <UIButton type="secondary" text="Edit Feedback" />
-      </div>
+    <div class="feedback-detail__header">
+      <UIButton type="light" text="Go Back" @click="handleGoBack">
+        <IconArrowLeft />
+      </UIButton>
+      <UIButton type="secondary" text="Edit Feedback" />
+    </div>
+    <template v-if="loader || error">
+      <SuggestionsListItemSkeleton />
+      <CommentsThreadSkeleton />
+    </template>
+    <template v-else-if="feedback">
       <SuggestionsListItem :suggestion="feedback" @upvote="upvoteFeedback" />
       <CommentsThread v-if="comments?.length" />
-      <AddComment @submit="submitComment" />
     </template>
+    <AddComment @submit="submitComment" />
   </div>
 </template>
 
@@ -50,9 +55,6 @@ function handleGoBack() {
   display: flex;
   flex-direction: column;
   gap: 24px;
-  &__empty {
-    text-align: center;
-  }
   &__header {
     display: flex;
     align-items: center;

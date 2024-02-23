@@ -10,7 +10,7 @@ import { useUserStore } from '@/stores/user'
 type FeedbackReturnType = Promise<ISuggestion | undefined>
 
 export const useFeedbackStore = defineStore('feedback', () => {
-  const loading = ref(false)
+  const loader = ref(true)
   const error = ref<string | null>(null)
 
   const feedback = ref<ISuggestion | null>(null)
@@ -22,8 +22,8 @@ export const useFeedbackStore = defineStore('feedback', () => {
   )
 
   // Api call
-  async function fetchFeedback(id: number, delay = 300): FeedbackReturnType {
-    loading.value = true
+  async function fetchFeedback(id: number, delay = 600): FeedbackReturnType {
+    loader.value = true
 
     try {
       const responsePromise = new Promise<ISuggestion>((resolve, reject) => {
@@ -36,7 +36,7 @@ export const useFeedbackStore = defineStore('feedback', () => {
       error.value = 'Failed to load feedback'
       console.log(err)
     } finally {
-      loading.value = false
+      loader.value = false
     }
   }
 
@@ -62,7 +62,7 @@ export const useFeedbackStore = defineStore('feedback', () => {
   }
 
   function $reset() {
-    loading.value = false
+    loader.value = true
     error.value = null
     feedback.value = null
     openReplyId.value = null
@@ -107,7 +107,7 @@ export const useFeedbackStore = defineStore('feedback', () => {
   }
 
   return {
-    loading,
+    loader,
     error,
 
     feedback,
