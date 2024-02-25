@@ -22,23 +22,19 @@ const isReply = computed(() => props.type === 'reply')
 const user = computed(() => (props.reply ? props.reply.user : props.comment.user))
 const content = computed(() => (props.reply ? props.reply.content : props.comment.content))
 
-// scroll to last comment
+// For better UX - scroll to last comment
 const repliesAmount = computed(() => {
   const replies = props.comment.replies
   return isReply.value || !replies ? 0 : replies.length
 })
 const { commentRef } = useScrollToLastComment(repliesAmount)
 
-const rootClasses = computed(() => ({
-  'is-replies-open': !!(isComment.value && repliesAmount.value)
-}))
-
 // Add Reply
 const { currentUser } = storeToRefs(useUserStore())
 const { openReplyId } = storeToRefs(useFeedbackStore())
 
 const showReplyBtn = computed(() => {
-  return currentUser.value.username !== props.comment.user.username
+  return currentUser.value.username !== user.value.username
 })
 const showPostReply = computed(() => {
   return openReplyId.value === (props.reply ? props.reply.id : props.comment.id)
@@ -51,7 +47,7 @@ function handleSubmitReply(commentMsg: string) {
 </script>
 
 <template>
-  <div class="comment-outer" :class="rootClasses">
+  <div class="comment-outer" :class="{ 'is-replies-open': !!(isComment && repliesAmount) }">
     <div class="comment">
       <div class="comment__header">
         <UserProfile :user="user" />
