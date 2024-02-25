@@ -1,13 +1,12 @@
 <script setup lang="ts">
 import CommentsItem from '@/components/feedbackDetail/comments/CommentsItem.vue'
 import type { IComment, IReply } from '@/types'
-import { computed } from 'vue'
+import { computed, toRefs } from 'vue'
 import AddReply from '@/components/feedbackDetail/comments/AddReply.vue'
 import UserProfile from '@/components/feedbackDetail/comments/UserProfile.vue'
 import { useScrollToLastComment } from '@/composables/comments/useScrollToLastComment'
-import { useUserStore } from '@/stores/user'
-import { storeToRefs } from 'pinia'
 import { useFeedbackStore } from '@/stores/feedback'
+import { useComment } from '@/composables/comments/useComment'
 
 interface Props {
   type: 'comment' | 'reply'
@@ -15,30 +14,17 @@ interface Props {
   reply?: IReply
 }
 const props = defineProps<Props>()
+const { type, comment, reply } = toRefs(props)
 
-const isComment = computed(() => props.type === 'comment')
-const isReply = computed(() => props.type === 'reply')
-
-const user = computed(() => (props.reply ? props.reply.user : props.comment.user))
-const content = computed(() => (props.reply ? props.reply.content : props.comment.content))
+const { isComment, isReply, user, content, repliesAmount, showAddReply, showReplyBtn } = useComment(
+  type,
+  comment,
+  reply
+)
 
 // For better UX - scroll to last comment
-const repliesAmount = computed(() => {
-  const replies = props.comment.replies
-  return isReply.value || !replies ? 0 : replies.length
-})
 const { commentRef } = useScrollToLastComment(repliesAmount)
 
-// Add Reply
-const { currentUser } = storeToRefs(useUserStore())
-const { openReplyId } = storeToRefs(useFeedbackStore())
-
-const showReplyBtn = computed(() => {
-  return currentUser.value.username !== user.value.username
-})
-const showPostReply = computed(() => {
-  return openReplyId.value === (props.reply ? props.reply.id : props.comment.id)
-})
 const { toggleReply, submitReply } = useFeedbackStore()
 
 function handleSubmitReply(commentMsg: string) {
@@ -63,7 +49,7 @@ function handleSubmitReply(commentMsg: string) {
           <span v-if="reply" class="replying-to"> @{{ reply.replyingTo }} </span>
           {{ content }}
         </div>
-        <AddReply v-if="showPostReply" @submit="handleSubmitReply" />
+        <AddReply v-if="showAddReply" @submit="handleSubmitReply" />
       </div>
     </div>
     <div v-if="isComment && comment.replies" class="comment-replies">
