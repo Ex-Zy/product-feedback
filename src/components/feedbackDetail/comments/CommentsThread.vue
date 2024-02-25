@@ -18,7 +18,6 @@ const { commentRef } = useScrollToLastComment(commentsAmount)
         ref="commentRef"
         v-for="comment in comments"
         :key="comment.id"
-        :parent-comment-id="comment.id"
         :comment="comment"
         type="comment"
       />

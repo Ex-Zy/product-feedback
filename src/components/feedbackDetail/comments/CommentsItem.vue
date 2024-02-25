@@ -11,17 +11,26 @@ import { useFeedbackStore } from '@/stores/feedback'
 
 interface Props {
   type: 'comment' | 'reply'
-  comment: IComment & IReply
-  parentCommentId: number
+  comment: IComment
+  reply?: IReply
 }
 const props = defineProps<Props>()
 
+const isComment = computed(() => props.type === 'comment')
+const isReply = computed(() => props.type === 'reply')
+
+const user = computed(() => (props.reply ? props.reply.user : props.comment.user))
+const content = computed(() => (props.reply ? props.reply.content : props.comment.content))
+
 // scroll to last comment
-const repliesAmount = computed(() => props.comment.replies?.length ?? 0)
+const repliesAmount = computed(() => {
+  const replies = props.comment.replies
+  return isReply.value || !replies ? 0 : replies.length
+})
 const { commentRef } = useScrollToLastComment(repliesAmount)
 
 const rootClasses = computed(() => ({
-  'is-replies-open': !!props.comment.replies?.length
+  'is-replies-open': !!(isComment.value && repliesAmount.value)
 }))
 
 // Add Reply
@@ -32,15 +41,12 @@ const showReplyBtn = computed(() => {
   return currentUser.value.username !== props.comment.user.username
 })
 const showPostReply = computed(() => {
-  if (props.type === 'reply') {
-    return openReplyId.value === props.comment.id
-  }
-  return openReplyId.value === props.parentCommentId
+  return openReplyId.value === (props.reply ? props.reply.id : props.comment.id)
 })
 const { toggleReply, submitReply } = useFeedbackStore()
 
 function handleSubmitReply(commentMsg: string) {
-  submitReply(props.parentCommentId, commentMsg)
+  submitReply(props.comment.id, commentMsg)
 }
 </script>
 
@@ -48,30 +54,25 @@ function handleSubmitReply(commentMsg: string) {
   <div class="comment-outer" :class="rootClasses">
     <div class="comment">
       <div class="comment__header">
-        <UserProfile :user="comment.user" />
+        <UserProfile :user="user" />
         <span
           v-if="showReplyBtn"
           class="reply-btn"
-          @click="toggleReply(parentCommentId, comment.id)"
+          @click="toggleReply(comment.id, props.reply?.id)"
           >Reply</span
         >
       </div>
       <div class="comment__body">
         <div class="comment__content b2">
-          <span v-if="comment.replyingTo" class="replying-to"> @{{ comment.replyingTo }} </span>
-          {{ comment.content }}
+          <span v-if="reply" class="replying-to"> @{{ reply.replyingTo }} </span>
+          {{ content }}
         </div>
         <AddReply v-if="showPostReply" @submit="handleSubmitReply" />
       </div>
     </div>
-    <div v-if="repliesAmount" class="comment-replies">
+    <div v-if="isComment && comment.replies" class="comment-replies">
       <template v-for="item in comment.replies" :key="item.id">
-        <CommentsItem
-          ref="commentRef"
-          type="reply"
-          :comment="item"
-          :parent-comment-id="comment.id"
-        />
+        <CommentsItem ref="commentRef" type="reply" :comment="comment" :reply="item" />
       </template>
     </div>
   </div>
