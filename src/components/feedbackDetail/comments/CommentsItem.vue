@@ -16,7 +16,7 @@ interface Props {
 const props = defineProps<Props>()
 const { type, comment, reply } = toRefs(props)
 
-const { isComment, isReply, user, content, repliesAmount, showAddReply, showReplyBtn } = useComment(
+const { isComment, user, content, repliesAmount, showAddReply, showReplyBtn } = useComment(
   type,
   comment,
   reply
@@ -25,6 +25,7 @@ const { isComment, isReply, user, content, repliesAmount, showAddReply, showRepl
 // For better UX - scroll to last comment
 const { commentRef } = useScrollToLastComment(repliesAmount)
 
+// submit reply
 const { toggleReply, submitReply } = useFeedbackStore()
 
 function handleSubmitReply(commentMsg: string) {
@@ -37,10 +38,7 @@ function handleSubmitReply(commentMsg: string) {
     <div class="comment">
       <div class="comment__header">
         <UserProfile :user="user" />
-        <span
-          v-if="showReplyBtn"
-          class="reply-btn"
-          @click="toggleReply(comment.id, props.reply?.id)"
+        <span v-if="showReplyBtn" class="reply-btn" @click="toggleReply(reply?.id ?? comment.id)"
           >Reply</span
         >
       </div>

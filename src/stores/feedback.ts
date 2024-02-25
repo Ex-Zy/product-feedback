@@ -14,12 +14,31 @@ export const useFeedbackStore = defineStore('feedback', () => {
   const error = ref<string | null>(null)
 
   const feedback = ref<ISuggestion | null>(null)
-  const openReplyId = ref<number | null>(null)
 
   const comments = computed<IComment[] | null>(() => feedback.value?.comments ?? null)
   const commentsAmount = computed<number>(() =>
     comments.value ? calculateComments(comments.value) : 0
   )
+
+  // show/hide Add Replies
+  const visibleReplies = ref<number[]>([])
+  function isVisibleReply(id: number) {
+    return visibleReplies.value.includes(id)
+  }
+  function hideReplies() {
+    visibleReplies.value.length = 0
+  }
+  function showReply(id: number) {
+    visibleReplies.value.push(id)
+  }
+  function toggleReply(id: number) {
+    if (isVisibleReply(id)) {
+      hideReplies()
+    } else {
+      hideReplies()
+      showReply(id)
+    }
+  }
 
   // Api call
   async function fetchFeedback(id: number, delay = 600): FeedbackReturnType {
@@ -65,14 +84,7 @@ export const useFeedbackStore = defineStore('feedback', () => {
     loader.value = true
     error.value = null
     feedback.value = null
-    openReplyId.value = null
-  }
-
-  function toggleReply(commentId: number, replyId?: number) {
-    const id = replyId ?? commentId
-    const isSameReply = openReplyId.value === id
-
-    openReplyId.value = isSameReply ? null : id
+    hideReplies()
   }
 
   function submitReply(commentId: number, commentMsg: string) {
@@ -88,7 +100,7 @@ export const useFeedbackStore = defineStore('feedback', () => {
       }
 
       comment.replies = comment.replies ? [...comment.replies, reply] : [reply]
-      openReplyId.value = null
+      hideReplies()
     }
   }
 
@@ -113,13 +125,17 @@ export const useFeedbackStore = defineStore('feedback', () => {
     feedback,
     comments,
     commentsAmount,
-    openReplyId,
+
+    visibleReplies,
+    isVisibleReply,
+    showReply,
+    hideReplies,
+    toggleReply,
 
     fetchFeedback,
     loadFeedbackToStore,
     upvoteFeedback,
     $reset,
-    toggleReply,
     submitReply,
     submitComment
   }

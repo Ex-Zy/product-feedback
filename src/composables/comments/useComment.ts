@@ -10,6 +10,9 @@ export const useComment = (
   comment: Ref<IComment>,
   reply: Ref<IReply | undefined>
 ) => {
+  const { currentUser } = storeToRefs(useUserStore())
+  const { isVisibleReply } = useFeedbackStore()
+
   const isComment = computed(() => type.value === 'comment')
   const isReply = computed(() => type.value === 'reply')
 
@@ -23,15 +26,10 @@ export const useComment = (
   const user = computed(() => (reply.value ? reply.value.user : comment.value.user))
   const content = computed(() => (reply.value ? reply.value.content : comment.value.content))
 
-  // show/hide Reply button and AddReply form
-  const { currentUser } = storeToRefs(useUserStore())
-  const { openReplyId } = storeToRefs(useFeedbackStore())
   const showReplyBtn = computed(() => {
     return currentUser.value.username !== user.value.username
   })
-  const showAddReply = computed(() => {
-    return openReplyId.value === (reply.value ? reply.value.id : comment.value.id)
-  })
+  const showAddReply = computed(() => isVisibleReply(reply.value?.id ?? comment.value.id))
 
   return {
     showReplyBtn,
