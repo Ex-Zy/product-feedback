@@ -45,13 +45,16 @@ const comments: IComment[] = [
 describe('SuggestionsListItem.vue Test', () => {
   const wrapper: VueWrapper = mount(SuggestionsListItem, {
     props: {
-      id: 5,
-      title: 'Ability to follow others',
-      category: 'feature',
-      upvotes: 42,
-      description: 'Stay updated on comments and solutions other people post.',
-      isUpVoted: false,
-      comments
+      suggestion: {
+        id: 5,
+        title: 'Ability to follow others',
+        category: 'feature',
+        status: 'live',
+        upvotes: 42,
+        description: 'Stay updated on comments and solutions other people post.',
+        isUpvoted: false,
+        comments
+      }
     }
   })
 
