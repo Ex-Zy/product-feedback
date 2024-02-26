@@ -12,6 +12,16 @@ const router = createRouter({
       path: '/feedback/:id',
       name: 'feedback',
       component: () => import('@/views/FeedbackDetailView.vue')
+    },
+    {
+      path: '/edit/:id',
+      name: 'edit',
+      component: () => import('@/views/EditFeedbackView.vue')
+    },
+    {
+      path: '/create',
+      name: 'create',
+      component: () => import('@/views/CreateFeedbackView.vue')
     }
   ]
 })

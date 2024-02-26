@@ -5,12 +5,17 @@ import { storeToRefs } from 'pinia'
 import UIButton from '@/components/common/UIButton.vue'
 import SortBySelect from '@/components/suggestions/SortBySelect.vue'
 import type { SortBy } from '@/types'
+import router from '@/router'
 
 const { suggestionsAmount, sortBy } = storeToRefs(useSuggestionsStore())
 const { loadSuggestionsPageDataToStore } = useSuggestionsStore()
 
 function handleSort(sortBy: SortBy) {
   loadSuggestionsPageDataToStore({ sortBy })
+}
+
+function redirectToCreate() {
+  router.push('/create')
 }
 </script>
 
@@ -19,7 +24,7 @@ function handleSort(sortBy: SortBy) {
     <IconSuggestions class="suggestions-header__icon" />
     <div class="suggestions-header__count h3">{{ suggestionsAmount }} Suggestions</div>
     <SortBySelect :model-value="sortBy" @update:model-value="handleSort" />
-    <UIButton text="+ Add Feedback" class="suggestions-header__btn" />
+    <UIButton text="+ Add Feedback" class="suggestions-header__btn" @click="redirectToCreate" />
   </header>
 </template>
 

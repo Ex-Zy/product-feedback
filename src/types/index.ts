@@ -46,3 +46,11 @@ export type SortBy =
   | typeof LEAST_COMMENTS
 
 export type FilterType = 'all' | 'enhancement' | 'feature' | 'bug' | 'ui' | 'ux'
+
+export type InputSuggestion = Pick<ISuggestion, 'category' | 'title' | 'description'>
+
+export interface ICategory {
+  id: number
+  name: string
+  label: string
+}

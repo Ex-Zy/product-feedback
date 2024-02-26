@@ -7,10 +7,14 @@ import { useFeedbackStore } from '@/stores/feedback'
 import UIButton from '@/components/common/UIButton.vue'
 import router from '@/router'
 import IconArrowLeft from '@/components/common/icons/IconArrowLeft.vue'
-import { onBeforeUnmount, onMounted } from 'vue'
+import { computed, onBeforeUnmount, onMounted } from 'vue'
 import { useUserStore } from '@/stores/user'
 import SuggestionsListItemSkeleton from '@/components/suggestions/main/skeleton/SuggestionsListItemSkeleton.vue'
 import CommentsThreadSkeleton from '@/components/feedbackDetail/comments/skeleton/CommentsThreadSkeleton.vue'
+import { useRoute } from 'vue-router'
+
+const route = useRoute()
+const id = computed(() => Number(route.params.id))
 
 const { loadCurrentUserToStore } = useUserStore()
 const { feedback, comments, loader, error } = storeToRefs(useFeedbackStore())
@@ -28,6 +32,10 @@ onBeforeUnmount(() => {
 function handleGoBack() {
   router.push('/')
 }
+
+function redirectToEdit() {
+  router.push(`/edit/${id.value}`)
+}
 </script>
 
 <template>
@@ -36,7 +44,7 @@ function handleGoBack() {
       <UIButton type="light" text="Go Back" @click="handleGoBack">
         <IconArrowLeft />
       </UIButton>
-      <UIButton type="secondary" text="Edit Feedback" />
+      <UIButton type="secondary" text="Edit Feedback" @click="redirectToEdit" />
     </div>
     <template v-if="loader || error">
       <SuggestionsListItemSkeleton />

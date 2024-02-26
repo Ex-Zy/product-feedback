@@ -1,4 +1,4 @@
-import { defineStore } from 'pinia'
+import { defineStore, storeToRefs } from 'pinia'
 import { useRoute } from 'vue-router'
 import { computed, ref, toRef } from 'vue'
 import type { IComment, IReply, ISuggestion } from '@/types'
@@ -6,10 +6,13 @@ import { calculateComments } from '@/helpers'
 import { productRequests } from '@/data/data.json'
 import { useConfetti } from '@/composables/useConfetti'
 import { useUserStore } from '@/stores/user'
+import { useSuggestionsStore } from '@/stores/suggestions'
 
 type FeedbackReturnType = Promise<ISuggestion | undefined>
 
 export const useFeedbackStore = defineStore('feedback', () => {
+  const { suggestions } = storeToRefs(useSuggestionsStore())
+
   const loader = ref(true)
   const error = ref<string | null>(null)
 
@@ -118,6 +121,41 @@ export const useFeedbackStore = defineStore('feedback', () => {
     feedback.value.comments = comments ? [...comments, newComment] : [newComment]
   }
 
+  async function editFeedback(updatedSuggestion: ISuggestion, delay = 600): FeedbackReturnType {
+    loader.value = true
+
+    try {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          feedback.value = updatedSuggestion
+          resolve(updatedSuggestion)
+        }, delay)
+      })
+    } catch (err) {
+      error.value = `Something went wrong`
+      console.log(err)
+    } finally {
+      loader.value = false
+    }
+  }
+
+  async function deleteFeedback(suggestion: ISuggestion, delay = 600): FeedbackReturnType {
+    loader.value = true
+
+    try {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          suggestions.value = suggestions.value.filter((item) => item.id !== suggestion.id)
+          resolve(suggestion)
+        }, delay)
+      })
+    } catch (err) {
+      error.value = `Something went wrong`
+    } finally {
+      loader.value = false
+    }
+  }
+
   return {
     loader,
     error,
@@ -137,6 +175,8 @@ export const useFeedbackStore = defineStore('feedback', () => {
     upvoteFeedback,
     $reset,
     submitReply,
-    submitComment
+    submitComment,
+    editFeedback,
+    deleteFeedback
   }
 })

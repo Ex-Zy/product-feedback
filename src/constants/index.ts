@@ -1,4 +1,4 @@
-import type { ISuggestion } from '@/types'
+import type { ICategory, ISuggestion } from '@/types'
 
 export const MOST_UPVOTES = 'Most Upvotes'
 export const LEAST_UPVOTES = 'Least Upvotes'
@@ -14,3 +14,11 @@ export const DEFAULT_SUGGESTION: ISuggestion = {
   isUpvoted: false,
   status: 'suggestion'
 }
+
+export const CATEGORIES: ICategory[] = [
+  { id: 2, name: 'ui', label: 'UI' },
+  { id: 3, name: 'ux', label: 'UX' },
+  { id: 4, name: 'enhancement', label: 'Enhancement' },
+  { id: 5, name: 'bug', label: 'Bug' },
+  { id: 6, name: 'feature', label: 'Feature' }
+]
