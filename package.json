@@ -4,6 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "api": "json-server --watch ./src/data/data.json --port=30001",
     "deploy": "npm run build && gh-pages -d dist",
     "dev": "vite",
     "build": "run-p type-check \"build-only {@}\" --",
@@ -38,6 +39,7 @@
     "eslint-plugin-vue": "^9.17.0",
     "gh-pages": "^6.1.1",
     "jsdom": "^24.0.0",
+    "json-server": "^1.0.0-alpha.23",
     "npm-run-all2": "^6.1.1",
     "prettier": "^3.0.3",
     "sass": "^1.70.0",

@@ -98,5 +98,27 @@ const rootClasses = computed(() => ({
       }
     }
   }
+
+  &.is-terminate {
+    background: var(--color-3);
+
+    &:hover {
+      background: var(--color-3-hover);
+      .ui-button__txt {
+        color: #f2f4fe;
+      }
+    }
+  }
+
+  &.is-danger {
+    background: var(--color-danger);
+
+    &:hover {
+      background: var(--color-danger-hover);
+      .ui-button__txt {
+        color: #f2f4fe;
+      }
+    }
+  }
 }
 </style>

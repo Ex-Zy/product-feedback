@@ -1,5 +1,9 @@
 import type { ICategory, ISuggestion } from '@/types'
 
+export const API_URL = import.meta.env.VITE_API_URL
+export const API_USER = `${API_URL}/currentUser`
+export const API_PRODUCTS = `${API_URL}/productRequests`
+
 export const MOST_UPVOTES = 'Most Upvotes'
 export const LEAST_UPVOTES = 'Least Upvotes'
 export const MOST_COMMENTS = 'Most Comments'

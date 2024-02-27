@@ -8,6 +8,10 @@ import { useCreateFeedbackStore } from '@/stores/createFeedback'
 import { storeToRefs } from 'pinia'
 import router from '@/router'
 import { CATEGORIES } from '@/constants'
+import UIInput from '@/components/common/UIInput.vue'
+import UITextArea from '@/components/common/UITextArea.vue'
+import UISelect from '@/components/common/UISelect.vue'
+import IconNewFeedback from '@/components/common/icons/IconNewFeedback.vue'
 
 const { loader } = storeToRefs(useCreateFeedbackStore())
 const { createNewFeedback } = useCreateFeedbackStore()
@@ -36,26 +40,30 @@ function handleNewFeedback() {
 <template>
   <FeedbackLayout>
     <FeedbackCard class="create-feedback">
+      <template #icon><IconNewFeedback /></template>
       <template #title>
         <h1 class="h1">Create New Feedback</h1>
       </template>
       <template #content>
-        <div class="row">
-          <input type="text" placeholder="Feedback title" v-model="newFeedback.title" />
-        </div>
-        <div class="row">
-          <select v-model="newFeedback.category">
-            <option v-for="category in CATEGORIES" :value="category.name" :key="category.id">
-              {{ category.label }}
-            </option>
-          </select>
-        </div>
-        <div class="row">
-          <textarea v-model="newFeedback.description"></textarea>
-        </div>
+        <UIInput
+          title="Feedback title"
+          description="Add a short, descriptive headline"
+          v-model="newFeedback.title"
+        />
+        <UISelect
+          v-model="newFeedback.category"
+          title="Category"
+          description="Choose a category for your feedback"
+          :options="CATEGORIES"
+        />
+        <UITextArea
+          title="Feedback Detail"
+          description="Include any specific comments on what should be improved, added, etc."
+          v-model="newFeedback.description"
+        />
       </template>
       <template #footer>
-        <UIButton text="Cancel" />
+        <UIButton text="Cancel" type="terminate" />
         <UIButton text="Add Feedback" @click="handleNewFeedback" />
       </template>
     </FeedbackCard>

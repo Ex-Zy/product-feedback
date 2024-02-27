@@ -14,7 +14,7 @@ const isOpen = ref(false)
   <dropdown-menu :isOpen="isOpen" @opened="isOpen = true" @closed="isOpen = false" :overlay="false">
     <template #trigger>
       <button type="button" class="trigger-button">
-        Sort by&nbsp:&nbsp<span>{{ model }}</span>
+        Sort by &nbsp;<span>{{ model }}</span>
         <IconArrowUp v-if="isOpen" class="trigger-button__arrow" />
         <IconArrowDown v-else class="trigger-button__arrow" />
       </button>

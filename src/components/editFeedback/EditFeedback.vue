@@ -9,6 +9,10 @@ import { CATEGORIES } from '@/constants'
 import { useStatuses } from '@/stores/statuses'
 import UIButton from '@/components/common/UIButton.vue'
 import { useSuggestionsStore } from '@/stores/suggestions'
+import UIInput from '@/components/common/UIInput.vue'
+import UITextArea from '@/components/common/UITextArea.vue'
+import UISelect from '@/components/common/UISelect.vue'
+import IconEditFeedback from '@/components/common/icons/IconEditFeedback.vue'
 
 // initial data
 const { loadSuggestionsPageDataToStore } = useSuggestionsStore()
@@ -52,34 +56,42 @@ async function handleDeleteFeedback(deletedFeedback: ISuggestion) {
 <template>
   <FeedbackLayout>
     <FeedbackCard v-if="feedback && editedFeedback" class="edit-feedback">
+      <template #icon><IconEditFeedback /></template>
       <template #title>
-        <h1 class="h1">Editing {{ editedFeedback?.title }}</h1>
+        <h1 class="h1">Editing `{{ feedback.title }}`</h1>
       </template>
       <template #content>
-        <div class="row">
-          <input type="text" placeholder="Feedback title" v-model="editedFeedback.title" />
-        </div>
-        <div class="row">
-          <select v-model="editedFeedback.category">
-            <option v-for="category in CATEGORIES" :value="category.name" :key="category.id">
-              {{ category.label }}
-            </option>
-          </select>
-        </div>
-        <div class="row">
-          <select v-model="editedFeedback.status">
-            <option v-for="status in statuses" :value="status.name" :key="status.name">
-              {{ status.label }}
-            </option>
-          </select>
-        </div>
-        <div class="row">
-          <textarea v-model="editedFeedback.description"></textarea>
-        </div>
+        <UIInput
+          v-model="editedFeedback.title"
+          title="Feedback Title"
+          description="Add a short, descriptive headline"
+        />
+        <UISelect
+          v-model="editedFeedback.category"
+          title="Category"
+          description="Choose a category for your feedback"
+          :options="CATEGORIES"
+        />
+        <UISelect
+          v-model="editedFeedback.status"
+          title="Update Status"
+          description="Change feedback state"
+          :options="statuses"
+        />
+        <UITextArea
+          title="Feedback Detail"
+          description="Include any specific comments on what should be improved, added, etc."
+          v-model="editedFeedback.description"
+        />
       </template>
       <template #footer>
-        <UIButton text="delete" class="delete-btn" @click="handleDeleteFeedback(feedback)" />
-        <UIButton text="Cancel" @click="handleResetFeedback(feedback)" />
+        <UIButton
+          type="danger"
+          text="Delete"
+          class="delete-btn"
+          @click="handleDeleteFeedback(feedback)"
+        />
+        <UIButton type="terminate" text="Cancel" @click="handleResetFeedback(feedback)" />
         <UIButton text="Add Feedback" @click="handleEditFeedback(editedFeedback)" />
       </template>
     </FeedbackCard>
@@ -87,17 +99,6 @@ async function handleDeleteFeedback(deletedFeedback: ISuggestion) {
 </template>
 
 <style scoped lang="scss">
-.row {
-  margin: 10px 0;
-
-  input,
-  select,
-  textarea {
-    height: 40px;
-    width: 100%;
-  }
-}
-
 .delete-btn {
   margin-right: auto;
 }
