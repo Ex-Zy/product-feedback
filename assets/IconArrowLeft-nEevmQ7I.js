@@ -1,1 +1,0 @@
-import{_ as e,o as t,c as o,a as s}from"./index-dvVLpKp4.js";const n={},c={width:"7",height:"10",xmlns:"http://www.w3.org/2000/svg"},r=s("path",{d:"M6 9L2 5l4-4",stroke:"#4661E6","stroke-width":"2",fill:"none","fill-rule":"evenodd"},null,-1),_=[r];function a(l,d){return t(),o("svg",c,_)}const h=e(n,[["render",a]]);export{h as I};
