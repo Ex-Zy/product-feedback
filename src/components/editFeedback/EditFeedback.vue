@@ -8,19 +8,18 @@ import type { ISuggestion } from '@/types'
 import { CATEGORIES } from '@/constants'
 import { useStatuses } from '@/stores/statuses'
 import UIButton from '@/components/common/UIButton.vue'
-import { useSuggestionsStore } from '@/stores/suggestions'
 import UIInput from '@/components/common/UIInput.vue'
 import UITextArea from '@/components/common/UITextArea.vue'
 import UISelect from '@/components/common/UISelect.vue'
 import IconEditFeedback from '@/components/common/icons/IconEditFeedback.vue'
+import { deepEqual } from '@/helpers'
+import router from '@/router'
 
 // initial data
-const { loadSuggestionsPageDataToStore } = useSuggestionsStore()
-const { feedback, loader } = storeToRefs(useFeedbackStore())
+const { feedback } = storeToRefs(useFeedbackStore())
 const { loadFeedbackToStore, editFeedback, deleteFeedback } = useFeedbackStore()
 
 onMounted(() => {
-  loadSuggestionsPageDataToStore()
   loadFeedbackToStore()
 })
 
@@ -38,18 +37,15 @@ watchEffect(() => {
 // statuses
 const { statuses } = storeToRefs(useStatuses())
 
-async function handleEditFeedback(newFeedback: ISuggestion) {
-  const fb = await editFeedback(newFeedback)
+function handleCancelFeedback(feedback: ISuggestion) {
+  const isFeedbackNotChanges = deepEqual(feedback, editedFeedback.value!)
 
-  console.log(fb)
-}
-function handleResetFeedback(feedback: ISuggestion) {
+  if (isFeedbackNotChanges) {
+    router.back()
+    return
+  }
+
   editedFeedback.value = { ...feedback }
-}
-async function handleDeleteFeedback(deletedFeedback: ISuggestion) {
-  const fb = await deleteFeedback(deletedFeedback)
-
-  console.log(fb)
 }
 </script>
 
@@ -89,10 +85,10 @@ async function handleDeleteFeedback(deletedFeedback: ISuggestion) {
           type="danger"
           text="Delete"
           class="delete-btn"
-          @click="handleDeleteFeedback(feedback)"
+          @click="deleteFeedback(feedback)"
         />
-        <UIButton type="terminate" text="Cancel" @click="handleResetFeedback(feedback)" />
-        <UIButton text="Add Feedback" @click="handleEditFeedback(editedFeedback)" />
+        <UIButton type="terminate" text="Cancel" @click="handleCancelFeedback(feedback)" />
+        <UIButton text="Add Feedback" @click="editFeedback(editedFeedback)" />
       </template>
     </FeedbackCard>
   </FeedbackLayout>

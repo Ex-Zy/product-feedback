@@ -22,5 +22,11 @@ export default defineConfig({
         additionalData: '@import "./src/scss/_mixins.scss";'
       }
     }
+  },
+  server: {
+    watch: {
+      // ignore json files like data/data.json
+      ignored: ['./data/**']
+    }
   }
 })

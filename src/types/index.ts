@@ -54,3 +54,5 @@ export interface ICategory {
   name: string
   label: string
 }
+
+export type FeedbackReturnType = Promise<ISuggestion | undefined>

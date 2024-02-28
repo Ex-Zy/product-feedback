@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { calculateComments, capitalize } from '@/helpers'
-import type { IComment, ISuggestion } from '@/types'
+import { calculateComments } from '@/helpers'
+import type { ISuggestion } from '@/types'
 import UIUpVote from '@/components/common/UIUpVote.vue'
 import UiCategory from '@/components/common/UiCategory.vue'
 import { useMediaQuery } from '@vueuse/core'
 import { computed, toRefs } from 'vue'
+import { useRoute } from 'vue-router'
 
 interface Props {
   suggestion: ISuggestion
@@ -32,7 +33,10 @@ function handleUpvote() {
   emit('upvote', suggestion.value, true)
 }
 
+const route = useRoute()
+const isFeedbackRoute = computed(() => route.name === 'feedback')
 const feedbackUrl = computed(() => `/feedback/${suggestion.value.id}`)
+const editUrl = computed(() => `/edit/${suggestion.value.id}`)
 </script>
 
 <template>
@@ -46,7 +50,11 @@ const feedbackUrl = computed(() => `/feedback/${suggestion.value.id}`)
       />
     </div>
     <div class="suggestions-item__content">
-      <router-link data-test="title" class="suggestions-item__title h3" :to="feedbackUrl">
+      <router-link
+        data-test="title"
+        class="suggestions-item__title h3"
+        :to="isFeedbackRoute ? editUrl : feedbackUrl"
+      >
         {{ suggestion.title }}
       </router-link>
       <p data-test="description" class="suggestions-item__description b1">

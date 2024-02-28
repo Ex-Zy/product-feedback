@@ -1,20 +1,18 @@
 <script setup lang="ts">
 import FeedbackLayout from '@/components/FeedbackLayout.vue'
 import FeedbackCard from '@/components/common/FeedbackCard.vue'
-import { reactive, ref } from 'vue'
+import { reactive } from 'vue'
 import UIButton from '@/components/common/UIButton.vue'
-import type { ICategory, InputSuggestion } from '@/types'
-import { useCreateFeedbackStore } from '@/stores/createFeedback'
-import { storeToRefs } from 'pinia'
-import router from '@/router'
+import type { InputSuggestion } from '@/types'
 import { CATEGORIES } from '@/constants'
 import UIInput from '@/components/common/UIInput.vue'
 import UITextArea from '@/components/common/UITextArea.vue'
 import UISelect from '@/components/common/UISelect.vue'
 import IconNewFeedback from '@/components/common/icons/IconNewFeedback.vue'
+import { useFeedbackStore } from '@/stores/feedback'
+import router from '@/router'
 
-const { loader } = storeToRefs(useCreateFeedbackStore())
-const { createNewFeedback } = useCreateFeedbackStore()
+const { createNewFeedback } = useFeedbackStore()
 
 // feedback
 const newFeedback = reactive<InputSuggestion>({
@@ -22,18 +20,17 @@ const newFeedback = reactive<InputSuggestion>({
   category: CATEGORIES[4].name,
   description: ''
 })
-function resetFeedback() {
+function handleCancelFeedback() {
+  const isEmptyFeedback = !newFeedback.title.trim() && !newFeedback.description.trim()
+
+  if (isEmptyFeedback) {
+    router.back()
+    return
+  }
+
   newFeedback.title = ''
   newFeedback.category = 'feature'
   newFeedback.description = ''
-}
-function redirectBack() {
-  router.back()
-}
-function handleNewFeedback() {
-  createNewFeedback(newFeedback)
-  setTimeout(resetFeedback, 500)
-  setTimeout(redirectBack, 600)
 }
 </script>
 
@@ -63,8 +60,8 @@ function handleNewFeedback() {
         />
       </template>
       <template #footer>
-        <UIButton text="Cancel" type="terminate" />
-        <UIButton text="Add Feedback" @click="handleNewFeedback" />
+        <UIButton text="Cancel" type="terminate" @click="handleCancelFeedback" />
+        <UIButton text="Add Feedback" @click="createNewFeedback(newFeedback)" />
       </template>
     </FeedbackCard>
   </FeedbackLayout>

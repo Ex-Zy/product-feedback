@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import type { IUser } from '@/types'
-import { currentUser as jsonUser } from '@/data/data.json'
+import { API_USER } from '@/constants'
 
 export const useUserStore = defineStore('user', () => {
   const loader = ref(false)
@@ -13,13 +13,12 @@ export const useUserStore = defineStore('user', () => {
     username: ''
   })
 
-  async function fetchCurrentUser(delay = 300): Promise<IUser | undefined> {
+  async function fetchCurrentUser(): Promise<IUser | undefined> {
     loader.value = true
     try {
-      const responsePromise: Promise<IUser> = new Promise((resolve, reject) => {
-        setTimeout(resolve, delay, jsonUser)
-      })
-      return await responsePromise
+      const promiseResponse: Response = await fetch(API_USER)
+
+      return (await promiseResponse.json()) as IUser
     } catch (err) {
       error.value = 'Failed to load currentUser'
       console.log(err)

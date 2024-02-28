@@ -1,9 +1,8 @@
 import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
 import type { FilterType, ISuggestion, SortBy } from '@/types'
-import { MOST_UPVOTES } from '@/constants'
+import { API_PRODUCTS, MOST_UPVOTES } from '@/constants'
 import { sortSuggestionsBy } from '@/stores/utils/sortSuggestionsBy'
-import { productRequests } from '@/data/data.json'
 import { filterSuggestionsByCategory } from '@/stores/utils/filterSuggestionsByCategory'
 
 interface Params {
@@ -25,23 +24,20 @@ export const useSuggestionsStore = defineStore('suggestions', () => {
 
   // Api calls
   async function fetchSuggestions(
-    params = { filterBy: 'all', sortBy: MOST_UPVOTES } as Params,
-    delay = 800
+    params = { filterBy: 'all', sortBy: MOST_UPVOTES } as Params
   ): SuggestionsReturnType {
     loader.value = true
 
     try {
-      const promiseResponse = new Promise<ISuggestion[]>((resolve, reject) => {
-        setTimeout(() => resolve(productRequests), delay)
-      })
-      const response: ISuggestion[] = await promiseResponse
+      const promiseResponse: Response = await fetch(API_PRODUCTS)
+      const response: ISuggestion[] = await promiseResponse.json()
 
       sortBy.value = params.sortBy
       filterBy.value = params.filterBy
 
       return response
-        ?.filter(filterSuggestionsByCategory(params.filterBy))
-        ?.sort(sortSuggestionsBy(params.sortBy))
+        .filter(filterSuggestionsByCategory(params.filterBy))
+        .sort(sortSuggestionsBy(params.sortBy))
     } catch (err) {
       error.value = 'Failed to fetch any suggestions'
       console.log(err)

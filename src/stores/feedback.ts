@@ -1,18 +1,18 @@
-import { defineStore, storeToRefs } from 'pinia'
+import { defineStore } from 'pinia'
 import { useRoute } from 'vue-router'
 import { computed, ref, toRef } from 'vue'
-import type { IComment, IReply, ISuggestion } from '@/types'
+import type { FeedbackReturnType, IComment, InputSuggestion, IReply, ISuggestion } from '@/types'
 import { calculateComments } from '@/helpers'
-import { productRequests } from '@/data/data.json'
 import { useConfetti } from '@/composables/useConfetti'
 import { useUserStore } from '@/stores/user'
-import { useSuggestionsStore } from '@/stores/suggestions'
-
-type FeedbackReturnType = Promise<ISuggestion | undefined>
+import { API_PRODUCTS } from '@/constants'
+import { apiUpvoteFeedback } from '@/stores/utils/api/apiUpvoteFeedback'
+import { apiDeleteFeedback } from '@/stores/utils/api/apiDeleteFeedback'
+import router from '@/router'
+import { apiEditFeedback } from '@/stores/utils/api/apiEditFeedback'
+import { apiCreateFeedback } from '@/stores/utils/api/apiCreateFeedback'
 
 export const useFeedbackStore = defineStore('feedback', () => {
-  const { suggestions } = storeToRefs(useSuggestionsStore())
-
   const loader = ref(true)
   const error = ref<string | null>(null)
 
@@ -44,16 +44,12 @@ export const useFeedbackStore = defineStore('feedback', () => {
   }
 
   // Api call
-  async function fetchFeedback(id: number, delay = 600): FeedbackReturnType {
+  async function fetchFeedback(id: number): FeedbackReturnType {
     loader.value = true
 
     try {
-      const responsePromise = new Promise<ISuggestion>((resolve, reject) => {
-        const suggestion = productRequests.find((suggestion) => suggestion.id === id)
-        setTimeout(resolve, delay, suggestion)
-      })
-
-      return await responsePromise
+      const promiseResponse: Response = await fetch(`${API_PRODUCTS}/${id}`)
+      return (await promiseResponse.json()) as ISuggestion
     } catch (err) {
       error.value = 'Failed to load feedback'
       console.log(err)
@@ -71,16 +67,30 @@ export const useFeedbackStore = defineStore('feedback', () => {
     }
   }
 
-  async function upvoteFeedback(suggestion: ISuggestion, isUpvoted: boolean) {
-    const fb = toRef(suggestion)
+  async function upvoteFeedback(suggestion: ISuggestion, isUpvoted: boolean): FeedbackReturnType {
+    try {
+      const fb = toRef(suggestion)
 
-    if (!isUpvoted || !fb.value) return
+      if (!isUpvoted || !fb.value) return
 
-    fb.value.isUpvoted = isUpvoted
-    fb.value.upvotes++
+      const upvotes = suggestion.upvotes + 1
 
-    const { showConfetti } = useConfetti()
-    await showConfetti()
+      fb.value.isUpvoted = isUpvoted
+      fb.value.upvotes = upvotes
+
+      const response = await apiUpvoteFeedback(suggestion.id, {
+        isUpvoted,
+        upvotes
+      })
+
+      const { showConfetti } = useConfetti()
+      await showConfetti()
+
+      return response
+    } catch (err) {
+      error.value = 'Something went wrong'
+      console.log(err)
+    }
   }
 
   function $reset() {
@@ -90,47 +100,41 @@ export const useFeedbackStore = defineStore('feedback', () => {
     hideReplies()
   }
 
-  function submitReply(commentId: number, commentMsg: string) {
+  async function submitReply(commentId: number, commentMsg: string): FeedbackReturnType {
     const { currentUser } = useUserStore()
     const comment = feedback.value?.comments?.find((item) => item.id === commentId)
 
-    if (comment) {
-      const reply: IReply = {
-        id: Date.now(),
-        content: commentMsg,
-        user: { ...currentUser },
-        replyingTo: comment?.user.username ?? ''
-      }
+    if (!comment) return
 
-      comment.replies = comment.replies ? [...comment.replies, reply] : [reply]
-      hideReplies()
-    }
-  }
-
-  function submitComment(commentMsg: string) {
-    if (!feedback.value) return
-
-    const { currentUser } = useUserStore()
-    const { comments } = feedback.value
-    const newComment: IComment = {
+    const reply: IReply = {
       id: Date.now(),
       content: commentMsg,
-      user: { ...currentUser }
+      user: { ...currentUser },
+      replyingTo: comment?.user.username ?? ''
     }
 
-    feedback.value.comments = comments ? [...comments, newComment] : [newComment]
+    comment.replies = comment.replies ? [...comment.replies, reply] : [reply]
+    hideReplies()
+
+    return await apiEditFeedback(feedback.value!)
   }
 
-  async function editFeedback(updatedSuggestion: ISuggestion, delay = 600): FeedbackReturnType {
+  async function submitComment(commentMsg: string): FeedbackReturnType {
     loader.value = true
-
     try {
-      return new Promise((resolve, reject) => {
-        setTimeout(() => {
-          feedback.value = updatedSuggestion
-          resolve(updatedSuggestion)
-        }, delay)
-      })
+      if (!feedback.value) return
+
+      const { currentUser } = useUserStore()
+      const { comments } = feedback.value
+      const newComment: IComment = {
+        id: Date.now(),
+        content: commentMsg,
+        user: { ...currentUser }
+      }
+
+      feedback.value.comments = comments ? [...comments, newComment] : [newComment]
+
+      return await apiEditFeedback(feedback.value)
     } catch (err) {
       error.value = `Something went wrong`
       console.log(err)
@@ -139,16 +143,53 @@ export const useFeedbackStore = defineStore('feedback', () => {
     }
   }
 
-  async function deleteFeedback(suggestion: ISuggestion, delay = 600): FeedbackReturnType {
+  async function editFeedback(suggestion: ISuggestion): FeedbackReturnType {
     loader.value = true
 
     try {
-      return new Promise((resolve, reject) => {
-        setTimeout(() => {
-          suggestions.value = suggestions.value.filter((item) => item.id !== suggestion.id)
-          resolve(suggestion)
-        }, delay)
-      })
+      feedback.value = suggestion
+
+      // TODO - add toast or modal for success edit
+      setTimeout(() => router.back(), 100)
+
+      return await apiEditFeedback(suggestion)
+    } catch (err) {
+      error.value = `Something went wrong`
+      console.log(err)
+    } finally {
+      loader.value = false
+    }
+  }
+
+  async function deleteFeedback(suggestion: ISuggestion): FeedbackReturnType {
+    loader.value = true
+
+    try {
+      const deletedFeedback = await apiDeleteFeedback(suggestion.id)
+
+      if (!deletedFeedback) return
+
+      // TODO - add toast or modal for success delete
+      setTimeout(() => router.push('/'), 100)
+      return deletedFeedback
+    } catch (err) {
+      error.value = `Something went wrong`
+    } finally {
+      loader.value = false
+    }
+  }
+
+  async function createNewFeedback(newSuggestion: InputSuggestion): FeedbackReturnType {
+    loader.value = true
+
+    try {
+      const suggestion = await apiCreateFeedback(newSuggestion)
+
+      if (!suggestion) return
+
+      // TODO - add toast or modal for success create
+      setTimeout(() => router.push('/'), 100)
+      return suggestion
     } catch (err) {
       error.value = `Something went wrong`
     } finally {
@@ -177,6 +218,7 @@ export const useFeedbackStore = defineStore('feedback', () => {
     submitReply,
     submitComment,
     editFeedback,
-    deleteFeedback
+    deleteFeedback,
+    createNewFeedback
   }
 })
