@@ -1,8 +1,20 @@
 <script setup lang="ts">
 import { useStatuses } from '@/stores/statuses'
 import { storeToRefs } from 'pinia'
+import { onMounted } from 'vue'
+import { useSuggestionsStore } from '@/stores/suggestions'
 
 const { statuses } = storeToRefs(useStatuses())
+const { calculateStatusesAmount } = useStatuses()
+const { fetchSuggestions } = useSuggestionsStore()
+
+onMounted(async () => {
+  const suggestions = await fetchSuggestions()
+
+  if (suggestions) {
+    calculateStatusesAmount(suggestions)
+  }
+})
 </script>
 
 <template>

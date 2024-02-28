@@ -1,10 +1,8 @@
-import { defineStore, storeToRefs } from 'pinia'
-import { useSuggestionsStore } from '@/stores/suggestions'
-import { ref, watchEffect } from 'vue'
-import type { IStatus } from '@/types'
+import { defineStore } from 'pinia'
+import { ref } from 'vue'
+import type { IStatus, ISuggestion } from '@/types'
 
 export const useStatuses = defineStore('statuses', () => {
-  const { suggestions } = storeToRefs(useSuggestionsStore())
   const statuses = ref<IStatus[]>([
     {
       status: 'planned',
@@ -24,13 +22,9 @@ export const useStatuses = defineStore('statuses', () => {
     { status: 'suggestion', amount: 0, name: 'suggestion', label: 'Suggestion', color: '' }
   ])
 
-  watchEffect(calculateStatusesAmount)
-
-  function calculateStatusesAmount() {
+  function calculateStatusesAmount(suggestions: ISuggestion[]) {
     statuses.value = statuses.value.map((status) => {
-      const amount = suggestions.value.filter(
-        (suggestion) => suggestion.status === status.status
-      ).length
+      const amount = suggestions.filter((suggestion) => suggestion.status === status.status).length
 
       return {
         ...status,

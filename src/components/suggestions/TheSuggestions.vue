@@ -17,7 +17,7 @@ const { loadSuggestionsPageDataToStore } = useSuggestionsStore()
 
 onMounted(() => {
   loadCurrentUserToStore()
-  loadSuggestionsPageDataToStore()
+  loadSuggestionsPageDataToStore({ filterBy: 'all' })
 })
 </script>
 
