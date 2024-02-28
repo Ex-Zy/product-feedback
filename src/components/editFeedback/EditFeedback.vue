@@ -72,7 +72,7 @@ function handleCancelFeedback(feedback: ISuggestion) {
           v-model="editedFeedback.status"
           title="Update Status"
           description="Change feedback state"
-          :options="statuses"
+          :options="statuses.map(({ name, label }, index) => ({ id: index, name, label }))"
         />
         <UITextArea
           title="Feedback Detail"
