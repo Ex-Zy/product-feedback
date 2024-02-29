@@ -21,7 +21,7 @@ onMounted(async () => {
   <div class="widget-roadmap">
     <div class="widget-roadmap__top">
       <h3 class="widget-roadmap__title h3">Roadmap</h3>
-      <RouterLink class="widget-roadmap__link link" to="/">View</RouterLink>
+      <RouterLink class="widget-roadmap__link link" to="/roadmap">View</RouterLink>
     </div>
     <ul class="feedback-statuses">
       <template v-for="item in statuses" :key="item.status">

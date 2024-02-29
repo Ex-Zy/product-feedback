@@ -22,6 +22,11 @@ const router = createRouter({
       path: '/create',
       name: 'create',
       component: () => import('@/views/CreateFeedbackView.vue')
+    },
+    {
+      path: '/roadmap',
+      name: 'roadmap',
+      component: () => import('@/views/RoadmapView.vue')
     }
   ]
 })

@@ -7,6 +7,8 @@ import 'v-dropdown-menu/css'
 import DropdownMenu from 'v-dropdown-menu'
 import FloatingVue from 'floating-vue'
 
+import { plugin as Slicksort } from 'vue-slicksort'
+
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 
@@ -20,5 +22,6 @@ app.use(router)
 
 app.use(DropdownMenu)
 app.use(FloatingVue)
+app.use(Slicksort)
 
 app.mount('#app')
