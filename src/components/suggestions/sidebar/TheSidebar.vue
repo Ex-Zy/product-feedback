@@ -43,7 +43,7 @@ const isOpenSidebar = ref(false)
   @include mobile {
     width: 272px;
     position: fixed;
-    z-index: 100;
+    z-index: 110;
     display: flex;
     gap: 24px;
     padding-block-start: calc(72px + 24px); // widget height + offset

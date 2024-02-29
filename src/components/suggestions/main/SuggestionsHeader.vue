@@ -31,6 +31,7 @@ function redirectToCreate() {
 <style scoped lang="scss">
 .suggestions-header {
   position: sticky;
+  z-index: 100;
   top: 10px;
   display: flex;
   align-items: center;
