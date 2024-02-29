@@ -30,7 +30,7 @@ onBeforeUnmount(() => {
 })
 
 function handleGoBack() {
-  router.push('/')
+  router.back()
 }
 
 function redirectToEdit() {

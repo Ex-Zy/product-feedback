@@ -9,19 +9,24 @@ import { useRoute } from 'vue-router'
 
 interface Props {
   suggestion: ISuggestion
+  type?: 'suggestion' | 'roadmap'
+  color?: string
 }
 
 interface Emit {
   (e: 'upvote', suggestion: ISuggestion, isUpvoted: boolean): void
 }
 
-const props = defineProps<Props>()
+const props = withDefaults(defineProps<Props>(), {
+  type: 'suggestion'
+})
 const emit = defineEmits<Emit>()
 
 const { suggestion } = toRefs(props)
 
 const isMobile = useMediaQuery('(max-width: 767px)')
-const align = computed(() => (isMobile.value ? 'horizontal' : 'vertical'))
+const isRoadmap = computed(() => props.type === 'roadmap')
+const align = computed(() => (isMobile.value || isRoadmap.value ? 'horizontal' : 'vertical'))
 
 const commentsAmount = computed(() => {
   return suggestion.value.comments ? calculateComments(suggestion.value.comments) : 0
@@ -37,10 +42,15 @@ const route = useRoute()
 const isFeedbackRoute = computed(() => route.name === 'feedback')
 const feedbackUrl = computed(() => `/feedback/${suggestion.value.id}`)
 const editUrl = computed(() => `/edit/${suggestion.value.id}`)
+
+const rootClasses = computed(() => ({
+  [`is-${props.type}`]: true
+}))
 </script>
 
 <template>
-  <li class="suggestions-item" :data-id="suggestion.id">
+  <li class="suggestions-item" :data-id="suggestion.id" :class="rootClasses">
+    <div v-if="isRoadmap" class="suggestions-item__status b1"><span />{{ suggestion.status }}</div>
     <div class="suggestions-item__vote">
       <UIUpVote
         :align="align"
@@ -85,6 +95,20 @@ const editUrl = computed(() => `/edit/${suggestion.value.id}`)
     padding: 24px;
   }
 
+  &__status {
+    text-transform: capitalize;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    span {
+      border-radius: 50%;
+      width: 8px;
+      height: 8px;
+      background: v-bind(color);
+    }
+  }
+
   &__vote {
     @include mobile {
       order: 2;
@@ -126,6 +150,50 @@ const editUrl = computed(() => `/edit/${suggestion.value.id}`)
 
     @include mobile {
       order: 3;
+    }
+  }
+
+  &.is-roadmap {
+    border-top: 6px solid v-bind(color);
+    flex-wrap: wrap;
+    justify-content: space-between;
+    row-gap: 16px;
+    padding: 32px;
+
+    @include tablet {
+      padding: 20px;
+    }
+
+    .suggestions-item__status {
+      @include tablet {
+        @include font-body(13px, 19px);
+      }
+    }
+
+    .suggestions-item__vote {
+      order: 2;
+    }
+
+    .suggestions-item__content {
+      flex-grow: 1;
+      order: 1;
+      flex-basis: 100%;
+    }
+
+    .suggestions-item__comment-amount {
+      order: 3;
+    }
+
+    .suggestions-item__title {
+      @include tablet {
+        @include font-title(13px, 19px, -0.18px);
+      }
+    }
+
+    .suggestions-item__description {
+      @include tablet {
+        @include font-body(13px, 19px);
+      }
     }
   }
 }

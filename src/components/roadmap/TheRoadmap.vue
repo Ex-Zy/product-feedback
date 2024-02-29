@@ -1,6 +1,6 @@
 <template>
   <div class="kanban-board">
-    <h2>{{ kanban.name }}</h2>
+    <TheHeader :title="kanban.name" />
     <SlickList
       v-model:list="kanban.columns"
       :axis="axis"
@@ -22,7 +22,7 @@
         </header>
         <SlickList
           v-model:list="col.items"
-          axis="xy"
+          axis="y"
           :group="col.group"
           class="kanban-list"
           helper-class="kanban-helper"
@@ -33,7 +33,13 @@
             :index="j"
             class="kanban-list-item"
           >
-            <SuggestionsListItem :suggestion="item" @upvote="upvoteFeedback" />
+            <SuggestionsListItem
+              class="kanban-list-item-inner"
+              type="roadmap"
+              :suggestion="item"
+              :color="col.color"
+              @upvote="upvoteFeedback"
+            />
           </SlickItem>
         </SlickList>
       </SlickItem>
@@ -48,7 +54,22 @@ import { SlickList, SlickItem, DragHandle } from 'vue-slicksort'
 import { useSuggestionsStore } from '@/stores/suggestions'
 import { storeToRefs } from 'pinia'
 import SuggestionsListItem from '@/components/suggestions/main/SuggestionsListItem.vue'
+import type { ISuggestion } from '@/types'
 import { useFeedbackStore } from '@/stores/feedback'
+import TheHeader from '@/components/roadmap/TheHeader.vue'
+
+interface IBoard {
+  name: string
+  columns: IBoardColumn[]
+}
+interface IBoardColumn {
+  id: string
+  name: string
+  description: string
+  color: string
+  group: string
+  items: ISuggestion[]
+}
 
 const { suggestions } = storeToRefs(useSuggestionsStore())
 const { loadSuggestionsToStore } = useSuggestionsStore()
@@ -58,8 +79,8 @@ onMounted(loadSuggestionsToStore)
 
 const { width } = useWindowSize()
 const axis = computed(() => (width.value > 768 ? 'x' : 'y'))
-const kanban = reactive({
-  name: 'Kanban Example',
+const kanban = reactive<IBoard>({
+  name: 'Roadmap',
   columns: [
     {
       id: 'planned',
@@ -67,7 +88,7 @@ const kanban = reactive({
       description: 'Ideas prioritized for research',
       color: '#F49F85',
       group: 'items',
-      items: suggestions.value.filter((item) => item.status === 'planned')
+      items: []
     },
     {
       id: 'in-progress',
@@ -75,7 +96,7 @@ const kanban = reactive({
       description: 'Currently being developed',
       color: '#AD1FEA',
       group: 'items',
-      items: suggestions.value.filter((item) => item.status === 'in-progress')
+      items: []
     },
     {
       id: 'live',
@@ -83,56 +104,88 @@ const kanban = reactive({
       description: 'Released features',
       color: '#62BCFA',
       group: 'items',
-      items: suggestions.value.filter((item) => item.status === 'live')
+      items: []
     }
   ]
 })
 
-watch(
-  () => suggestions.value,
-  () => {
-    const planed = suggestions.value.filter((item) => item.status === 'planned')
-    const inprogress = suggestions.value.filter((item) => item.status === 'in-progress')
-    const live = suggestions.value.filter((item) => item.status === 'live')
+function saveColumns() {
+  kanban.columns = kanban.columns.map((col) => {
+    const items = suggestions.value.filter((item) => item.status === col.id)
 
-    kanban.columns[0].items = planed
-    kanban.columns[1].items = inprogress
-    kanban.columns[2].items = live
-  }
-)
+    return {
+      ...col,
+      items
+    }
+  })
+}
+
+watch(() => suggestions.value, saveColumns, {
+  immediate: true
+})
 </script>
 
 <style lang="scss" scoped>
 .kanban-board {
-  padding-top: var(--header-height);
-  max-width: 1400px;
+  display: grid;
+  max-width: 1110px;
   margin: auto;
+
+  @include tablet {
+    max-width: 690px;
+  }
 }
 
 .column-container {
   display: flex;
+  column-gap: 30px;
   align-items: start;
+  margin-top: 16px;
+
+  @include tablet {
+    column-gap: 10px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+  }
 }
 
 .kanban-column {
-  width: 400px;
-  margin: 10px;
-  padding: 10px;
-  background: #eee;
-  border-radius: 20px;
+  width: 350px;
+
+  @include tablet {
+    width: auto;
+  }
 
   &__header {
-    padding: 10px;
-    font-size: 1.5rem;
-    font-weight: bold;
+    padding-block: 32px;
+
+    @include tablet {
+      padding-block: 24px;
+    }
+  }
+
+  &__title {
+    @include tablet {
+      @include font-title(14px, 20px, -0.19px);
+    }
+  }
+
+  &__description {
+    @include tablet {
+      @include font-body(14px, 20px);
+    }
   }
 }
 
 .kanban-list {
-  max-height: 500px;
   overflow: auto;
   display: flex;
   flex-direction: column;
+  gap: 24px;
+
+  @include tablet {
+    gap: 16px;
+  }
 }
 
 @media screen and (max-width: 768px) {
@@ -148,25 +201,18 @@ watch(
 
 <style lang="scss">
 .kanban-list-item {
-  width: calc(100% - 10px);
-  margin: 5px;
+  width: 100%;
+  visibility: visible !important; // fix blink item during draggable
 
   .kanban-list-item-inner {
     min-height: 100px;
-    padding: 10px 15px;
-    border-radius: 10px;
-    background: white;
-    box-shadow: 0 2px 0 rgba(0, 0, 0, 0.1);
     cursor: grab;
-    transition:
-      background 0.2s,
-      transform 0.2s;
+    transition: all 0.25s;
   }
 
   &.kanban-helper .kanban-list-item-inner {
     transform: rotate(10deg);
-    background: #9b51e0;
-    color: white;
+    background: var(--color-5);
   }
 }
 </style>

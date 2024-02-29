@@ -60,7 +60,8 @@ function handleUpVote(value: number) {
     background: var(--color-5-hover);
   }
 
-  &:active:not(.is-upvoted) {
+  &.is-upvoted {
+    cursor: not-allowed;
     background: var(--color-2);
 
     .ui-upvote__arrow {
@@ -70,11 +71,6 @@ function handleUpVote(value: number) {
     .ui-upvote__amount {
       color: var(--color-6);
     }
-  }
-
-  &.is-upvoted {
-    cursor: not-allowed;
-    background: #dbe1ff;
   }
 
   &.is-vertical {
