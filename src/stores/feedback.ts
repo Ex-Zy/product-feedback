@@ -11,6 +11,9 @@ import { apiDeleteFeedback } from '@/stores/utils/api/apiDeleteFeedback'
 import router from '@/router'
 import { apiEditFeedback } from '@/stores/utils/api/apiEditFeedback'
 import { apiCreateFeedback } from '@/stores/utils/api/apiCreateFeedback'
+import { addReplyToFeedback } from '@/stores/utils/feedback/addReplyToFeedback'
+import { addCommentToFeedback } from '@/stores/utils/feedback/addCommentToFeedback'
+import { incrementUpvoteFeedback } from '@/stores/utils/feedback/incrementUpvoteFeedback'
 
 export const useFeedbackStore = defineStore('feedback', () => {
   const loader = ref(true)
@@ -69,16 +72,11 @@ export const useFeedbackStore = defineStore('feedback', () => {
 
   async function upvoteFeedback(suggestion: ISuggestion, isUpvoted: boolean): FeedbackReturnType {
     try {
-      const fb = toRef(suggestion)
+      if (!isUpvoted) return
 
-      if (!isUpvoted || !fb.value) return
+      const { id, upvotes } = incrementUpvoteFeedback(suggestion, isUpvoted)
 
-      const upvotes = suggestion.upvotes + 1
-
-      fb.value.isUpvoted = isUpvoted
-      fb.value.upvotes = upvotes
-
-      const response = await apiUpvoteFeedback(suggestion.id, {
+      const response = await apiUpvoteFeedback(id, {
         isUpvoted,
         upvotes
       })
@@ -101,19 +99,10 @@ export const useFeedbackStore = defineStore('feedback', () => {
   }
 
   async function submitReply(commentId: number, commentMsg: string): FeedbackReturnType {
-    const { currentUser } = useUserStore()
-    const comment = feedback.value?.comments?.find((item) => item.id === commentId)
+    const comments: IComment[] = addReplyToFeedback(commentId, commentMsg)
+    if (!feedback.value) return
 
-    if (!comment) return
-
-    const reply: IReply = {
-      id: Date.now(),
-      content: commentMsg,
-      user: { ...currentUser },
-      replyingTo: comment?.user.username ?? ''
-    }
-
-    comment.replies = comment.replies ? [...comment.replies, reply] : [reply]
+    feedback.value.comments = comments
     hideReplies()
 
     return await apiEditFeedback(feedback.value!)
@@ -122,17 +111,10 @@ export const useFeedbackStore = defineStore('feedback', () => {
   async function submitComment(commentMsg: string): FeedbackReturnType {
     loader.value = true
     try {
+      const comments: IComment[] = addCommentToFeedback(commentMsg)
       if (!feedback.value) return
 
-      const { currentUser } = useUserStore()
-      const { comments } = feedback.value
-      const newComment: IComment = {
-        id: Date.now(),
-        content: commentMsg,
-        user: { ...currentUser }
-      }
-
-      feedback.value.comments = comments ? [...comments, newComment] : [newComment]
+      feedback.value.comments = comments
 
       return await apiEditFeedback(feedback.value)
     } catch (err) {
