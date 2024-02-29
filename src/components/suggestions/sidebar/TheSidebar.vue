@@ -6,10 +6,10 @@ import { useSuggestionsStore } from '@/stores/suggestions'
 import { ref } from 'vue'
 import type { FilterType } from '@/types'
 
-const { loadSuggestionsPageDataToStore } = useSuggestionsStore()
+const { loadSuggestionsToStore } = useSuggestionsStore()
 
 function handleFilterCategory(filterBy: FilterType) {
-  loadSuggestionsPageDataToStore({
+  loadSuggestionsToStore({
     filterBy
   })
 }

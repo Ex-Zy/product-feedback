@@ -8,10 +8,10 @@ import type { SortBy } from '@/types'
 import router from '@/router'
 
 const { suggestionsAmount, sortBy } = storeToRefs(useSuggestionsStore())
-const { loadSuggestionsPageDataToStore } = useSuggestionsStore()
+const { loadSuggestionsToStore } = useSuggestionsStore()
 
 function handleSort(sortBy: SortBy) {
-  loadSuggestionsPageDataToStore({ sortBy })
+  loadSuggestionsToStore({ sortBy })
 }
 
 function redirectToCreate() {

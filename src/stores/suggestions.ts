@@ -1,16 +1,14 @@
 import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
-import type { FilterType, ISuggestion, SortBy } from '@/types'
-import { API_PRODUCTS, MOST_UPVOTES } from '@/constants'
-import { sortSuggestionsBy } from '@/stores/utils/sortSuggestionsBy'
-import { filterSuggestionsByCategory } from '@/stores/utils/filterSuggestionsByCategory'
+import type { FilterType, ISuggestion, SortBy, SuggestionsReturnType } from '@/types'
+import { MOST_UPVOTES } from '@/constants'
+import { apiFetchSuggestions } from '@/stores/utils/api/apiFetchSuggestions'
+import { prepareSuggestionsResponse } from '@/stores/utils/suggestions/prepareSuggestionsResponse'
 
-interface Params {
+export interface Params {
   filterBy: FilterType
   sortBy: SortBy
 }
-
-type SuggestionsReturnType = Promise<ISuggestion[] | undefined>
 
 export const useSuggestionsStore = defineStore('suggestions', () => {
   const loader = ref<boolean>(true)
@@ -29,15 +27,12 @@ export const useSuggestionsStore = defineStore('suggestions', () => {
     loader.value = true
 
     try {
-      const promiseResponse: Response = await fetch(API_PRODUCTS)
-      const response: ISuggestion[] = await promiseResponse.json()
+      const response = await apiFetchSuggestions()
 
-      sortBy.value = params.sortBy
-      filterBy.value = params.filterBy
+      if (!response) return
 
-      return response
-        .filter(filterSuggestionsByCategory(params.filterBy))
-        .sort(sortSuggestionsBy(params.sortBy))
+      // apply filter and sort
+      return prepareSuggestionsResponse(response, params)
     } catch (err) {
       error.value = 'Failed to fetch any suggestions'
       console.log(err)
@@ -46,7 +41,7 @@ export const useSuggestionsStore = defineStore('suggestions', () => {
     }
   }
 
-  async function loadSuggestionsPageDataToStore(params: Partial<Params> = {}): Promise<void> {
+  async function loadSuggestionsToStore(params: Partial<Params> = {}): Promise<void> {
     const response = await fetchSuggestions({
       sortBy: params.sortBy ?? sortBy.value,
       filterBy: params.filterBy ?? filterBy.value
@@ -65,6 +60,6 @@ export const useSuggestionsStore = defineStore('suggestions', () => {
     filterBy,
     sortBy,
     fetchSuggestions,
-    loadSuggestionsPageDataToStore
+    loadSuggestionsToStore
   }
 })

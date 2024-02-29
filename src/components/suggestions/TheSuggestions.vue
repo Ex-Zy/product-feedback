@@ -13,11 +13,11 @@ import SuggestionsSkeleton from '@/components/suggestions/main/skeleton/Suggesti
 const { suggestions, loader, error } = storeToRefs(useSuggestionsStore())
 
 const { loadCurrentUserToStore } = useUserStore()
-const { loadSuggestionsPageDataToStore } = useSuggestionsStore()
+const { loadSuggestionsToStore } = useSuggestionsStore()
 
 onMounted(() => {
   loadCurrentUserToStore()
-  loadSuggestionsPageDataToStore({ filterBy: 'all' })
+  loadSuggestionsToStore({ filterBy: 'all' })
 })
 </script>
 
