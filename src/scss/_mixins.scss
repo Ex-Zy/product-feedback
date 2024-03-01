@@ -1,19 +1,19 @@
 // typography
-@mixin font-title($fs: 20px, $lh: 20px, $ls: -0.25px) {
+@mixin font-title($fs: 20px, $lh: 20px, $ls: -0.25px, $color: var(--color-7)) {
   font-weight: 700;
   font-size: $fs;
   line-height: $lh;
   font-family: 'Jost', sans-serif;
   letter-spacing: $ls;
-  color: var(--color-7);
+  color: $color;
 }
 
-@mixin font-body($fs: 16px, $lh: 23px, $fw: 400) {
+@mixin font-body($fs: 16px, $lh: 23px, $fw: 400, $color: var(--color-8)) {
   font-weight: $fw;
   font-size: $fs;
   line-height: $lh;
   font-family: 'Jost', sans-serif;
-  color: var(--color-8);
+  color: $color;
 }
 
 @mixin font-link($fs: 13px, $lh: 19px, $fw: 600) {

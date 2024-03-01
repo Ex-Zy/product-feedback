@@ -1,6 +1,12 @@
 <template>
   <div class="kanban-board">
     <TheHeader :title="kanban.name" />
+    <TabsHeader
+      v-if="mobile.enable"
+      :columns="kanban.columns"
+      :active="mobile.activeTab"
+      @click="(tab) => (mobile.activeTab = tab)"
+    />
     <SlickList
       v-model:list="kanban.columns"
       :axis="axis"
@@ -9,60 +15,57 @@
       use-drag-handle
       useWindowAsScrollContainer
     >
-      <SlickItem v-for="(col, i) in kanban.columns" :key="col.id" :index="i" class="kanban-column">
-        <header class="kanban-column__header">
-          <DragHandle />
-          <div class="kanban-column__title h3">
-            {{ col.name }}
-            ({{ col.items.length }})
-          </div>
-          <div class="kanban-column__description b1">
-            {{ col.description }}
-          </div>
-        </header>
-        <SlickList
-          v-model:list="col.items"
-          axis="y"
-          :group="col.group"
-          class="kanban-list"
-          helper-class="kanban-helper"
-        >
-          <SlickItem
-            v-for="(item, j) in col.items"
-            :key="item.id"
-            :index="j"
-            class="kanban-list-item"
-          >
-            <SuggestionsListItem
-              class="kanban-list-item-inner"
-              type="roadmap"
-              :suggestion="item"
-              :color="col.color"
-              @upvote="upvoteFeedback"
-            />
+      <TransitionGroup name="list">
+        <template v-for="(col, i) in kanban.columns" :key="col.id">
+          <SlickItem v-if="isVisibleColumn(col)" :index="i" class="kanban-column">
+            <ColumnHeader :column="col" />
+            <SlickList
+              v-model:list="col.items"
+              axis="y"
+              :group="col.group"
+              class="kanban-list"
+              helper-class="kanban-helper"
+            >
+              <SlickItem
+                v-for="(item, j) in col.items"
+                :key="item.id"
+                :index="j"
+                class="kanban-list-item"
+              >
+                <SuggestionsListItem
+                  class="kanban-list-item-inner"
+                  type="roadmap"
+                  :suggestion="item"
+                  :color="col.color"
+                  @upvote="upvoteFeedback"
+                />
+              </SlickItem>
+            </SlickList>
           </SlickItem>
-        </SlickList>
-      </SlickItem>
+        </template>
+      </TransitionGroup>
     </SlickList>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, reactive, watch } from 'vue'
-import { useWindowSize } from '@vueuse/core'
-import { SlickList, SlickItem, DragHandle } from 'vue-slicksort'
+import { computed, onMounted, reactive, watchEffect } from 'vue'
+import { useMediaQuery, useWindowSize } from '@vueuse/core'
+import { SlickList, SlickItem } from 'vue-slicksort'
 import { useSuggestionsStore } from '@/stores/suggestions'
 import { storeToRefs } from 'pinia'
 import SuggestionsListItem from '@/components/suggestions/main/SuggestionsListItem.vue'
 import type { ISuggestion } from '@/types'
 import { useFeedbackStore } from '@/stores/feedback'
 import TheHeader from '@/components/roadmap/TheHeader.vue'
+import TabsHeader from '@/components/roadmap/TabsHeader.vue'
+import ColumnHeader from '@/components/roadmap/ColumnHeader.vue'
 
-interface IBoard {
+export interface IBoard {
   name: string
   columns: IBoardColumn[]
 }
-interface IBoardColumn {
+export interface IBoardColumn {
   id: string
   name: string
   description: string
@@ -109,20 +112,29 @@ const kanban = reactive<IBoard>({
   ]
 })
 
-function saveColumns() {
-  kanban.columns = kanban.columns.map((col) => {
-    const items = suggestions.value.filter((item) => item.status === col.id)
+watchEffect(saveColumns)
 
-    return {
-      ...col,
-      items
-    }
-  })
+function saveColumns() {
+  function findItems(statusName: string): ISuggestion[] {
+    return suggestions.value.filter((item) => item.status === statusName)
+  }
+
+  function addItemsToColumns(): IBoardColumn[] {
+    return (kanban.columns = kanban.columns.map((col) => ({ ...col, items: findItems(col.id) })))
+  }
+
+  kanban.columns = addItemsToColumns()
 }
 
-watch(() => suggestions.value, saveColumns, {
-  immediate: true
+const mobile = reactive({
+  enable: useMediaQuery('(max-width: 767px)'),
+  activeTab: kanban.columns[1].id
 })
+
+function isVisibleColumn(col: IBoardColumn) {
+  if (!mobile.enable) return true
+  return col.id === mobile.activeTab
+}
 </script>
 
 <style lang="scss" scoped>
@@ -137,25 +149,23 @@ watch(() => suggestions.value, saveColumns, {
 }
 
 .column-container {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
   column-gap: 30px;
   align-items: start;
   margin-top: 16px;
 
   @include tablet {
     column-gap: 10px;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  @include mobile {
+    grid-template-columns: 1fr;
+    padding-inline: 24px;
   }
 }
 
 .kanban-column {
-  width: 350px;
-
-  @include tablet {
-    width: auto;
-  }
-
   &__header {
     padding-block: 32px;
 

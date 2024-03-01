@@ -22,7 +22,7 @@ function handleGoBack() {
       <UIButton class="content__btn" type="light" text="Go Back" @click="handleGoBack">
         <IconArrowLeft color="#fff" />
       </UIButton>
-      <h1 class="content__title h1">{{ title }}</h1>
+      <h1 class="content__title h1">{{ props.title }}</h1>
     </div>
     <UIButton text="+ Add Feedback" class="suggestions-header__btn" @click="redirectToCreate" />
   </header>
@@ -30,9 +30,6 @@ function handleGoBack() {
 
 <style scoped lang="scss">
 .suggestions-header {
-  position: sticky;
-  z-index: 100;
-  top: 10px;
   display: flex;
   align-items: center;
   column-gap: 16px;
@@ -43,7 +40,8 @@ function handleGoBack() {
 
   @include mobile {
     border-radius: 0;
-    top: 72px;
+    height: 100px;
+    padding: 26px 24px;
     margin: 0;
   }
 
@@ -55,6 +53,9 @@ function handleGoBack() {
 .content {
   &__title {
     color: var(--color-4);
+    @include mobile {
+      @include font-title(18px, 28px, -0.25, var(--color-4));
+    }
   }
 
   :deep(.content__btn) {
