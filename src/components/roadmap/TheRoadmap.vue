@@ -49,87 +49,29 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, reactive, watchEffect } from 'vue'
-import { useMediaQuery, useWindowSize } from '@vueuse/core'
+import { computed, onMounted, reactive } from 'vue'
+import { useMediaQuery } from '@vueuse/core'
 import { SlickList, SlickItem } from 'vue-slicksort'
-import { useSuggestionsStore } from '@/stores/suggestions'
 import { storeToRefs } from 'pinia'
 import SuggestionsListItem from '@/components/suggestions/main/SuggestionsListItem.vue'
-import type { ISuggestion } from '@/types'
+import type { IBoardColumn } from '@/types'
 import { useFeedbackStore } from '@/stores/feedback'
 import TheHeader from '@/components/roadmap/TheHeader.vue'
 import TabsHeader from '@/components/roadmap/TabsHeader.vue'
 import ColumnHeader from '@/components/roadmap/ColumnHeader.vue'
+import { useRoadmapStore } from '@/stores/roamap'
 
-export interface IBoard {
-  name: string
-  columns: IBoardColumn[]
-}
-export interface IBoardColumn {
-  id: string
-  name: string
-  description: string
-  color: string
-  group: string
-  items: ISuggestion[]
-}
+const { kanban } = storeToRefs(useRoadmapStore())
+const { loadRoadmapToStore } = useRoadmapStore()
+onMounted(loadRoadmapToStore)
 
-const { suggestions } = storeToRefs(useSuggestionsStore())
-const { loadSuggestionsToStore } = useSuggestionsStore()
 const { upvoteFeedback } = useFeedbackStore()
-
-onMounted(loadSuggestionsToStore)
-
-const { width } = useWindowSize()
-const axis = computed(() => (width.value > 768 ? 'x' : 'y'))
-const kanban = reactive<IBoard>({
-  name: 'Roadmap',
-  columns: [
-    {
-      id: 'planned',
-      name: 'Planned',
-      description: 'Ideas prioritized for research',
-      color: '#F49F85',
-      group: 'items',
-      items: []
-    },
-    {
-      id: 'in-progress',
-      name: 'In-progress',
-      description: 'Currently being developed',
-      color: '#AD1FEA',
-      group: 'items',
-      items: []
-    },
-    {
-      id: 'live',
-      name: 'Live',
-      description: 'Released features',
-      color: '#62BCFA',
-      group: 'items',
-      items: []
-    }
-  ]
-})
-
-watchEffect(saveColumns)
-
-function saveColumns() {
-  function findItems(statusName: string): ISuggestion[] {
-    return suggestions.value.filter((item) => item.status === statusName)
-  }
-
-  function addItemsToColumns(): IBoardColumn[] {
-    return (kanban.columns = kanban.columns.map((col) => ({ ...col, items: findItems(col.id) })))
-  }
-
-  kanban.columns = addItemsToColumns()
-}
 
 const mobile = reactive({
   enable: useMediaQuery('(max-width: 767px)'),
-  activeTab: kanban.columns[1].id
+  activeTab: 'in-progress'
 })
+const axis = computed(() => (mobile.enable ? 'x' : 'y'))
 
 function isVisibleColumn(col: IBoardColumn) {
   if (!mobile.enable) return true

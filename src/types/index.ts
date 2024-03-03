@@ -57,3 +57,17 @@ export interface ICategory {
 
 export type FeedbackReturnType = Promise<ISuggestion | undefined>
 export type SuggestionsReturnType = Promise<ISuggestion[] | undefined>
+export type BoardColumnsReturnType = Promise<IBoardColumn[] | undefined>
+
+export interface IBoard {
+  name: string
+  columns: IBoardColumn[]
+}
+export interface IBoardColumn {
+  id: string
+  name: string
+  description: string
+  color: string
+  group: string
+  items: ISuggestion[]
+}
