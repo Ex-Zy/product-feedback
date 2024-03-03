@@ -30,17 +30,17 @@ export const useFeedbackStore = defineStore('feedback', () => {
   )
 
   // show/hide Add Replies
-  const visibleReplies = ref<number[]>([])
-  function isVisibleReply(id: number) {
+  const visibleReplies = ref<string[]>([])
+  function isVisibleReply(id: string) {
     return visibleReplies.value.includes(id)
   }
   function hideReplies() {
     visibleReplies.value.length = 0
   }
-  function showReply(id: number) {
+  function showReply(id: string) {
     visibleReplies.value.push(id)
   }
-  function toggleReply(id: number) {
+  function toggleReply(id: string) {
     if (isVisibleReply(id)) {
       hideReplies()
     } else {
@@ -50,7 +50,7 @@ export const useFeedbackStore = defineStore('feedback', () => {
   }
 
   // Api call
-  async function fetchFeedback(id: number): FeedbackReturnType {
+  async function fetchFeedback(id: string): FeedbackReturnType {
     loader.value = true
 
     try {
@@ -65,7 +65,7 @@ export const useFeedbackStore = defineStore('feedback', () => {
   }
 
   async function loadFeedbackToStore() {
-    const id = Number(useRoute().params.id)
+    const id = useRoute().params.id.toString()
     const responseFeedback = await fetchFeedback(id)
 
     if (responseFeedback) {
@@ -101,7 +101,7 @@ export const useFeedbackStore = defineStore('feedback', () => {
     hideReplies()
   }
 
-  async function submitReply(commentId: number, commentMsg: string): FeedbackReturnType {
+  async function submitReply(commentId: string, commentMsg: string): FeedbackReturnType {
     loader.value = true
     try {
       const comments: IComment[] = addReplyToFeedback(commentId, commentMsg)

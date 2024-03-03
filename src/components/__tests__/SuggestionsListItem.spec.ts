@@ -1,5 +1,5 @@
 import { mount, VueWrapper } from '@vue/test-utils'
-import { describe, expect,it } from 'vitest'
+import { describe, expect, it } from 'vitest'
 
 import type { IComment } from '@/types'
 
@@ -9,7 +9,7 @@ import SuggestionsListItem from '../suggestions/main/SuggestionsListItem.vue'
 
 const comments: IComment[] = [
   {
-    id: 8,
+    id: '8',
     content:
       'I also want to be notified when devs I follow submit projects on FEM. Is in-app notification also in the pipeline?',
     user: {
@@ -19,7 +19,7 @@ const comments: IComment[] = [
     },
     replies: [
       {
-        id: 100,
+        id: '100',
         content:
           "Bumping this. It would be good to have a tab with a feed of people I follow so it's easy to see what challenges they’ve done lately. I learn a lot by reading good developers' code.",
         replyingTo: 'arlen_the_marlin',
@@ -32,7 +32,7 @@ const comments: IComment[] = [
     ]
   },
   {
-    id: 9,
+    id: '9',
     content:
       "I've been saving the profile URLs of a few people and I check what they’ve been doing from time to time. Being able to follow them solves that",
     user: {
@@ -47,7 +47,7 @@ describe('SuggestionsListItem.vue Test', () => {
   const wrapper: VueWrapper = mount(SuggestionsListItem, {
     props: {
       suggestion: {
-        id: 5,
+        id: '5',
         title: 'Ability to follow others',
         category: 'feature',
         status: 'live',

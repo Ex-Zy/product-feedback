@@ -15,7 +15,7 @@ import { useFeedbackStore } from '@/stores/feedback'
 import { useUserStore } from '@/stores/user'
 
 const route = useRoute()
-const id = computed(() => Number(route.params.id))
+const id = computed(() => route.params.id.toString())
 
 const { loadCurrentUserToStore } = useUserStore()
 const { feedback, comments, loader, error } = storeToRefs(useFeedbackStore())

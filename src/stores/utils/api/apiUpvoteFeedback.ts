@@ -6,7 +6,7 @@ interface UpvoteOptions {
   upvotes: number
 }
 export async function apiUpvoteFeedback(
-  suggestionId: number,
+  suggestionId: string,
   options: UpvoteOptions
 ): Promise<ISuggestion> {
   const url = `${API_PRODUCTS}/${suggestionId}`

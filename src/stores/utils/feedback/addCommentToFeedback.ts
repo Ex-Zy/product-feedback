@@ -12,7 +12,7 @@ export function addCommentToFeedback(commentMsg: string): IComment[] {
 
   const { comments } = feedback.value
   const newComment: IComment = {
-    id: Date.now(),
+    id: Date.now().toString(),
     content: commentMsg,
     user: { ...currentUser }
   }

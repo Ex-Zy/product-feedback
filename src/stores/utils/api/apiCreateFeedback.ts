@@ -4,7 +4,7 @@ import type { FeedbackReturnType, InputSuggestion, ISuggestion } from '@/types'
 function _transformToValidFeedback(newFeedback: InputSuggestion): ISuggestion {
   return Object.assign(
     {
-      id: Date.now(),
+      id: Date.now().toString(),
       upvotes: 0,
       isUpvoted: false,
       status: 'suggestion'

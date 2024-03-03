@@ -4,7 +4,7 @@ import { useFeedbackStore } from '@/stores/feedback'
 import { useUserStore } from '@/stores/user'
 import type { IComment, IReply } from '@/types'
 
-export function addReplyToFeedback(commentId: number, commentMsg: string): IComment[] {
+export function addReplyToFeedback(commentId: string, commentMsg: string): IComment[] {
   const { feedback } = storeToRefs(useFeedbackStore())
   const { currentUser } = useUserStore()
 
@@ -15,7 +15,7 @@ export function addReplyToFeedback(commentId: number, commentMsg: string): IComm
   return comments.map((comment) => {
     if (comment.id === commentId) {
       const reply: IReply = {
-        id: Date.now(),
+        id: Date.now().toString(),
         content: commentMsg,
         user: { ...currentUser },
         replyingTo: comment?.user.username ?? ''

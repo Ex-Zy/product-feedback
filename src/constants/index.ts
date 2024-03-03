@@ -10,7 +10,7 @@ export const MOST_COMMENTS = 'Most Comments'
 export const LEAST_COMMENTS = 'Least Comments'
 
 export const DEFAULT_SUGGESTION: ISuggestion = {
-  id: 0,
+  id: '0',
   title: '',
   description: '',
   category: 'enhancement',

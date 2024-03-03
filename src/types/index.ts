@@ -7,7 +7,7 @@ export interface IUser {
 }
 
 export interface ISuggestion {
-  id: number
+  id: string
   title: string
   category: string
   upvotes: number
@@ -18,14 +18,14 @@ export interface ISuggestion {
 }
 
 export interface IComment {
-  id: number
+  id: string
   content: string
   user: IUser
   replies?: IReply[]
 }
 
 export interface IReply {
-  id: number
+  id: string
   content: string
   user: IUser
   replyingTo: string
