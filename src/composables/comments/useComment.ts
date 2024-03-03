@@ -1,9 +1,10 @@
-import type { IComment, IReply } from '@/types'
+import { storeToRefs } from 'pinia'
 import type { Ref } from 'vue'
 import { computed } from 'vue'
-import { storeToRefs } from 'pinia'
-import { useUserStore } from '@/stores/user'
+
 import { useFeedbackStore } from '@/stores/feedback'
+import { useUserStore } from '@/stores/user'
+import type { IComment, IReply } from '@/types'
 
 export const useComment = (
   type: Ref<'comment' | 'reply'>,

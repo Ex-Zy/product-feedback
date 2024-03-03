@@ -1,16 +1,17 @@
 <script setup lang="ts">
-import FeedbackLayout from '@/components/FeedbackLayout.vue'
-import FeedbackCard from '@/components/common/FeedbackCard.vue'
 import { reactive } from 'vue'
-import UIButton from '@/components/common/UIButton.vue'
-import type { InputSuggestion } from '@/types'
-import { CATEGORIES } from '@/constants'
-import UIInput from '@/components/common/UIInput.vue'
-import UITextArea from '@/components/common/UITextArea.vue'
-import UISelect from '@/components/common/UISelect.vue'
+
+import FeedbackCard from '@/components/common/FeedbackCard.vue'
 import IconNewFeedback from '@/components/common/icons/IconNewFeedback.vue'
-import { useFeedbackStore } from '@/stores/feedback'
+import UIButton from '@/components/common/UIButton.vue'
+import UIInput from '@/components/common/UIInput.vue'
+import UISelect from '@/components/common/UISelect.vue'
+import UITextArea from '@/components/common/UITextArea.vue'
+import FeedbackLayout from '@/components/FeedbackLayout.vue'
+import { CATEGORIES } from '@/constants'
 import router from '@/router'
+import { useFeedbackStore } from '@/stores/feedback'
+import type { InputSuggestion } from '@/types'
 
 const { createNewFeedback } = useFeedbackStore()
 

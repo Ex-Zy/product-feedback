@@ -1,8 +1,9 @@
 import { defineStore } from 'pinia'
 import { reactive, ref } from 'vue'
-import type { BoardColumnsReturnType, IBoard } from '@/types'
+
 import { useSuggestionsStore } from '@/stores/suggestions'
 import { addSuggestionsToKanbanColumns } from '@/stores/utils/roadmap/addSuggestionsToKanbanColumns'
+import type { BoardColumnsReturnType, IBoard } from '@/types'
 
 export const useRoadmapStore = defineStore('roadmap', () => {
   const { fetchSuggestions } = useSuggestionsStore()

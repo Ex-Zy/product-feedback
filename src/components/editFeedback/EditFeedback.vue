@@ -1,19 +1,20 @@
 <script setup lang="ts">
-import FeedbackLayout from '@/components/FeedbackLayout.vue'
-import FeedbackCard from '@/components/common/FeedbackCard.vue'
-import { useFeedbackStore } from '@/stores/feedback'
 import { storeToRefs } from 'pinia'
 import { onMounted, ref, watchEffect } from 'vue'
-import type { ISuggestion } from '@/types'
-import { CATEGORIES } from '@/constants'
-import { useStatuses } from '@/stores/statuses'
+
+import FeedbackCard from '@/components/common/FeedbackCard.vue'
+import IconEditFeedback from '@/components/common/icons/IconEditFeedback.vue'
 import UIButton from '@/components/common/UIButton.vue'
 import UIInput from '@/components/common/UIInput.vue'
-import UITextArea from '@/components/common/UITextArea.vue'
 import UISelect from '@/components/common/UISelect.vue'
-import IconEditFeedback from '@/components/common/icons/IconEditFeedback.vue'
+import UITextArea from '@/components/common/UITextArea.vue'
+import FeedbackLayout from '@/components/FeedbackLayout.vue'
+import { CATEGORIES } from '@/constants'
 import { deepEqual } from '@/helpers'
 import router from '@/router'
+import { useFeedbackStore } from '@/stores/feedback'
+import { useStatuses } from '@/stores/statuses'
+import type { ISuggestion } from '@/types'
 
 // initial data
 const { feedback } = storeToRefs(useFeedbackStore())

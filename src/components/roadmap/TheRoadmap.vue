@@ -49,17 +49,18 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, reactive } from 'vue'
 import { useMediaQuery } from '@vueuse/core'
-import { SlickList, SlickItem } from 'vue-slicksort'
 import { storeToRefs } from 'pinia'
-import SuggestionsListItem from '@/components/suggestions/main/SuggestionsListItem.vue'
-import type { IBoardColumn } from '@/types'
-import { useFeedbackStore } from '@/stores/feedback'
-import TheHeader from '@/components/roadmap/TheHeader.vue'
-import TabsHeader from '@/components/roadmap/TabsHeader.vue'
+import { computed, onMounted, reactive } from 'vue'
+import { SlickItem,SlickList } from 'vue-slicksort'
+
 import ColumnHeader from '@/components/roadmap/ColumnHeader.vue'
+import TabsHeader from '@/components/roadmap/TabsHeader.vue'
+import TheHeader from '@/components/roadmap/TheHeader.vue'
+import SuggestionsListItem from '@/components/suggestions/main/SuggestionsListItem.vue'
+import { useFeedbackStore } from '@/stores/feedback'
 import { useRoadmapStore } from '@/stores/roamap'
+import type { IBoardColumn } from '@/types'
 
 const { kanban } = storeToRefs(useRoadmapStore())
 const { loadRoadmapToStore } = useRoadmapStore()

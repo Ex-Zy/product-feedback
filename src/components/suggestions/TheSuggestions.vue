@@ -1,14 +1,15 @@
 <script setup lang="ts">
+import { storeToRefs } from 'pinia'
+import { onMounted } from 'vue'
+
 import AppLayout from '@/components/AppLayout.vue'
-import TheSidebar from '@/components/suggestions/sidebar/TheSidebar.vue'
+import SuggestionsSkeleton from '@/components/suggestions/main/skeleton/SuggestionsSkeleton.vue'
+import SuggestionsEmpty from '@/components/suggestions/main/SuggestionsEmpty.vue'
 import SuggestionsHeader from '@/components/suggestions/main/SuggestionsHeader.vue'
 import SuggestionsList from '@/components/suggestions/main/SuggestionsList.vue'
+import TheSidebar from '@/components/suggestions/sidebar/TheSidebar.vue'
 import { useSuggestionsStore } from '@/stores/suggestions'
-import { storeToRefs } from 'pinia'
-import SuggestionsEmpty from '@/components/suggestions/main/SuggestionsEmpty.vue'
-import { onMounted } from 'vue'
 import { useUserStore } from '@/stores/user'
-import SuggestionsSkeleton from '@/components/suggestions/main/skeleton/SuggestionsSkeleton.vue'
 
 const { suggestions, loader, error } = storeToRefs(useSuggestionsStore())
 

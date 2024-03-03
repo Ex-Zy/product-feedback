@@ -1,9 +1,10 @@
 <script setup lang="ts">
+import { ref } from 'vue'
+
 import WidgetCategories from '@/components/suggestions/sidebar/WidgetCategories.vue'
 import WidgetFeedbackBoard from '@/components/suggestions/sidebar/WidgetFeedbackBoard.vue'
 import WidgetRoadmap from '@/components/suggestions/sidebar/WidgetRoadmap.vue'
 import { useSuggestionsStore } from '@/stores/suggestions'
-import { ref } from 'vue'
 import type { FilterType } from '@/types'
 
 const { loadSuggestionsToStore } = useSuggestionsStore()

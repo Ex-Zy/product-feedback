@@ -1,16 +1,14 @@
 import './scss/app.scss'
-
 import 'floating-vue/dist/style.css'
 import 'v-dropdown-menu/css'
+
+import FloatingVue from 'floating-vue'
+import { createPinia } from 'pinia'
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import DropdownMenu from 'v-dropdown-menu'
-import FloatingVue from 'floating-vue'
-
-import { plugin as Slicksort } from 'vue-slicksort'
-
 import { createApp } from 'vue'
-import { createPinia } from 'pinia'
+import { plugin as Slicksort } from 'vue-slicksort'
 
 import App from './App.vue'
 import router from './router'

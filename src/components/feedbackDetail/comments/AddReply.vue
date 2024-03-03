@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import UIButton from '@/components/common/UIButton.vue'
-import { usePostMessage } from '@/composables/comments/usePostMessage'
 import { useFocusToCommentForm } from '@/composables/comments/useFocusToCommentForm'
+import { usePostMessage } from '@/composables/comments/usePostMessage'
 
 interface Emit {
   (e: 'submit', value: string): void

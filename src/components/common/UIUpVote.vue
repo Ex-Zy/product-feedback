@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+
 import IconArrowUp from '@/components/common/icons/IconArrowUp.vue'
 
 interface Props {

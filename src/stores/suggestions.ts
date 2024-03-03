@@ -1,9 +1,10 @@
-import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
-import type { FilterType, ISuggestion, SortBy, SuggestionsReturnType } from '@/types'
+import { computed, ref } from 'vue'
+
 import { MOST_UPVOTES } from '@/constants'
 import { apiFetchSuggestions } from '@/stores/utils/api/apiFetchSuggestions'
 import { prepareSuggestionsResponse } from '@/stores/utils/suggestions/prepareSuggestionsResponse'
+import type { FilterType, ISuggestion, SortBy, SuggestionsReturnType } from '@/types'
 
 export interface Params {
   filterBy: FilterType

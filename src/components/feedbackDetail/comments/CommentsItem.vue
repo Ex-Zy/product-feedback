@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import CommentsItem from '@/components/feedbackDetail/comments/CommentsItem.vue'
-import type { IComment, IReply } from '@/types'
-import { computed, toRefs } from 'vue'
+import { toRefs } from 'vue'
+
 import AddReply from '@/components/feedbackDetail/comments/AddReply.vue'
+import CommentsItem from '@/components/feedbackDetail/comments/CommentsItem.vue'
 import UserProfile from '@/components/feedbackDetail/comments/UserProfile.vue'
+import { useComment } from '@/composables/comments/useComment'
 import { useScrollToLastComment } from '@/composables/comments/useScrollToLastComment'
 import { useFeedbackStore } from '@/stores/feedback'
-import { useComment } from '@/composables/comments/useComment'
+import type { IComment, IReply } from '@/types'
 
 interface Props {
   type: 'comment' | 'reply'

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
+
 import TheConfetti from '@/components/common/TheConfetti.vue'
 </script>
 

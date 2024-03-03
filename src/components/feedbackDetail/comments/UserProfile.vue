@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import type { IUser } from '@/types'
 import { computed } from 'vue'
+
+import type { IUser } from '@/types'
 
 interface Props {
   user: IUser

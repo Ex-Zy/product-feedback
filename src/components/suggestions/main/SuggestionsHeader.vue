@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import IconSuggestions from '@/components/common/icons/IconSuggestions.vue'
-import { useSuggestionsStore } from '@/stores/suggestions'
 import { storeToRefs } from 'pinia'
+
+import IconSuggestions from '@/components/common/icons/IconSuggestions.vue'
 import UIButton from '@/components/common/UIButton.vue'
 import SortBySelect from '@/components/suggestions/SortBySelect.vue'
-import type { SortBy } from '@/types'
 import router from '@/router'
+import { useSuggestionsStore } from '@/stores/suggestions'
+import type { SortBy } from '@/types'
 
 const { suggestionsAmount, sortBy } = storeToRefs(useSuggestionsStore())
 const { loadSuggestionsToStore } = useSuggestionsStore()

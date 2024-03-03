@@ -1,7 +1,8 @@
 <script setup lang="ts">
+import { storeToRefs } from 'pinia'
+
 import CommentsItem from '@/components/feedbackDetail/comments/CommentsItem.vue'
 import { useScrollToLastComment } from '@/composables/comments/useScrollToLastComment'
-import { storeToRefs } from 'pinia'
 import { useFeedbackStore } from '@/stores/feedback'
 
 const { comments, commentsAmount } = storeToRefs(useFeedbackStore())

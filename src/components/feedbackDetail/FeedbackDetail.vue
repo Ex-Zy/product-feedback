@@ -1,17 +1,18 @@
 <script setup lang="ts">
-import SuggestionsListItem from '@/components/suggestions/main/SuggestionsListItem.vue'
-import CommentsThread from '@/components/feedbackDetail/comments/CommentsThread.vue'
-import AddComment from '@/components/feedbackDetail/AddComment.vue'
 import { storeToRefs } from 'pinia'
-import { useFeedbackStore } from '@/stores/feedback'
-import UIButton from '@/components/common/UIButton.vue'
-import router from '@/router'
-import IconArrowLeft from '@/components/common/icons/IconArrowLeft.vue'
 import { computed, onBeforeUnmount, onMounted } from 'vue'
-import { useUserStore } from '@/stores/user'
-import SuggestionsListItemSkeleton from '@/components/suggestions/main/skeleton/SuggestionsListItemSkeleton.vue'
-import CommentsThreadSkeleton from '@/components/feedbackDetail/comments/skeleton/CommentsThreadSkeleton.vue'
 import { useRoute } from 'vue-router'
+
+import IconArrowLeft from '@/components/common/icons/IconArrowLeft.vue'
+import UIButton from '@/components/common/UIButton.vue'
+import AddComment from '@/components/feedbackDetail/AddComment.vue'
+import CommentsThread from '@/components/feedbackDetail/comments/CommentsThread.vue'
+import CommentsThreadSkeleton from '@/components/feedbackDetail/comments/skeleton/CommentsThreadSkeleton.vue'
+import SuggestionsListItemSkeleton from '@/components/suggestions/main/skeleton/SuggestionsListItemSkeleton.vue'
+import SuggestionsListItem from '@/components/suggestions/main/SuggestionsListItem.vue'
+import router from '@/router'
+import { useFeedbackStore } from '@/stores/feedback'
+import { useUserStore } from '@/stores/user'
 
 const route = useRoute()
 const id = computed(() => Number(route.params.id))

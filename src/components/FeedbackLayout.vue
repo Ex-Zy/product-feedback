@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import UIButton from '@/components/common/UIButton.vue'
 import IconArrowLeft from '@/components/common/icons/IconArrowLeft.vue'
+import UIButton from '@/components/common/UIButton.vue'
 import router from '@/router'
 
 function handleGoBack() {

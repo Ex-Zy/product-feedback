@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
+
 import type { IStatus, ISuggestion } from '@/types'
 
 export const useStatuses = defineStore('statuses', () => {

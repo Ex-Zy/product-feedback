@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { DragHandle } from 'vue-slicksort'
+
 import type { IBoardColumn } from '@/types'
 
 interface Props {

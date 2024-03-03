@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { useSuggestionsStore } from '@/stores/suggestions'
 import { storeToRefs } from 'pinia'
+
 import SuggestionsListItem from '@/components/suggestions/main/SuggestionsListItem.vue'
 import { useFeedbackStore } from '@/stores/feedback'
+import { useSuggestionsStore } from '@/stores/suggestions'
 
 const { suggestions } = storeToRefs(useSuggestionsStore())
 const { upvoteFeedback } = useFeedbackStore()

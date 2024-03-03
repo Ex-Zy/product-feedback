@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import IconArrowLeft from '@/components/common/icons/IconArrowLeft.vue'
 import UIButton from '@/components/common/UIButton.vue'
 import router from '@/router'
-import IconArrowLeft from '@/components/common/icons/IconArrowLeft.vue'
 
 const props = defineProps<{
   title: string

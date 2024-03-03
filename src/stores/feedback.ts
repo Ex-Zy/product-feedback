@@ -1,18 +1,19 @@
 import { defineStore } from 'pinia'
-import { useRoute } from 'vue-router'
 import { computed, ref } from 'vue'
-import type { FeedbackReturnType, IComment, InputSuggestion, ISuggestion } from '@/types'
-import { calculateComments } from '@/helpers'
+import { useRoute } from 'vue-router'
+
 import { useConfetti } from '@/composables/useConfetti'
 import { API_PRODUCTS } from '@/constants'
-import { apiUpvoteFeedback } from '@/stores/utils/api/apiUpvoteFeedback'
-import { apiDeleteFeedback } from '@/stores/utils/api/apiDeleteFeedback'
+import { calculateComments } from '@/helpers'
 import router from '@/router'
-import { apiEditFeedback } from '@/stores/utils/api/apiEditFeedback'
 import { apiCreateFeedback } from '@/stores/utils/api/apiCreateFeedback'
-import { addReplyToFeedback } from '@/stores/utils/feedback/addReplyToFeedback'
+import { apiDeleteFeedback } from '@/stores/utils/api/apiDeleteFeedback'
+import { apiEditFeedback } from '@/stores/utils/api/apiEditFeedback'
+import { apiUpvoteFeedback } from '@/stores/utils/api/apiUpvoteFeedback'
 import { addCommentToFeedback } from '@/stores/utils/feedback/addCommentToFeedback'
+import { addReplyToFeedback } from '@/stores/utils/feedback/addReplyToFeedback'
 import { incrementUpvoteFeedback } from '@/stores/utils/feedback/incrementUpvoteFeedback'
+import type { FeedbackReturnType, IComment, InputSuggestion, ISuggestion } from '@/types'
 
 export const useFeedbackStore = defineStore('feedback', () => {
   const loader = ref(true)

@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import ConfettiExplosion from 'vue-confetti-explosion'
-import { useConfetti } from '@/composables/useConfetti'
 import { useWindowSize } from '@vueuse/core'
+import ConfettiExplosion from 'vue-confetti-explosion'
+
+import { useConfetti } from '@/composables/useConfetti'
 
 const { show, duration } = useConfetti()
 const { width, height } = useWindowSize()

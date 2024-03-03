@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import UiCategory from '@/components/common/UiCategory.vue'
 import { reactive } from 'vue'
+
+import UiCategory from '@/components/common/UiCategory.vue'
 import type { FilterType } from '@/types'
 
 interface IWidgetCategory {

@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { useStatuses } from '@/stores/statuses'
 import { storeToRefs } from 'pinia'
 import { onMounted } from 'vue'
+
+import { useStatuses } from '@/stores/statuses'
 import { useSuggestionsStore } from '@/stores/suggestions'
 
 const { statuses } = storeToRefs(useStatuses())

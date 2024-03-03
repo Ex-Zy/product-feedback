@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { calculateComments } from '@/helpers'
-import type { ISuggestion } from '@/types'
-import UIUpVote from '@/components/common/UIUpVote.vue'
-import UiCategory from '@/components/common/UiCategory.vue'
 import { useMediaQuery } from '@vueuse/core'
 import { computed, toRefs } from 'vue'
 import { useRoute } from 'vue-router'
+
+import UiCategory from '@/components/common/UiCategory.vue'
+import UIUpVote from '@/components/common/UIUpVote.vue'
+import { calculateComments } from '@/helpers'
+import type { ISuggestion } from '@/types'
 
 interface Props {
   suggestion: ISuggestion

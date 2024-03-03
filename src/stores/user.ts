@@ -1,7 +1,8 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import type { IUser } from '@/types'
+
 import { API_USER } from '@/constants'
+import type { IUser } from '@/types'
 
 export const useUserStore = defineStore('user', () => {
   const loader = ref(false)

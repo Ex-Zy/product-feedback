@@ -1,5 +1,6 @@
-import type { ISuggestion } from '@/types'
 import { toRef } from 'vue'
+
+import type { ISuggestion } from '@/types'
 
 export function incrementUpvoteFeedback(suggestion: ISuggestion, isUpvoted: boolean): ISuggestion {
   const feedback = toRef<ISuggestion>(suggestion)

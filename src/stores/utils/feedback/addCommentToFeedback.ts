@@ -1,7 +1,8 @@
+import { storeToRefs } from 'pinia'
+
+import { useFeedbackStore } from '@/stores/feedback'
 import { useUserStore } from '@/stores/user'
 import type { IComment } from '@/types'
-import { storeToRefs } from 'pinia'
-import { useFeedbackStore } from '@/stores/feedback'
 
 export function addCommentToFeedback(commentMsg: string): IComment[] {
   const { feedback } = storeToRefs(useFeedbackStore())

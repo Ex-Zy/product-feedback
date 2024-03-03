@@ -1,5 +1,5 @@
-import type { InputSuggestion, ISuggestion } from '@/types'
 import { API_PRODUCTS } from '@/constants'
+import type { InputSuggestion, ISuggestion } from '@/types'
 
 function _transformToValidFeedback(newFeedback: InputSuggestion): ISuggestion {
   return Object.assign(
