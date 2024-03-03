@@ -188,8 +188,8 @@
       "id": "7",
       "title": "More comprehensive reports",
       "category": "feature",
-      "upvotes": 123,
-      "isUpvoted": false,
+      "upvotes": 124,
+      "isUpvoted": true,
       "status": "planned",
       "description": "It would be great to see a more detailed breakdown of solutions.",
       "comments": [

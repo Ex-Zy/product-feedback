@@ -1,8 +1,10 @@
 <script setup lang="ts">
+import type { Ref } from 'vue'
+
 interface Props {
   title: string
   description: string
-  error?: string
+  error?: string | Ref<string>
 }
 
 const props = defineProps<Props>()
