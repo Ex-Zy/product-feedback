@@ -1,0 +1,1 @@
+import{d as o,o as t,c as s,a as r}from"./index-ZopbLXTv.js";const n={width:"7",height:"10",xmlns:"http://www.w3.org/2000/svg"},l=["stroke"],d=o({__name:"IconArrowLeft",props:{color:{default:"#4661E6"}},setup(a){return(e,c)=>(t(),s("svg",n,[r("path",{d:"M6 9L2 5l4-4",stroke:e.color,"stroke-width":"2",fill:"none","fill-rule":"evenodd"},null,8,l)]))}});export{d as _};
