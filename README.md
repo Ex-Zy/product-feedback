@@ -41,7 +41,7 @@ Scripts name          | Description
 ### Links
 
 - Solution URL: [Github](https://github.com/Ex-Zy/product-feedback/)
-- Live Site URL: [Heroku](https://ex-zy.github.io/product-feedback/)
+- Live Site URL: [Github Pages](https://ex-zy.github.io/product-feedback/)
 
 ### Built with
 
