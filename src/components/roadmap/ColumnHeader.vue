@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { DragHandle } from 'vue-slicksort'
-import type { IBoardColumn } from '@/components/roadmap/TheRoadmap.vue'
+import type { IBoardColumn } from '@/types'
 
 interface Props {
   column: IBoardColumn

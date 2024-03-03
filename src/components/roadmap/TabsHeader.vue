@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { IBoardColumn } from '@/components/roadmap/TheRoadmap.vue'
+import type { IBoardColumn } from '@/types'
 
 interface Props {
   columns: IBoardColumn[]
