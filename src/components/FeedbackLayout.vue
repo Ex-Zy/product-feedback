@@ -27,6 +27,10 @@ function handleGoBack() {
   margin: 0 auto;
   padding-block: 40px;
 
+  @include mobile {
+    padding-inline: 24px;
+  }
+
   &__content {
     margin-top: 40px;
   }

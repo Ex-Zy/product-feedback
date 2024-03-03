@@ -55,7 +55,7 @@ function handleCancelFeedback(feedback: ISuggestion) {
     <FeedbackCard v-if="feedback && editedFeedback" class="edit-feedback">
       <template #icon><IconEditFeedback /></template>
       <template #title>
-        <h1 class="h1">Editing `{{ feedback.title }}`</h1>
+        <h1 class="edit-feedback__title h1">Editing `{{ feedback.title }}`</h1>
       </template>
       <template #content>
         <UIInput
@@ -85,18 +85,56 @@ function handleCancelFeedback(feedback: ISuggestion) {
         <UIButton
           type="danger"
           text="Delete"
-          class="delete-btn"
+          class="edit-feedback-btn delete-btn"
           @click="deleteFeedback(feedback)"
         />
-        <UIButton type="terminate" text="Cancel" @click="handleCancelFeedback(feedback)" />
-        <UIButton text="Add Feedback" @click="editFeedback(editedFeedback)" />
+        <UIButton
+          class="edit-feedback-btn cancel-btn"
+          type="terminate"
+          text="Cancel"
+          @click="handleCancelFeedback(feedback)"
+        />
+        <UIButton
+          class="edit-feedback-btn edit-btn"
+          text="Save Changes"
+          @click="editFeedback(editedFeedback)"
+        />
       </template>
     </FeedbackCard>
   </FeedbackLayout>
 </template>
 
 <style scoped lang="scss">
+.edit-feedback {
+  &__title {
+    @include mobile {
+      @include font-title(18px, 26px, -0.25px);
+    }
+  }
+}
+
+.edit-feedback-btn {
+  justify-content: center;
+}
+
 .delete-btn {
   margin-right: auto;
+
+  @include mobile {
+    margin: initial;
+    order: 3;
+  }
+}
+
+.edit-btn {
+  @include mobile {
+    order: 1;
+  }
+}
+
+.cancel-btn {
+  @include mobile {
+    order: 2;
+  }
 }
 </style>

@@ -40,7 +40,7 @@ function handleCancelFeedback() {
     <FeedbackCard class="create-feedback">
       <template #icon><IconNewFeedback /></template>
       <template #title>
-        <h1 class="h1">Create New Feedback</h1>
+        <h1 class="create-feedback__title h1">Create New Feedback</h1>
       </template>
       <template #content>
         <UIInput
@@ -61,22 +61,44 @@ function handleCancelFeedback() {
         />
       </template>
       <template #footer>
-        <UIButton text="Cancel" type="terminate" @click="handleCancelFeedback" />
-        <UIButton text="Add Feedback" @click="createNewFeedback(newFeedback)" />
+        <UIButton
+          class="create-feedback-btn cancel-btn"
+          text="Cancel"
+          type="terminate"
+          @click="handleCancelFeedback"
+        />
+        <UIButton
+          class="create-feedback-btn add-btn"
+          text="Add Feedback"
+          @click="createNewFeedback(newFeedback)"
+        />
       </template>
     </FeedbackCard>
   </FeedbackLayout>
 </template>
 
 <style scoped lang="scss">
-.row {
-  margin: 10px 0;
+.create-feedback {
+  &__title {
+    @include mobile {
+      @include font-title(18px, 26px, -0.25px);
+    }
+  }
+}
 
-  input,
-  select,
-  textarea {
-    height: 40px;
-    width: 100%;
+.create-feedback-btn {
+  justify-content: center;
+}
+
+.add-btn {
+  @include mobile {
+    order: 1;
+  }
+}
+
+.cancel-btn {
+  @include mobile {
+    order: 2;
   }
 }
 </style>

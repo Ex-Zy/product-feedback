@@ -27,11 +27,21 @@ const slots = defineSlots<{
   background: var(--color-4);
   position: relative;
 
+  @include mobile {
+    padding: 42px 24px 24px;
+  }
+
   &__icon {
     position: absolute;
     left: 42px;
     top: 0;
     transform: translateY(-50%);
+
+    @include mobile {
+      left: 24px;
+      width: 40px;
+      height: 40px;
+    }
   }
 
   &__content {
@@ -46,6 +56,12 @@ const slots = defineSlots<{
     display: flex;
     justify-content: flex-end;
     column-gap: 16px;
+
+    @include mobile {
+      flex-direction: column;
+      justify-content: flex-start;
+      gap: 16px;
+    }
   }
 }
 </style>
