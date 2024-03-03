@@ -1,5 +1,5 @@
 import { API_PRODUCTS } from '@/constants'
-import type { InputSuggestion, ISuggestion } from '@/types'
+import type { FeedbackReturnType, InputSuggestion, ISuggestion } from '@/types'
 
 function _transformToValidFeedback(newFeedback: InputSuggestion): ISuggestion {
   return Object.assign(
@@ -13,7 +13,7 @@ function _transformToValidFeedback(newFeedback: InputSuggestion): ISuggestion {
   )
 }
 
-export async function apiCreateFeedback(newFeedback: InputSuggestion) {
+export async function apiCreateFeedback(newFeedback: InputSuggestion): FeedbackReturnType {
   const feedback = _transformToValidFeedback(newFeedback)
 
   const requestOptions: RequestInit = {

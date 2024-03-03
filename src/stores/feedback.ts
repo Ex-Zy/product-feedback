@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 import { useRoute } from 'vue-router'
+import { useToast } from 'vue-toast-notification'
 
 import { useConfetti } from '@/composables/useConfetti'
 import { API_PRODUCTS } from '@/constants'
@@ -16,6 +17,8 @@ import { incrementUpvoteFeedback } from '@/stores/utils/feedback/incrementUpvote
 import type { FeedbackReturnType, IComment, InputSuggestion, ISuggestion } from '@/types'
 
 export const useFeedbackStore = defineStore('feedback', () => {
+  const $toast = useToast()
+
   const loader = ref(true)
   const error = ref<string | null>(null)
 
@@ -99,13 +102,32 @@ export const useFeedbackStore = defineStore('feedback', () => {
   }
 
   async function submitReply(commentId: number, commentMsg: string): FeedbackReturnType {
-    const comments: IComment[] = addReplyToFeedback(commentId, commentMsg)
-    if (!feedback.value) return
+    loader.value = true
+    try {
+      const comments: IComment[] = addReplyToFeedback(commentId, commentMsg)
+      if (!feedback.value) return
 
-    feedback.value.comments = comments
-    hideReplies()
+      feedback.value.comments = comments
+      hideReplies()
 
-    return await apiEditFeedback(feedback.value!)
+      const editedFeedback = await apiEditFeedback(feedback.value)
+      if (!editedFeedback) return
+
+      $toast.success('Comment successfully added', {
+        position: 'top',
+        duration: 3000
+      })
+
+      return editedFeedback
+    } catch (err) {
+      console.log(err)
+      $toast.error('Failed to create comment', {
+        position: 'top',
+        duration: 3000
+      })
+    } finally {
+      loader.value = false
+    }
   }
 
   async function submitComment(commentMsg: string): FeedbackReturnType {
@@ -116,10 +138,21 @@ export const useFeedbackStore = defineStore('feedback', () => {
 
       feedback.value.comments = comments
 
-      return await apiEditFeedback(feedback.value)
+      const editedFeedback = await apiEditFeedback(feedback.value)
+      if (!editedFeedback) return
+
+      $toast.success('Comment successfully added', {
+        position: 'top',
+        duration: 3000
+      })
+
+      return editedFeedback
     } catch (err) {
-      error.value = `Something went wrong`
       console.log(err)
+      $toast.error('Failed to create comment', {
+        position: 'top',
+        duration: 3000
+      })
     } finally {
       loader.value = false
     }
@@ -131,13 +164,23 @@ export const useFeedbackStore = defineStore('feedback', () => {
     try {
       feedback.value = suggestion
 
-      // TODO - add toast or modal for success edit
-      setTimeout(() => router.back(), 100)
+      const editedFeedback = await apiEditFeedback(suggestion)
 
-      return await apiEditFeedback(suggestion)
+      if (!editedFeedback) return
+
+      $toast.success('Feedback successfully edited', {
+        position: 'top',
+        duration: 3000,
+        onDismiss: () => router.back()
+      })
+
+      return editedFeedback
     } catch (err) {
-      error.value = `Something went wrong`
       console.log(err)
+      $toast.error('Failed to edit feedback', {
+        position: 'top',
+        duration: 3000
+      })
     } finally {
       loader.value = false
     }
@@ -151,11 +194,19 @@ export const useFeedbackStore = defineStore('feedback', () => {
 
       if (!deletedFeedback) return
 
-      // TODO - add toast or modal for success delete
-      setTimeout(() => router.push('/'), 100)
+      $toast.success('Feedback successfully deleted', {
+        position: 'top',
+        duration: 3000,
+        onDismiss: () => router.push('/')
+      })
+
       return deletedFeedback
     } catch (err) {
-      error.value = `Something went wrong`
+      console.log(err)
+      $toast.error('Failed to delete feedback', {
+        position: 'top',
+        duration: 3000
+      })
     } finally {
       loader.value = false
     }
@@ -169,11 +220,20 @@ export const useFeedbackStore = defineStore('feedback', () => {
 
       if (!suggestion) return
 
-      // TODO - add toast or modal for success create
-      setTimeout(() => router.push('/'), 100)
+      const $toast = useToast()
+      $toast.success('Feedback successfully created', {
+        position: 'top',
+        duration: 3000,
+        onDismiss: () => router.push('/')
+      })
+
       return suggestion
     } catch (err) {
-      error.value = `Something went wrong`
+      console.log(err)
+      $toast.error('Failed to create feedback', {
+        position: 'top',
+        duration: 3000
+      })
     } finally {
       loader.value = false
     }
