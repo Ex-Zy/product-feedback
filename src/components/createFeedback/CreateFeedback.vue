@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useVuelidate } from '@vuelidate/core'
+import { helpers, required } from '@vuelidate/validators'
 import { reactive } from 'vue'
 
 import FeedbackCard from '@/components/common/FeedbackCard.vue'
@@ -21,6 +23,16 @@ const newFeedback = reactive<InputSuggestion>({
   category: CATEGORIES[4].name,
   description: ''
 })
+
+const rules = {
+  title: {
+    required: helpers.withMessage(`Can't be empty`, required)
+  },
+  description: { required: helpers.withMessage(`Can't be empty`, required) }
+}
+
+const v$ = useVuelidate(rules, newFeedback)
+
 function handleCancelFeedback() {
   const isEmptyFeedback = !newFeedback.title.trim() && !newFeedback.description.trim()
 
@@ -32,6 +44,14 @@ function handleCancelFeedback() {
   newFeedback.title = ''
   newFeedback.category = 'feature'
   newFeedback.description = ''
+}
+
+async function handleCreateFeedback() {
+  const isFormValid = await v$.value.$validate()
+
+  if (!isFormValid) return
+
+  await createNewFeedback(newFeedback)
 }
 </script>
 
@@ -47,6 +67,7 @@ function handleCancelFeedback() {
           title="Feedback title"
           description="Add a short, descriptive headline"
           v-model="newFeedback.title"
+          :error="v$.title.$errors[0]?.$message"
         />
         <UISelect
           v-model="newFeedback.category"
@@ -58,6 +79,7 @@ function handleCancelFeedback() {
           title="Feedback Detail"
           description="Include any specific comments on what should be improved, added, etc."
           v-model="newFeedback.description"
+          :error="v$.description.$errors[0]?.$message"
         />
       </template>
       <template #footer>
@@ -70,7 +92,7 @@ function handleCancelFeedback() {
         <UIButton
           class="create-feedback-btn add-btn"
           text="Add Feedback"
-          @click="createNewFeedback(newFeedback)"
+          @click="handleCreateFeedback"
         />
       </template>
     </FeedbackCard>

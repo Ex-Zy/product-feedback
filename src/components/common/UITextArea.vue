@@ -2,6 +2,7 @@
 interface Props {
   title: string
   description: string
+  error?: string
 }
 
 const props = defineProps<Props>()
@@ -9,10 +10,11 @@ const value = defineModel({ default: '' })
 </script>
 
 <template>
-  <div class="ui-textarea">
+  <div class="ui-textarea" :class="{ 'is-error': props.error }">
     <div class="ui-textarea__title">{{ props.title }}</div>
     <div class="ui-textarea__desc">{{ props.description }}</div>
     <textarea type="text" class="ui-textarea__field" v-model="value" v-bind="$attrs" />
+    <div v-if="props.error" class="ui-textarea__error">{{ props.error }}</div>
   </div>
 </template>
 
@@ -55,6 +57,17 @@ const value = defineModel({ default: '' })
       font-size: 13px;
       padding: 16px;
     }
+  }
+
+  &.is-error {
+    .ui-textarea__field {
+      border-color: var(--color-danger);
+    }
+  }
+
+  &__error {
+    margin: 4px 0 0;
+    @include font-body(14px, 20px, 400, var(--color-danger));
   }
 }
 </style>

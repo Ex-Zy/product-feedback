@@ -6,7 +6,7 @@
   },
   "productRequests": [
     {
-      "id": 1,
+      "id": "1",
       "title": "Add tags for solutions",
       "category": "enhancement",
       "upvotes": 112,
@@ -35,7 +35,7 @@
       ]
     },
     {
-      "id": 2,
+      "id": "2",
       "title": "Add a dark theme option",
       "category": "feature",
       "upvotes": 99,
@@ -86,7 +86,7 @@
       ]
     },
     {
-      "id": 3,
+      "id": "3",
       "title": "Q&A within the challenge hubs",
       "category": "feature",
       "upvotes": 65,
@@ -106,7 +106,7 @@
       ]
     },
     {
-      "id": 4,
+      "id": "4",
       "title": "Add image/video upload to feedback",
       "category": "enhancement",
       "upvotes": 51,
@@ -135,7 +135,7 @@
       ]
     },
     {
-      "id": 5,
+      "id": "5",
       "title": "Ability to follow others",
       "category": "feature",
       "upvotes": 42,
@@ -176,7 +176,7 @@
       ]
     },
     {
-      "id": 6,
+      "id": "6",
       "title": "Preview images not loading",
       "category": "bug",
       "upvotes": 3,
@@ -185,7 +185,7 @@
       "description": "Challenge preview images are missing when you apply a filter."
     },
     {
-      "id": 7,
+      "id": "7",
       "title": "More comprehensive reports",
       "category": "feature",
       "upvotes": 123,
@@ -214,7 +214,7 @@
       ]
     },
     {
-      "id": 8,
+      "id": "8",
       "title": "Learning paths",
       "category": "feature",
       "upvotes": 28,
@@ -234,7 +234,7 @@
       ]
     },
     {
-      "id": 9,
+      "id": "9",
       "title": "One-click portfolio generation",
       "category": "feature",
       "upvotes": 62,
@@ -254,7 +254,7 @@
       ]
     },
     {
-      "id": 10,
+      "id": "10",
       "title": "Bookmark challenges",
       "category": "feature",
       "upvotes": 31,
@@ -274,7 +274,7 @@
       ]
     },
     {
-      "id": 11,
+      "id": "11",
       "title": "Animated solution screenshots",
       "category": "bug",
       "upvotes": 9,
@@ -283,7 +283,7 @@
       "description": "Screenshots of solutions with animations don’t display correctly."
     },
     {
-      "id": 12,
+      "id": "12",
       "title": "Add micro-interactions",
       "category": "enhancement",
       "upvotes": 71,
@@ -313,6 +313,15 @@
           ]
         }
       ]
+    },
+    {
+      "id": 1709473247248,
+      "upvotes": 0,
+      "isUpvoted": false,
+      "status": "suggestion",
+      "title": "",
+      "category": "feature",
+      "description": ""
     }
   ]
 }
