@@ -10,7 +10,13 @@ module.exports = {
     'simple-import-sort/exports': 'error',
     'import/first': 'error',
     'import/newline-after-import': 'error',
-    'import/no-duplicates': 'error'
+    'import/no-duplicates': 'error',
+    'vue/block-order': [
+      'error',
+      {
+        order: ['script', 'template', 'style']
+      }
+    ]
   },
   extends: [
     'plugin:vue/vue3-essential',

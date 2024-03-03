@@ -1,3 +1,35 @@
+<script lang="ts" setup>
+import { useMediaQuery } from '@vueuse/core'
+import { storeToRefs } from 'pinia'
+import { computed, onMounted, reactive } from 'vue'
+import { SlickItem, SlickList } from 'vue-slicksort'
+
+import ColumnHeader from '@/components/roadmap/ColumnHeader.vue'
+import TabsHeader from '@/components/roadmap/TabsHeader.vue'
+import TheHeader from '@/components/roadmap/TheHeader.vue'
+import SuggestionsListItem from '@/components/suggestions/main/SuggestionsListItem.vue'
+import { useFeedbackStore } from '@/stores/feedback'
+import { useRoadmapStore } from '@/stores/roamap'
+import type { IBoardColumn } from '@/types'
+
+const { kanban } = storeToRefs(useRoadmapStore())
+const { loadRoadmapToStore } = useRoadmapStore()
+onMounted(loadRoadmapToStore)
+
+const { upvoteFeedback } = useFeedbackStore()
+
+const mobile = reactive({
+  enable: useMediaQuery('(max-width: 767px)'),
+  activeTab: 'in-progress'
+})
+const axis = computed(() => (mobile.enable ? 'x' : 'y'))
+
+function isVisibleColumn(col: IBoardColumn) {
+  if (!mobile.enable) return true
+  return col.id === mobile.activeTab
+}
+</script>
+
 <template>
   <div class="kanban-board">
     <TheHeader :title="kanban.name" />
@@ -47,38 +79,6 @@
     </SlickList>
   </div>
 </template>
-
-<script lang="ts" setup>
-import { useMediaQuery } from '@vueuse/core'
-import { storeToRefs } from 'pinia'
-import { computed, onMounted, reactive } from 'vue'
-import { SlickItem,SlickList } from 'vue-slicksort'
-
-import ColumnHeader from '@/components/roadmap/ColumnHeader.vue'
-import TabsHeader from '@/components/roadmap/TabsHeader.vue'
-import TheHeader from '@/components/roadmap/TheHeader.vue'
-import SuggestionsListItem from '@/components/suggestions/main/SuggestionsListItem.vue'
-import { useFeedbackStore } from '@/stores/feedback'
-import { useRoadmapStore } from '@/stores/roamap'
-import type { IBoardColumn } from '@/types'
-
-const { kanban } = storeToRefs(useRoadmapStore())
-const { loadRoadmapToStore } = useRoadmapStore()
-onMounted(loadRoadmapToStore)
-
-const { upvoteFeedback } = useFeedbackStore()
-
-const mobile = reactive({
-  enable: useMediaQuery('(max-width: 767px)'),
-  activeTab: 'in-progress'
-})
-const axis = computed(() => (mobile.enable ? 'x' : 'y'))
-
-function isVisibleColumn(col: IBoardColumn) {
-  if (!mobile.enable) return true
-  return col.id === mobile.activeTab
-}
-</script>
 
 <style lang="scss" scoped>
 .kanban-board {
