@@ -5,7 +5,6 @@ import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 
 import SuggestionsList from '@/components/suggestions/main/SuggestionsList.vue'
 import SuggestionsListItem from '@/components/suggestions/main/SuggestionsListItem.vue'
-import { mockSuggestions } from '@/mock'
 import router from '@/router'
 import { useSuggestionsStore } from '@/stores/suggestions'
 
@@ -26,9 +25,10 @@ describe('Test SuggestionsListItem.vue component', () => {
 
   it('Rendering with correct items amount', async () => {
     const store = useSuggestionsStore()
-    store.$patch({ suggestions: mockSuggestions })
 
+    await store.loadSuggestionsToStore()
     await flushPromises()
+
     expect(wrapper.findAllComponents(SuggestionsListItem)).toHaveLength(12)
   })
 })
