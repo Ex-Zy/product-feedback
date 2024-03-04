@@ -128,10 +128,28 @@ const rootClasses = computed(() => ({
   &__title {
     transition: color 0.25s;
     cursor: pointer;
+    position: relative;
     text-decoration: none;
+
+    &:after {
+      content: '';
+      display: block;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 20px;
+      height: 1px;
+      transition: all 0.25s;
+      background: var(--color-7);
+    }
 
     &:hover {
       color: var(--color-7-hover);
+
+      &:after {
+        width: 100%;
+        background: var(--color-7-hover);
+      }
     }
   }
 
