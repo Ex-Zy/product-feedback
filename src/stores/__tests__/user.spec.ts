@@ -1,3 +1,4 @@
+import { flushPromises } from '@vue/test-utils'
 import { createPinia, setActivePinia } from 'pinia'
 import { beforeEach, describe, expect, it } from 'vitest'
 
@@ -38,6 +39,7 @@ describe('Test "user" store', () => {
     const state = useUserStore()
 
     await state.loadCurrentUserToStore()
+    await flushPromises()
 
     expect(state.currentUser).toEqual(getUser())
   })
