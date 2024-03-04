@@ -2,10 +2,10 @@ import { flushPromises, mount, VueWrapper } from '@vue/test-utils'
 import FloatingVue from 'floating-vue'
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 
-import UiCategory from '@/components/common/UiCategory.vue'
-import UIUpVote from '@/components/common/UIUpVote.vue'
-import SuggestionsListItem from '@/components/suggestions/main/SuggestionsListItem.vue'
-import router from '@/router'
+import router from '../../../router'
+import UiCategory from '../../common/UiCategory.vue'
+import UIUpVote from '../../common/UIUpVote.vue'
+import SuggestionsListItem from '../main/SuggestionsListItem.vue'
 
 describe('Render Suggestion with correct data', () => {
   const wrapper: VueWrapper<InstanceType<typeof SuggestionsListItem>> = mount(SuggestionsListItem, {

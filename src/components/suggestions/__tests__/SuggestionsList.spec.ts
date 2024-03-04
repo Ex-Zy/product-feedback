@@ -4,11 +4,10 @@ import { createPinia } from 'pinia'
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 
 import SuggestionsList from '@/components/suggestions/main/SuggestionsList.vue'
-
-import { mockSuggestions } from '../../mock'
-import router from '../../router'
-import { useSuggestionsStore } from '../../stores/suggestions'
-import SuggestionsListItem from '../suggestions/main/SuggestionsListItem.vue'
+import SuggestionsListItem from '@/components/suggestions/main/SuggestionsListItem.vue'
+import { mockSuggestions } from '@/mock'
+import router from '@/router'
+import { useSuggestionsStore } from '@/stores/suggestions'
 
 describe('Test SuggestionsListItem.vue component', () => {
   let wrapper: VueWrapper<InstanceType<typeof SuggestionsList>>
