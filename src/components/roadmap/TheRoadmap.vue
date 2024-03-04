@@ -164,7 +164,6 @@ function isVisibleColumn(col: IBoardColumn) {
   }
 
   &.kanban-helper .kanban-list-item-inner {
-    transform: rotate(10deg);
     background: var(--color-5);
   }
 }

@@ -173,11 +173,24 @@ const rootClasses = computed(() => ({
   }
 
   &.is-roadmap {
-    border-top: 6px solid v-bind(color);
+    position: relative;
     flex-wrap: wrap;
     justify-content: space-between;
     row-gap: 16px;
     padding: 32px;
+
+    &:before {
+      content: '';
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 6px;
+      background: v-bind(color);
+      border-top-left-radius: var(--radius-1);
+      border-top-right-radius: var(--radius-1);
+    }
 
     @include tablet {
       padding: 20px;
@@ -204,6 +217,9 @@ const rootClasses = computed(() => ({
     }
 
     .suggestions-item__title {
+      &:hover {
+        color: var(--color-7-hover);
+      }
       @include tablet {
         @include font-title(13px, 19px, -0.18px);
       }

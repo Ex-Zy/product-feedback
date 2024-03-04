@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { computed } from 'vue'
+
 import type { IBoardColumn } from '@/types'
 
 interface Props {
@@ -12,6 +14,8 @@ interface Emits {
 
 const props = defineProps<Props>()
 const emits = defineEmits<Emits>()
+
+const color = computed(() => props.columns.find((col) => col.id === props.active)?.color)
 
 function handleClick(tabName: string) {
   emits('click', tabName)
@@ -38,7 +42,17 @@ function handleClick(tabName: string) {
   grid-template-columns: 1fr 1fr 1fr;
   align-items: stretch;
   height: 60px;
-  border-bottom: 1px solid #acb0c6;
+  position: relative;
+  &:after {
+    content: '';
+    display: block;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: #acb0c6;
+  }
 
   &__link {
     position: relative;
@@ -53,13 +67,14 @@ function handleClick(tabName: string) {
       content: '';
       display: block;
       position: absolute;
-      bottom: -1px;
+      bottom: 0;
       left: 0;
       right: 0;
       height: 4px;
-      background: var(--color-1);
+      background: v-bind(color);
       transition: all 0.25s;
       opacity: 0;
+      z-index: 1;
     }
 
     &.is-active {
