@@ -1,88 +1,114 @@
-import { mount, VueWrapper } from '@vue/test-utils'
-import { describe, expect, it } from 'vitest'
+import { flushPromises, mount, VueWrapper } from '@vue/test-utils'
+import FloatingVue from 'floating-vue'
+import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 
-import type { IComment } from '@/types'
+import UiCategory from '@/components/common/UiCategory.vue'
+import UIUpVote from '@/components/common/UIUpVote.vue'
+import SuggestionsListItem from '@/components/suggestions/main/SuggestionsListItem.vue'
+import router from '@/router'
 
-import UiCategory from '../common/UiCategory.vue'
-import UIUpVote from '../common/UIUpVote.vue'
-import SuggestionsListItem from '../suggestions/main/SuggestionsListItem.vue'
-
-const comments: IComment[] = [
-  {
-    id: '8',
-    content:
-      'I also want to be notified when devs I follow submit projects on FEM. Is in-app notification also in the pipeline?',
-    user: {
-      image: './assets/user-images/image-victoria.jpg',
-      name: 'Victoria Mejia',
-      username: 'arlen_the_marlin'
-    },
-    replies: [
-      {
-        id: '100',
-        content:
-          "Bumping this. It would be good to have a tab with a feed of people I follow so it's easy to see what challenges they’ve done lately. I learn a lot by reading good developers' code.",
-        replyingTo: 'arlen_the_marlin',
-        user: {
-          image: './assets/user-images/image-zena.jpg',
-          name: 'Zena Kelley',
-          username: 'velvetround'
-        }
-      }
-    ]
-  },
-  {
-    id: '9',
-    content:
-      "I've been saving the profile URLs of a few people and I check what they’ve been doing from time to time. Being able to follow them solves that",
-    user: {
-      image: './assets/user-images/image-jackson.jpg',
-      name: 'Jackson Barker',
-      username: 'countryspirit'
-    }
-  }
-]
-
-describe('SuggestionsListItem.vue Test', () => {
-  const wrapper: VueWrapper = mount(SuggestionsListItem, {
+describe('Render Suggestion with correct data', () => {
+  const wrapper: VueWrapper<InstanceType<typeof SuggestionsListItem>> = mount(SuggestionsListItem, {
     props: {
       suggestion: {
-        id: '5',
-        title: 'Ability to follow others',
-        category: 'feature',
-        status: 'live',
-        upvotes: 42,
-        description: 'Stay updated on comments and solutions other people post.',
+        id: '6',
+        title: 'Preview images not loading',
+        category: 'bug',
+        upvotes: 3,
         isUpvoted: false,
-        comments
+        status: 'suggestion',
+        description: 'Challenge preview images are missing when you apply a filter.'
       }
+    },
+    global: {
+      plugins: [router, FloatingVue]
     }
   })
 
-  it('render title', () => {
-    expect(wrapper.find('[data-test="title"]').text()).toMatch('Ability to follow others')
+  it('correct title', () => {
+    expect(wrapper.find('[data-test="title"]').text()).toMatch('Preview images not loading')
   })
 
-  it('render description', () => {
+  it('correct description', () => {
     expect(wrapper.find('[data-test="description"]').text()).toMatch(
-      'Stay updated on comments and solutions other people post.'
+      'Challenge preview images are missing when you apply a filter.'
     )
   })
 
-  it('render comments amount', () => {
-    expect(wrapper.find('[data-test="amount"]').text()).toMatch('3')
+  it('correct number of comments', () => {
+    expect(wrapper.find('[data-test="amount"]').text()).toMatch('0')
   })
 
-  it('render category', () => {
-    expect(wrapper.findComponent(UiCategory).text()).toMatch('feature')
+  it('correct category', () => {
+    expect(wrapper.findComponent(UiCategory).text()).toMatch('bug')
   })
 
-  it('render upvote', () => {
-    expect(wrapper.findComponent(UIUpVote).text()).toMatch('42')
+  it('correct upvote', () => {
+    expect(wrapper.findComponent(UIUpVote).text()).toMatch('3')
+  })
+})
+
+describe('Suggestion produce correct input/output', () => {
+  let wrapper: VueWrapper<InstanceType<typeof SuggestionsListItem>>
+
+  beforeEach(() => {
+    wrapper = mount(SuggestionsListItem, {
+      props: {
+        suggestion: {
+          id: '1', // id must be for vue-router
+          title: '',
+          category: '',
+          upvotes: 0,
+          isUpvoted: false,
+          status: '',
+          description: ''
+        }
+      },
+      global: {
+        plugins: [router, FloatingVue]
+      }
+    })
+  })
+
+  afterEach(() => {
+    wrapper.unmount()
+  })
+
+  it('correct initial state', () => {
+    expect(wrapper.find('[data-test="title"]').text()).toMatch('')
+    expect(wrapper.find('[data-test="description"]').text()).toMatch('')
+    expect(wrapper.find('[data-test="amount"]').text()).toMatch('')
+    expect(wrapper.findComponent(UiCategory).text()).toMatch('')
+    expect(wrapper.findComponent(UIUpVote).text()).toMatch('0')
+  })
+
+  it('correct props', async () => {
+    await wrapper.setProps({
+      suggestion: {
+        id: '1',
+        title: 'Test',
+        category: 'bug',
+        upvotes: 1,
+        isUpvoted: false,
+        status: 'suggestion',
+        description: 'Test'
+      }
+    })
+
+    // Wait DOM updates
+    await flushPromises()
+
+    expect(wrapper.vm.suggestion.id).toMatch('1')
+    expect(wrapper.vm.suggestion.title).toMatch('Test')
+    expect(wrapper.vm.suggestion.category).toMatch('bug')
+    expect(wrapper.vm.suggestion.upvotes).toBe(1)
+    expect(wrapper.vm.suggestion.isUpvoted).toBeFalsy()
+    expect(wrapper.vm.suggestion.status).toMatch('suggestion')
+    expect(wrapper.vm.suggestion.description).toMatch('Test')
   })
 
   it('emit upvote event', async () => {
-    await wrapper.findComponent(UIUpVote).setValue(42)
+    await wrapper.findComponent(UIUpVote).setValue(4)
     expect(wrapper.emitted()).toHaveProperty('upvote')
   })
 })
